@@ -1,0 +1,4 @@
+{
+  "presets": ["es2015", "flow", "react", "power-assert"],
+  "plugins": ["transform-class-properties"]
+}
