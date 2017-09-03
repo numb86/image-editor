@@ -1,5 +1,7 @@
 import React from 'react';
 
+const RESIZE_RATIO = 0.5;
+
 const UploadButton = props => (
   <form className="uploadButton">
     <label htmlFor="imageUploadInput">
@@ -29,8 +31,8 @@ class ImagePreviewer extends React.Component {
       const image = new Image();
       image.onload = () => {
         const canvas = document.createElement('canvas');
-        const dstWidth = image.width * 0.5;
-        const dstHeight = image.height * 0.5;
+        const dstWidth = image.width * RESIZE_RATIO;
+        const dstHeight = image.height * RESIZE_RATIO;
         canvas.width = dstWidth;
         canvas.height = dstHeight;
         const ctx = canvas.getContext('2d');
