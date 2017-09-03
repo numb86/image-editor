@@ -26,8 +26,20 @@ class ImagePreviewer extends React.Component {
     const fr = new FileReader();
 
     fr.onload = () => {
-      this.setState({uploadedImage: fr.result});
+      const image = new Image();
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        const dstWidth = image.width * 0.5;
+        const dstHeight = image.height * 0.5;
+        canvas.width = dstWidth;
+        canvas.height = dstHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(image, 0, 0, dstWidth, dstHeight);
+        this.setState({uploadedImage: canvas.toDataURL('image/png')});
+      };
+      image.src = fr.result;
     };
+
     fr.readAsDataURL(file);
   }
 
