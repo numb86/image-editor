@@ -19,8 +19,20 @@ const UploadButton = props => (
 class ImagePreviewer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {uploadedImage: null};
+    this.state = {uploadedImageUrl: null};
     this.onImageSelected = this.onImageSelected.bind(this);
+    this.onImageLoad = this.onImageLoad.bind(this);
+  }
+
+  onImageLoad(imageObject) {
+    const canvas = document.createElement('canvas');
+    const dstWidth = imageObject.width * RESIZE_RATIO;
+    const dstHeight = imageObject.height * RESIZE_RATIO;
+    canvas.width = dstWidth;
+    canvas.height = dstHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(imageObject, 0, 0, dstWidth, dstHeight);
+    this.setState({uploadedImageUrl: canvas.toDataURL('image/png')});
   }
 
   onImageSelected(e) {
@@ -30,14 +42,7 @@ class ImagePreviewer extends React.Component {
     fr.onload = () => {
       const image = new Image();
       image.onload = () => {
-        const canvas = document.createElement('canvas');
-        const dstWidth = image.width * RESIZE_RATIO;
-        const dstHeight = image.height * RESIZE_RATIO;
-        canvas.width = dstWidth;
-        canvas.height = dstHeight;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(image, 0, 0, dstWidth, dstHeight);
-        this.setState({uploadedImage: canvas.toDataURL('image/png')});
+        this.onImageLoad(image);
       };
       image.src = fr.result;
     };
@@ -50,7 +55,7 @@ class ImagePreviewer extends React.Component {
       <div>
         <UploadButton onChange={this.onImageSelected} />
         <p>
-          <img src={this.state.uploadedImage} alt="ここに画像が表示されます。" />
+          <img src={this.state.uploadedImageUrl} alt="ここに画像が表示されます。" />
         </p>
       </div>
     );
