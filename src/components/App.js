@@ -1,5 +1,7 @@
 import React from 'react';
 
+const RESIZE_RATIO = 0.5;
+
 const UploadButton = props => (
   <form className="uploadButton">
     <label htmlFor="imageUploadInput">
@@ -17,8 +19,20 @@ const UploadButton = props => (
 class ImagePreviewer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {uploadedImage: null};
+    this.state = {uploadedImageUrl: null};
     this.onImageSelected = this.onImageSelected.bind(this);
+    this.onImageLoad = this.onImageLoad.bind(this);
+  }
+
+  onImageLoad(imageObject) {
+    const canvas = document.createElement('canvas');
+    const dstWidth = imageObject.width * RESIZE_RATIO;
+    const dstHeight = imageObject.height * RESIZE_RATIO;
+    canvas.width = dstWidth;
+    canvas.height = dstHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(imageObject, 0, 0, dstWidth, dstHeight);
+    this.setState({uploadedImageUrl: canvas.toDataURL('image/png')});
   }
 
   onImageSelected(e) {
@@ -26,8 +40,13 @@ class ImagePreviewer extends React.Component {
     const fr = new FileReader();
 
     fr.onload = () => {
-      this.setState({uploadedImage: fr.result});
+      const image = new Image();
+      image.onload = () => {
+        this.onImageLoad(image);
+      };
+      image.src = fr.result;
     };
+
     fr.readAsDataURL(file);
   }
 
@@ -36,7 +55,7 @@ class ImagePreviewer extends React.Component {
       <div>
         <UploadButton onChange={this.onImageSelected} />
         <p>
-          <img src={this.state.uploadedImage} alt="ここに画像が表示されます。" />
+          <img src={this.state.uploadedImageUrl} alt="ここに画像が表示されます。" />
         </p>
       </div>
     );
