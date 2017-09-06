@@ -1,6 +1,7 @@
 import React from 'react';
 
 const RESIZE_RATIO = 0.5;
+const DOWNLOAD_IMAGE_FILE_TYPE = 'png';
 
 const UploadButton = props => (
   <form className="uploadButton">
@@ -16,10 +17,18 @@ const UploadButton = props => (
   </form>
 );
 
+const trimFileNameExtension = fileName => {
+  const periodPosition = fileName.lastIndexOf('.');
+  return fileName.slice(0, periodPosition);
+};
+
 class ImagePreviewer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {uploadedImageUrl: null};
+    this.state = {
+      uploadedImageUrl: null,
+      downloadImageFileName: null,
+    };
     this.onImageSelected = this.onImageSelected.bind(this);
     this.onImageLoad = this.onImageLoad.bind(this);
   }
@@ -32,7 +41,9 @@ class ImagePreviewer extends React.Component {
     canvas.height = dstHeight;
     const ctx = canvas.getContext('2d');
     ctx.drawImage(imageObject, 0, 0, dstWidth, dstHeight);
-    this.setState({uploadedImageUrl: canvas.toDataURL('image/png')});
+    this.setState({
+      uploadedImageUrl: canvas.toDataURL(`image/${DOWNLOAD_IMAGE_FILE_TYPE}`),
+    });
   }
 
   onImageSelected(e) {
@@ -45,15 +56,23 @@ class ImagePreviewer extends React.Component {
         this.onImageLoad(image);
       };
       image.src = fr.result;
+      this.setState({
+        /* prettier-ignore */
+        downloadImageFileName: `${trimFileNameExtension(file.name)}.${DOWNLOAD_IMAGE_FILE_TYPE}`,
+      });
     };
 
     fr.readAsDataURL(file);
   }
 
   render() {
+    const {uploadedImageUrl, downloadImageFileName} = this.state;
     return (
       <div>
         <UploadButton onChange={this.onImageSelected} />
+        <a href={uploadedImageUrl} download={downloadImageFileName}>
+          ダウンロード
+        </a>
         <p>
           <img src={this.state.uploadedImageUrl} alt="ここに画像が表示されます。" />
         </p>
