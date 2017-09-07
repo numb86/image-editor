@@ -22,6 +22,13 @@ const trimFileNameExtension = fileName => {
   return fileName.slice(0, periodPosition);
 };
 
+const autoDownload = (url, fileName) => {
+  const elem = document.createElement('a');
+  elem.href = url;
+  elem.download = fileName;
+  elem.click();
+};
+
 class ImagePreviewer extends React.Component {
   constructor(props) {
     super(props);
@@ -60,6 +67,10 @@ class ImagePreviewer extends React.Component {
         /* prettier-ignore */
         downloadImageFileName: `${trimFileNameExtension(file.name)}.${DOWNLOAD_IMAGE_FILE_TYPE}`,
       });
+      autoDownload(
+        this.state.uploadedImageUrl,
+        this.state.downloadImageFileName
+      );
     };
 
     fr.readAsDataURL(file);
