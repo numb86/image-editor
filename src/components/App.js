@@ -55,14 +55,14 @@ class ImagePreviewer extends React.Component {
 
   onImageSelected(e) {
     const file = e.target.files[0];
-    const fr = new FileReader();
+    const fileReader = new FileReader();
 
-    fr.onload = () => {
+    fileReader.onload = () => {
       const image = new Image();
       image.onload = () => {
         this.onImageLoad(image);
       };
-      image.src = fr.result;
+      image.src = fileReader.result;
       this.setState({
         /* prettier-ignore */
         downloadImageFileName: `${trimFileNameExtension(file.name)}.${DOWNLOAD_IMAGE_FILE_TYPE}`,
@@ -73,7 +73,7 @@ class ImagePreviewer extends React.Component {
       );
     };
 
-    fr.readAsDataURL(file);
+    fileReader.readAsDataURL(file);
   }
 
   render() {
