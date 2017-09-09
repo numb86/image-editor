@@ -29,6 +29,22 @@ const autoDownload = (url, fileName) => {
   elem.click();
 };
 
+const resizeImage = (imageDataUrl, ratio) =>
+  new Promise(resolve => {
+    const image = new Image();
+    image.onload = () => {
+      const deformedWidth = image.width * ratio;
+      const deformedHeight = image.height * ratio;
+      const canvas = document.createElement('canvas');
+      canvas.width = deformedWidth;
+      canvas.height = deformedHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(image, 0, 0, deformedWidth, deformedHeight);
+      resolve(canvas.toDataURL(`image/${DOWNLOAD_IMAGE_FILE_TYPE}`));
+    };
+    image.src = imageDataUrl;
+  });
+
 class ImagePreviewer extends React.Component {
   constructor(props) {
     super(props);
@@ -40,39 +56,26 @@ class ImagePreviewer extends React.Component {
     this.onImageLoad = this.onImageLoad.bind(this);
   }
 
-  onImageLoad(imageObject) {
-    const canvas = document.createElement('canvas');
-    const dstWidth = imageObject.width * RESIZE_RATIO;
-    const dstHeight = imageObject.height * RESIZE_RATIO;
-    canvas.width = dstWidth;
-    canvas.height = dstHeight;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(imageObject, 0, 0, dstWidth, dstHeight);
-    this.setState({
-      uploadedImageUrl: canvas.toDataURL(`image/${DOWNLOAD_IMAGE_FILE_TYPE}`),
+  onImageLoad(imageDataUrl, originalFileName) {
+    resizeImage(imageDataUrl, RESIZE_RATIO).then(res => {
+      this.setState({
+        uploadedImageUrl: res,
+        /* prettier-ignore */
+        downloadImageFileName: `${trimFileNameExtension(originalFileName)}.${DOWNLOAD_IMAGE_FILE_TYPE}`,
+      });
+      autoDownload(
+        this.state.uploadedImageUrl,
+        this.state.downloadImageFileName
+      );
     });
   }
 
   onImageSelected(e) {
     const file = e.target.files[0];
     const fileReader = new FileReader();
-
     fileReader.onload = () => {
-      const image = new Image();
-      image.onload = () => {
-        this.onImageLoad(image);
-      };
-      image.src = fileReader.result;
-      this.setState({
-        /* prettier-ignore */
-        downloadImageFileName: `${trimFileNameExtension(file.name)}.${DOWNLOAD_IMAGE_FILE_TYPE}`,
-      });
-      autoDownload(
-        this.state.uploadedImageUrl,
-        this.state.downloadImageFileName
-      );
+      this.onImageLoad(fileReader.result, file.name);
     };
-
     fileReader.readAsDataURL(file);
   }
 
@@ -85,7 +88,7 @@ class ImagePreviewer extends React.Component {
           ダウンロード
         </a>
         <p>
-          <img src={this.state.uploadedImageUrl} alt="ここに画像が表示されます。" />
+          <img src={uploadedImageUrl} alt="ここに画像が表示されます。" />
         </p>
       </div>
     );
