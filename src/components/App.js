@@ -1,6 +1,7 @@
 import React from 'react';
 
 const RESIZE_RATIO = 0.5;
+const DOWNLOAD_IMAGE_FILE_TYPE = 'png';
 
 const UploadButton = props => (
   <form className="uploadButton">
@@ -16,46 +17,78 @@ const UploadButton = props => (
   </form>
 );
 
+const trimFileNameExtension = fileName => {
+  const periodPosition = fileName.lastIndexOf('.');
+  return fileName.slice(0, periodPosition);
+};
+
+const autoDownload = (url, fileName) => {
+  const elem = document.createElement('a');
+  elem.href = url;
+  elem.download = fileName;
+  elem.click();
+};
+
+const resizeImage = (imageDataUrl, ratio) =>
+  new Promise(resolve => {
+    const image = new Image();
+    image.onload = () => {
+      const deformedWidth = image.width * ratio;
+      const deformedHeight = image.height * ratio;
+      const canvas = document.createElement('canvas');
+      canvas.width = deformedWidth;
+      canvas.height = deformedHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(image, 0, 0, deformedWidth, deformedHeight);
+      resolve(canvas.toDataURL(`image/${DOWNLOAD_IMAGE_FILE_TYPE}`));
+    };
+    image.src = imageDataUrl;
+  });
+
 class ImagePreviewer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {uploadedImageUrl: null};
+    this.state = {
+      uploadedImageUrl: null,
+      downloadImageFileName: null,
+    };
     this.onImageSelected = this.onImageSelected.bind(this);
     this.onImageLoad = this.onImageLoad.bind(this);
   }
 
-  onImageLoad(imageObject) {
-    const canvas = document.createElement('canvas');
-    const dstWidth = imageObject.width * RESIZE_RATIO;
-    const dstHeight = imageObject.height * RESIZE_RATIO;
-    canvas.width = dstWidth;
-    canvas.height = dstHeight;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(imageObject, 0, 0, dstWidth, dstHeight);
-    this.setState({uploadedImageUrl: canvas.toDataURL('image/png')});
+  onImageLoad(imageDataUrl, originalFileName) {
+    resizeImage(imageDataUrl, RESIZE_RATIO).then(res => {
+      this.setState({
+        uploadedImageUrl: res,
+        /* prettier-ignore */
+        downloadImageFileName: `${trimFileNameExtension(originalFileName)}.${DOWNLOAD_IMAGE_FILE_TYPE}`,
+      });
+      autoDownload(
+        this.state.uploadedImageUrl,
+        this.state.downloadImageFileName
+      );
+    });
   }
 
   onImageSelected(e) {
     const file = e.target.files[0];
-    const fr = new FileReader();
-
-    fr.onload = () => {
-      const image = new Image();
-      image.onload = () => {
-        this.onImageLoad(image);
-      };
-      image.src = fr.result;
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+      this.onImageLoad(fileReader.result, file.name);
     };
-
-    fr.readAsDataURL(file);
+    fileReader.readAsDataURL(file);
   }
 
   render() {
+    const {uploadedImageUrl, downloadImageFileName} = this.state;
     return (
       <div>
         <UploadButton onChange={this.onImageSelected} />
+        <a href={uploadedImageUrl} download={downloadImageFileName}>
+          ダウンロード
+        </a>
         <p>
-          <img src={this.state.uploadedImageUrl} alt="ここに画像が表示されます。" />
+          <img src={uploadedImageUrl} alt="ここに画像が表示されます。" />
         </p>
       </div>
     );
