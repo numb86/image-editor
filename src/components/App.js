@@ -29,7 +29,7 @@ const DownloadButton = props => {
 };
 
 const FileTransferButtons = props => (
-  <div className="fileTransferButtons">
+  <div className="fileTransferButtonArea">
     <UploadButton onChange={props.onImageSelected} />
     <DownloadButton
       href={props.previewImageDataUrl}

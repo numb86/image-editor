@@ -1,14 +1,21 @@
-.uploadButton {
+$fileTransferButtonFontSize: 16px;
+$buttonFontColor: #fff;
+
+.fileTransferButton {
   width: 160px;
   height: 30px;
   border-radius: 4px;
   text-align: center;
   cursor: pointer;
+}
+
+.uploadButton {
+  @extend .fileTransferButton;
   background-color: #3c3;
   label {
-    font-size: 16px;
-    line-height: 32px;
-    color: #fff;
+    font-size: $fileTransferButtonFontSize;
+    line-height: $fileTransferButtonFontSize * 2;
+    color: $buttonFontColor;
     cursor: pointer;
   }
   input {
@@ -16,24 +23,20 @@
   }
 }
 .downloadButton {
-  width: 160px;
-  height: 30px;
-  border-radius: 4px;
-  text-align: center;
-  cursor: pointer;
+  @extend .fileTransferButton;
   background-color: #09f;
   a {
     width: 100%;
     height: 100%;
-    font-size: 16px;
-    line-height: 32px;
-    color: #fff;
+    font-size: $fileTransferButtonFontSize;
+    line-height: $fileTransferButtonFontSize * 2;
+    color: $buttonFontColor;
     text-decoration: none;
     display: block;
   }
 }
 
-.fileTransferButtons {
+.fileTransferButtonArea {
   height: 30px;
   .downloadButton {
     position: relative;

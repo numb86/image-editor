@@ -1,9 +1,12 @@
-.uploadButton {
+.fileTransferButton, .uploadButton, .downloadButton {
   width: 160px;
   height: 30px;
   border-radius: 4px;
   text-align: center;
   cursor: pointer;
+}
+
+.uploadButton {
   background-color: #3c3;
 }
 .uploadButton label {
@@ -17,11 +20,6 @@
 }
 
 .downloadButton {
-  width: 160px;
-  height: 30px;
-  border-radius: 4px;
-  text-align: center;
-  cursor: pointer;
   background-color: #09f;
 }
 .downloadButton a {
@@ -34,10 +32,10 @@
   display: block;
 }
 
-.fileTransferButtons {
+.fileTransferButtonArea {
   height: 30px;
 }
-.fileTransferButtons .downloadButton {
+.fileTransferButtonArea .downloadButton {
   position: relative;
   top: -30px;
   left: 180px;
