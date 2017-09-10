@@ -49,7 +49,7 @@ class ImagePreviewer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      uploadedImageUrl: null,
+      previewImageDataUrl: null,
       downloadImageFileName: null,
     };
     this.onImageSelected = this.onImageSelected.bind(this);
@@ -59,12 +59,12 @@ class ImagePreviewer extends React.Component {
   onImageLoad(imageDataUrl, originalFileName) {
     resizeImage(imageDataUrl, RESIZE_RATIO).then(res => {
       this.setState({
-        uploadedImageUrl: res,
+        previewImageDataUrl: res,
         /* prettier-ignore */
         downloadImageFileName: `${trimFileNameExtension(originalFileName)}.${DOWNLOAD_IMAGE_FILE_TYPE}`,
       });
       autoDownload(
-        this.state.uploadedImageUrl,
+        this.state.previewImageDataUrl,
         this.state.downloadImageFileName
       );
     });
@@ -80,15 +80,15 @@ class ImagePreviewer extends React.Component {
   }
 
   render() {
-    const {uploadedImageUrl, downloadImageFileName} = this.state;
+    const {previewImageDataUrl, downloadImageFileName} = this.state;
     return (
       <div>
         <UploadButton onChange={this.onImageSelected} />
-        <a href={uploadedImageUrl} download={downloadImageFileName}>
+        <a href={previewImageDataUrl} download={downloadImageFileName}>
           ダウンロード
         </a>
         <p>
-          <img src={uploadedImageUrl} alt="ここに画像が表示されます。" />
+          <img src={previewImageDataUrl} alt="ここに画像が表示されます。" />
         </p>
       </div>
     );
