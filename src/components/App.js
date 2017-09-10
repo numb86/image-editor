@@ -17,13 +17,16 @@ const UploadButton = props => (
   </form>
 );
 
-const DownloadButton = props => (
-  <div className="downloadButton">
-    <a href={props.href} download={props.download}>
-      画像をダウンロード
-    </a>
-  </div>
-);
+const DownloadButton = props => {
+  if (!props.href) return null;
+  return (
+    <div className="downloadButton">
+      <a href={props.href} download={props.download}>
+        画像をダウンロード
+      </a>
+    </div>
+  );
+};
 
 const FileTransferButtons = props => (
   <div className="fileTransferButtons">
