@@ -1,12 +1,34 @@
-.uploadButton label {
-  font-size: 16px;
-  padding: 10px;
-  color: #333;
-  background-color: #0f0;
+.uploadButton {
+  width: 160px;
+  height: 30px;
   border-radius: 4px;
   text-align: center;
   cursor: pointer;
+  background-color: #3c3;
+}
+.uploadButton label {
+  font-size: 16px;
+  line-height: 32px;
+  color: #fff;
 }
 .uploadButton input {
   display: none;
+}
+
+.downloadButton {
+  width: 160px;
+  height: 30px;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #09f;
+}
+.downloadButton a {
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
+  line-height: 32px;
+  color: #fff;
+  text-decoration: none;
+  display: block;
 }

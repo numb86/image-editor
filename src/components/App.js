@@ -17,6 +17,14 @@ const UploadButton = props => (
   </form>
 );
 
+const DownloadButton = props => (
+  <div className="downloadButton">
+    <a href={props.href} download={props.download}>
+      画像をダウンロード
+    </a>
+  </div>
+);
+
 const trimFileNameExtension = fileName => {
   const periodPosition = fileName.lastIndexOf('.');
   return fileName.slice(0, periodPosition);
@@ -84,9 +92,10 @@ class ImagePreviewer extends React.Component {
     return (
       <div>
         <UploadButton onChange={this.onImageSelected} />
-        <a href={previewImageDataUrl} download={downloadImageFileName}>
-          ダウンロード
-        </a>
+        <DownloadButton
+          href={previewImageDataUrl}
+          download={downloadImageFileName}
+        />
         <p>
           <img src={previewImageDataUrl} alt="ここに画像が表示されます。" />
         </p>
