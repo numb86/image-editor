@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './components/App';
+import ImagePreviewer from './components/ImagePreviewer';
 
-ReactDOM.render(<App />, document.querySelector('#app'));
+ReactDOM.render(<ImagePreviewer />, document.querySelector('#app'));

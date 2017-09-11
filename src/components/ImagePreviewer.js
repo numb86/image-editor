@@ -1,42 +1,9 @@
 import React from 'react';
 
+import FileTransferButtons from './FileTransferButtons';
+
 const RESIZE_RATIO = 0.5;
 const DOWNLOAD_IMAGE_FILE_TYPE = 'png';
-
-const UploadButton = props => (
-  <form className="uploadButton">
-    <label htmlFor="imageUploadInput">
-      画像をアップロード
-      <input
-        id="imageUploadInput"
-        type="file"
-        accept="image/*"
-        onChange={props.onChange}
-      />
-    </label>
-  </form>
-);
-
-const DownloadButton = props => {
-  if (!props.href) return null;
-  return (
-    <div className="downloadButton">
-      <a href={props.href} download={props.download}>
-        画像をダウンロード
-      </a>
-    </div>
-  );
-};
-
-const FileTransferButtons = props => (
-  <div className="fileTransferButtonArea">
-    <UploadButton onChange={props.onImageSelected} />
-    <DownloadButton
-      href={props.previewImageDataUrl}
-      download={props.downloadImageFileName}
-    />
-  </div>
-);
 
 const trimFileNameExtension = fileName => {
   const periodPosition = fileName.lastIndexOf('.');
@@ -66,7 +33,7 @@ const resizeImage = (imageDataUrl, ratio) =>
     image.src = imageDataUrl;
   });
 
-class ImagePreviewer extends React.Component {
+export default class ImagePreviewer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -115,8 +82,4 @@ class ImagePreviewer extends React.Component {
       </div>
     );
   }
-}
-
-export default function App() {
-  return <ImagePreviewer />;
 }
