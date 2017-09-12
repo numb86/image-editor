@@ -33,7 +33,7 @@ const resizeImage = (imageDataUrl, ratio) =>
     image.src = imageDataUrl;
   });
 
-export default class ImagePreviewer extends React.Component {
+export default class ImageEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
