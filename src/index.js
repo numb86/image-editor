@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './components/App';
+import ImageEditor from './components/ImageEditor';
 
-ReactDOM.render(<App />, document.querySelector('#app'));
+ReactDOM.render(<ImageEditor />, document.querySelector('#app'));
