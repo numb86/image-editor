@@ -3,13 +3,7 @@ import React from 'react';
 import FileTransferButtons from './FileTransferButtons';
 
 const RESIZE_RATIO = 0.5;
-const DOWNLOAD_IMAGE_FILE_TYPE = 'png';
 const ALLOW_FILE_TYPES = ['image/png', 'image/jpeg'];
-
-const trimFileNameExtension = fileName => {
-  const periodPosition = fileName.lastIndexOf('.');
-  return fileName.slice(0, periodPosition);
-};
 
 const autoDownload = (url, fileName) => {
   const elem = document.createElement('a');
@@ -23,7 +17,7 @@ const isAllowedFileType = (uploadedFileType, allowList) => {
   return !!(result.length > 0) || false;
 };
 
-const resizeImage = (imageDataUrl, ratio) =>
+const resizeImage = (imageDataUrl, mime, ratio) =>
   new Promise(resolve => {
     const image = new Image();
     image.onload = () => {
@@ -34,7 +28,7 @@ const resizeImage = (imageDataUrl, ratio) =>
       canvas.height = deformedHeight;
       const ctx = canvas.getContext('2d');
       ctx.drawImage(image, 0, 0, deformedWidth, deformedHeight);
-      resolve(canvas.toDataURL(`image/${DOWNLOAD_IMAGE_FILE_TYPE}`));
+      resolve(canvas.toDataURL(mime));
     };
     image.src = imageDataUrl;
   });
@@ -51,12 +45,12 @@ export default class ImageEditor extends React.Component {
     this.onImageLoad = this.onImageLoad.bind(this);
   }
 
-  onImageLoad(imageDataUrl, originalFileName) {
-    resizeImage(imageDataUrl, RESIZE_RATIO).then(res => {
+  onImageLoad(imageDataUrl, originalFileName, originalFileMime) {
+    resizeImage(imageDataUrl, originalFileMime, RESIZE_RATIO).then(res => {
       this.setState({
         previewImageDataUrl: res,
         /* prettier-ignore */
-        downloadImageFileName: `${trimFileNameExtension(originalFileName)}.${DOWNLOAD_IMAGE_FILE_TYPE}`,
+        downloadImageFileName: originalFileName,
         errorMessage: null,
       });
       autoDownload(
@@ -74,7 +68,7 @@ export default class ImageEditor extends React.Component {
     }
     const fileReader = new FileReader();
     fileReader.onload = () => {
-      this.onImageLoad(fileReader.result, file.name);
+      this.onImageLoad(fileReader.result, file.name, file.type);
     };
     fileReader.readAsDataURL(file);
   }
