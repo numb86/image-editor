@@ -86,7 +86,7 @@ export default class ImageEditor extends React.Component {
           previewImageDataUrl={previewImageDataUrl}
           downloadImageFileName={downloadImageFileName}
         />
-        {errorMessage && <p>{errorMessage}</p>}
+        {errorMessage && <p className="errorMessage">{errorMessage}</p>}
         <p>
           <img src={previewImageDataUrl} alt="ここに画像が表示されます。" />
         </p>

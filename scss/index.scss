@@ -1,5 +1,6 @@
 $fileTransferButtonFontSize: 16px;
 $buttonFontColor: #fff;
+$errorMessageFontColor: #f36;
 
 .fileTransferButton {
   width: 160px;
@@ -43,4 +44,8 @@ $buttonFontColor: #fff;
     top: -30px;
     left: 180px;
   }
+}
+
+.errorMessage {
+  color: $errorMessageFontColor;
 }
