@@ -14,6 +14,9 @@ $errorMessageFontColor: #f36;
   @extend .fileTransferButton;
   background-color: #3c3;
   label {
+    width: 100%;
+    height: 100%;
+    display: block;
     font-size: $fileTransferButtonFontSize;
     line-height: $fileTransferButtonFontSize * 2;
     color: $buttonFontColor;
