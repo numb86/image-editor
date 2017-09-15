@@ -14,7 +14,7 @@ const autoDownload = (url, fileName) => {
 
 const isAllowedFileType = (uploadedFileType, allowList) => {
   const result = allowList.filter(allowFile => allowFile === uploadedFileType);
-  return !!(result.length > 0) || false;
+  return !!(result.length > 0);
 };
 
 const resizeImage = (imageDataUrl, mime, ratio) =>
