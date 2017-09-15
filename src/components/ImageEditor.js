@@ -89,7 +89,7 @@ export default class ImageEditor extends React.Component {
           previewImageDataUrl={previewImageDataUrl}
           downloadImageFileName={downloadImageFileName}
         />
-        <form>
+        <form className="optionSettingArea">
           <label htmlFor="option-setting">
             <input
               id="option-setting"
