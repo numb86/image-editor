@@ -39,6 +39,7 @@ export default class ImageEditor extends React.Component {
     this.state = {
       previewImageDataUrl: null,
       downloadImageFileName: null,
+      allowAutoDownload: true,
       errorMessage: null,
     };
     this.onImageSelected = this.onImageSelected.bind(this);
@@ -53,6 +54,7 @@ export default class ImageEditor extends React.Component {
         downloadImageFileName: originalFileName,
         errorMessage: null,
       });
+      if (!this.state.allowAutoDownload) return;
       autoDownload(
         this.state.previewImageDataUrl,
         this.state.downloadImageFileName
@@ -77,6 +79,7 @@ export default class ImageEditor extends React.Component {
     const {
       previewImageDataUrl,
       downloadImageFileName,
+      allowAutoDownload,
       errorMessage,
     } = this.state;
     return (
@@ -86,6 +89,19 @@ export default class ImageEditor extends React.Component {
           previewImageDataUrl={previewImageDataUrl}
           downloadImageFileName={downloadImageFileName}
         />
+        <form>
+          <label htmlFor="optionSetting">
+            <input
+              id="optionSetting"
+              type="checkbox"
+              checked={allowAutoDownload}
+              onChange={e => {
+                this.setState({allowAutoDownload: e.target.checked});
+              }}
+            />
+            リサイズした画像を自動的にダウンロードする
+          </label>
+        </form>
         {errorMessage && <p className="errorMessage">{errorMessage}</p>}
         <p>
           <img src={previewImageDataUrl} alt="ここに画像が表示されます。" />
