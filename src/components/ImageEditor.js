@@ -90,9 +90,9 @@ export default class ImageEditor extends React.Component {
           downloadImageFileName={downloadImageFileName}
         />
         <form>
-          <label htmlFor="optionSetting">
+          <label htmlFor="option-setting">
             <input
-              id="optionSetting"
+              id="option-setting"
               type="checkbox"
               checked={allowAutoDownload}
               onChange={e => {

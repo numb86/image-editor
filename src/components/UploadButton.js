@@ -3,10 +3,10 @@ import React from 'react';
 export default function UploadButton(props) {
   return (
     <form className="uploadButton">
-      <label htmlFor="imageUploadInput">
+      <label htmlFor="image-upload-input">
         画像をアップロード
         <input
-          id="imageUploadInput"
+          id="image-upload-input"
           type="file"
           accept="image/*"
           onChange={props.onChange}
