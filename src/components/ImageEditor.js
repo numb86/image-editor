@@ -1,5 +1,6 @@
 import React from 'react';
 
+import FileDropArea from './FileDropArea';
 import FileTransferButtons from './FileTransferButtons';
 
 const RESIZE_RATIO = 0.5;
@@ -62,8 +63,8 @@ export default class ImageEditor extends React.Component {
     });
   }
 
-  onImageSelected(e) {
-    const file = e.target.files[0];
+  onImageSelected(fileList) {
+    const file = fileList[0];
     if (!isAllowedFileType(file.type, ALLOW_FILE_TYPES)) {
       this.setState({errorMessage: '対応しているファイル形式はjpegとpngのみです。'});
       return;
@@ -85,7 +86,9 @@ export default class ImageEditor extends React.Component {
     return (
       <div>
         <FileTransferButtons
-          onImageSelected={this.onImageSelected}
+          onImageSelected={e => {
+            this.onImageSelected(e.target.files);
+          }}
           previewImageDataUrl={previewImageDataUrl}
           downloadImageFileName={downloadImageFileName}
         />
@@ -103,6 +106,7 @@ export default class ImageEditor extends React.Component {
           </label>
         </form>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
+        <FileDropArea onDrop={this.onImageSelected} />
         <p>
           <img src={previewImageDataUrl} alt="ここに画像が表示されます。" />
         </p>

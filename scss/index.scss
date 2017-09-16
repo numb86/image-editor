@@ -2,6 +2,12 @@ $file-transfer-button-font-size: 16px;
 $button-font-color: #fff;
 $error-message-font-color: #f36;
 
+.file-drop-area {
+  width: 100%;
+  height: 400px;
+  background-color: #ddd;
+}
+
 .file-transfer-button {
   width: 160px;
   height: 30px;
