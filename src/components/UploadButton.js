@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function UploadButton(props) {
   return (
-    <form className="uploadButton">
+    <form className="upload-button">
       <label htmlFor="image-upload-input">
         画像をアップロード
         <input

@@ -5,7 +5,7 @@ import DownloadButton from './DownloadButton';
 
 export default function FileTransferButtons(props) {
   return (
-    <div className="fileTransferButtonArea">
+    <div className="file-transfer-button-area">
       <UploadButton onChange={props.onImageSelected} />
       <DownloadButton
         href={props.previewImageDataUrl}
