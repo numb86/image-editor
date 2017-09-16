@@ -1,4 +1,4 @@
-.fileTransferButton, .uploadButton, .downloadButton {
+.file-transfer-button, .upload-button, .download-button {
   width: 160px;
   height: 30px;
   border-radius: 4px;
@@ -6,10 +6,10 @@
   cursor: pointer;
 }
 
-.uploadButton {
+.upload-button {
   background-color: #3c3;
 }
-.uploadButton label {
+.upload-button label {
   width: 100%;
   height: 100%;
   display: block;
@@ -18,14 +18,14 @@
   color: #fff;
   cursor: pointer;
 }
-.uploadButton input {
+.upload-button input {
   display: none;
 }
 
-.downloadButton {
+.download-button {
   background-color: #09f;
 }
-.downloadButton a {
+.download-button a {
   width: 100%;
   height: 100%;
   font-size: 16px;
@@ -35,23 +35,23 @@
   display: block;
 }
 
-.fileTransferButtonArea {
+.file-transfer-button-area {
   height: 30px;
 }
-.fileTransferButtonArea .downloadButton {
+.file-transfer-button-area .download-button {
   position: relative;
   top: -30px;
   left: 180px;
 }
 
-.optionSettingArea {
+.option-setting-area {
   margin: 20px 0 30px 0;
 }
-.optionSettingArea label {
+.option-setting-area label {
   padding: 10px 0;
   cursor: pointer;
 }
 
-.errorMessage {
+.error-message {
   color: #f36;
 }

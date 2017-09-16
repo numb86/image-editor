@@ -89,7 +89,7 @@ export default class ImageEditor extends React.Component {
           previewImageDataUrl={previewImageDataUrl}
           downloadImageFileName={downloadImageFileName}
         />
-        <form className="optionSettingArea">
+        <form className="option-setting-area">
           <label htmlFor="option-setting">
             <input
               id="option-setting"
@@ -102,7 +102,7 @@ export default class ImageEditor extends React.Component {
             リサイズした画像を自動的にダウンロードする
           </label>
         </form>
-        {errorMessage && <p className="errorMessage">{errorMessage}</p>}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
         <p>
           <img src={previewImageDataUrl} alt="ここに画像が表示されます。" />
         </p>
