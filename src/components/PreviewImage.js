@@ -15,6 +15,10 @@ export default class FileDropArea extends React.Component {
         src={this.props.src}
         alt="プレビュー画像"
         className={classNames}
+        onClick={e => {
+          e.preventDefault();
+          this.props.onClick(e.target);
+        }}
         onDrop={e => {
           e.preventDefault();
           this.setState({isDragOver: false});
