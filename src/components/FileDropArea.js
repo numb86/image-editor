@@ -1,25 +1,38 @@
 import React from 'react';
+import ClassNames from 'classnames';
 
-export default function FileDropArea(props) {
-  return (
-    <div
-      className="file-drop-area"
-      onDrop={e => {
-        e.preventDefault();
-        props.onDrop(e.dataTransfer.files);
-      }}
-      onDragOver={e => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'copy';
-      }}
-      onDragEnter={e => {
-        e.preventDefault();
-      }}
-      onDragLeave={e => {
-        e.preventDefault();
-      }}
-    >
-      ここに画像をドロップしてください
-    </div>
-  );
+export default class FileDropArea extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {isDragOver: false};
+  }
+  render() {
+    const classNames = ClassNames({
+      'file-drop-area': true,
+      'file-drag-over-are': this.state.isDragOver,
+    });
+    return (
+      <div
+        className={classNames}
+        onDrop={e => {
+          e.preventDefault();
+          this.props.onDrop(e.dataTransfer.files);
+        }}
+        onDragOver={e => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'copy';
+        }}
+        onDragEnter={e => {
+          e.preventDefault();
+          this.setState({isDragOver: true});
+        }}
+        onDragLeave={e => {
+          e.preventDefault();
+          this.setState({isDragOver: false});
+        }}
+      >
+        ここに画像をドロップすることでもアップロードできます
+      </div>
+    );
+  }
 }
