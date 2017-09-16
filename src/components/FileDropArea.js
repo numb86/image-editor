@@ -16,6 +16,7 @@ export default class FileDropArea extends React.Component {
         className={classNames}
         onDrop={e => {
           e.preventDefault();
+          this.setState({isDragOver: false});
           this.props.onDrop(e.dataTransfer.files);
         }}
         onDragOver={e => {
