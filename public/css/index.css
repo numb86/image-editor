@@ -1,3 +1,15 @@
+.file-drop-area {
+  width: 600px;
+  height: 400px;
+  box-sizing: border-box;
+  border: 2px solid #ddd;
+}
+
+.file-drag-over-area {
+  background-color: #09f;
+  opacity: 0.3;
+}
+
 .file-transfer-button, .upload-button, .download-button {
   width: 160px;
   height: 30px;
