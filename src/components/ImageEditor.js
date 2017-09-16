@@ -1,6 +1,7 @@
 import React from 'react';
 
 import FileDropArea from './FileDropArea';
+import PreviewImage from './PreviewImage';
 import FileTransferButtons from './FileTransferButtons';
 
 const RESIZE_RATIO = 0.5;
@@ -92,6 +93,7 @@ export default class ImageEditor extends React.Component {
           previewImageDataUrl={previewImageDataUrl}
           downloadImageFileName={downloadImageFileName}
         />
+        {previewImageDataUrl && <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>}
         <form className="option-setting-area">
           <label htmlFor="option-setting">
             <input
@@ -108,9 +110,10 @@ export default class ImageEditor extends React.Component {
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         {!previewImageDataUrl && <FileDropArea onDrop={this.onImageSelected} />}
         {previewImageDataUrl && (
-          <p>
-            <img src={previewImageDataUrl} alt="プレビュー画像" />
-          </p>
+          <PreviewImage
+            src={previewImageDataUrl}
+            onDrop={this.onImageSelected}
+          />
         )}
       </div>
     );
