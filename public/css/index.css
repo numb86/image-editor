@@ -44,6 +44,14 @@
   left: 180px;
 }
 
+.optionSettingArea {
+  margin: 20px 0 30px 0;
+}
+.optionSettingArea label {
+  padding: 10px 0;
+  cursor: pointer;
+}
+
 .errorMessage {
   color: #f36;
 }
