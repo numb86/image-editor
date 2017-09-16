@@ -106,10 +106,12 @@ export default class ImageEditor extends React.Component {
           </label>
         </form>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
-        <FileDropArea onDrop={this.onImageSelected} />
-        <p>
-          <img src={previewImageDataUrl} alt="ここに画像が表示されます。" />
-        </p>
+        {!previewImageDataUrl && <FileDropArea onDrop={this.onImageSelected} />}
+        {previewImageDataUrl && (
+          <p>
+            <img src={previewImageDataUrl} alt="プレビュー画像" />
+          </p>
+        )}
       </div>
     );
   }
