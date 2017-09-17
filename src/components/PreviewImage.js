@@ -17,7 +17,7 @@ export default class FileDropArea extends React.Component {
         className={classNames}
         onClick={e => {
           e.preventDefault();
-          this.props.onClick(e.target);
+          this.props.onClick(e);
         }}
         onDrop={e => {
           e.preventDefault();
