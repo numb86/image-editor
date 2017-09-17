@@ -9,14 +9,18 @@ const CanvasExifOrientation = require('canvas-exif-orientation');
 const RESIZE_RATIO = 0.5;
 const ALLOW_FILE_TYPES = ['image/png', 'image/jpeg'];
 
-const rotateNinetyDegrees = (originaImage, mime) => {
+const createImageDataUrl = (image, mime) => {
   const canvas = document.createElement('canvas');
-  const image = CanvasExifOrientation.drawImage(originaImage, 6);
   canvas.width = image.width;
   canvas.height = image.height;
   const ctx = canvas.getContext('2d');
   ctx.drawImage(image, 0, 0, image.width, image.height);
   return canvas.toDataURL(mime);
+};
+
+const rotateNinetyDegrees = (originaImage, mime) => {
+  const image = CanvasExifOrientation.drawImage(originaImage, 6);
+  return createImageDataUrl(image, mime);
 };
 
 const autoDownload = (url, fileName) => {
@@ -35,14 +39,9 @@ const resizeImage = (imageDataUrl, mime, ratio) =>
   new Promise(resolve => {
     const image = new Image();
     image.onload = () => {
-      const deformedWidth = image.width * ratio;
-      const deformedHeight = image.height * ratio;
-      const canvas = document.createElement('canvas');
-      canvas.width = deformedWidth;
-      canvas.height = deformedHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(image, 0, 0, deformedWidth, deformedHeight);
-      resolve(canvas.toDataURL(mime));
+      image.width *= ratio;
+      image.height *= ratio;
+      resolve(createImageDataUrl(image, mime));
     };
     image.src = imageDataUrl;
   });
