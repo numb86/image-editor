@@ -18,8 +18,8 @@ const createImageDataUrl = (image, mime) => {
   return canvas.toDataURL(mime);
 };
 
-const rotateNinetyDegreesClockwise = (originaImage, mime) => {
-  const image = CanvasExifOrientation.drawImage(originaImage, 6);
+const rotateNinetyDegreesClockwise = (currentImage, mime) => {
+  const image = CanvasExifOrientation.drawImage(currentImage, 6);
   return createImageDataUrl(image, mime);
 };
 
