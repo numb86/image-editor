@@ -18,7 +18,7 @@ const createImageDataUrl = (image, mime) => {
   return canvas.toDataURL(mime);
 };
 
-const rotateNinetyDegrees = (originaImage, mime) => {
+const rotateNinetyDegreesClockwise = (originaImage, mime) => {
   const image = CanvasExifOrientation.drawImage(originaImage, 6);
   return createImageDataUrl(image, mime);
 };
@@ -132,7 +132,10 @@ export default class ImageEditor extends React.Component {
             src={previewImageDataUrl}
             onDrop={this.onImageSelected}
             onClick={e => {
-              const rotatedImage = rotateNinetyDegrees(e, this.state.fileMime);
+              const rotatedImage = rotateNinetyDegreesClockwise(
+                e,
+                this.state.fileMime
+              );
               this.setState({previewImageDataUrl: rotatedImage});
             }}
           />
