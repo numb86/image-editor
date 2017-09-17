@@ -4,8 +4,24 @@ import FileDropArea from './FileDropArea';
 import PreviewImage from './PreviewImage';
 import FileTransferButtons from './FileTransferButtons';
 
+const CanvasExifOrientation = require('canvas-exif-orientation');
+
 const RESIZE_RATIO = 0.5;
 const ALLOW_FILE_TYPES = ['image/png', 'image/jpeg'];
+
+const createImageDataUrl = (image, mime) => {
+  const canvas = document.createElement('canvas');
+  canvas.width = image.width;
+  canvas.height = image.height;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(image, 0, 0, image.width, image.height);
+  return canvas.toDataURL(mime);
+};
+
+const rotateNinetyDegreesClockwise = (currentImage, mime) => {
+  const image = CanvasExifOrientation.drawImage(currentImage, 6);
+  return createImageDataUrl(image, mime);
+};
 
 const autoDownload = (url, fileName) => {
   const elem = document.createElement('a');
@@ -23,14 +39,9 @@ const resizeImage = (imageDataUrl, mime, ratio) =>
   new Promise(resolve => {
     const image = new Image();
     image.onload = () => {
-      const deformedWidth = image.width * ratio;
-      const deformedHeight = image.height * ratio;
-      const canvas = document.createElement('canvas');
-      canvas.width = deformedWidth;
-      canvas.height = deformedHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(image, 0, 0, deformedWidth, deformedHeight);
-      resolve(canvas.toDataURL(mime));
+      image.width *= ratio;
+      image.height *= ratio;
+      resolve(createImageDataUrl(image, mime));
     };
     image.src = imageDataUrl;
   });
@@ -41,6 +52,7 @@ export default class ImageEditor extends React.Component {
     this.state = {
       previewImageDataUrl: null,
       downloadImageFileName: null,
+      fileMime: null,
       allowAutoDownload: true,
       errorMessage: null,
     };
@@ -54,6 +66,7 @@ export default class ImageEditor extends React.Component {
         previewImageDataUrl: res,
         /* prettier-ignore */
         downloadImageFileName: originalFileName,
+        fileMime: originalFileMime,
         errorMessage: null,
       });
       if (!this.state.allowAutoDownload) return;
@@ -93,7 +106,12 @@ export default class ImageEditor extends React.Component {
           previewImageDataUrl={previewImageDataUrl}
           downloadImageFileName={downloadImageFileName}
         />
-        {previewImageDataUrl && <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>}
+        {previewImageDataUrl && (
+          <div>
+            画像にドロップすることでも、新しい画像をアップロードできます。<br />
+            画像をクリックすると右回りで90度回転します。
+          </div>
+        )}
         <form className="option-setting-area">
           <label htmlFor="option-setting">
             <input
@@ -113,6 +131,13 @@ export default class ImageEditor extends React.Component {
           <PreviewImage
             src={previewImageDataUrl}
             onDrop={this.onImageSelected}
+            onClick={e => {
+              const rotatedImage = rotateNinetyDegreesClockwise(
+                e.target,
+                this.state.fileMime
+              );
+              this.setState({previewImageDataUrl: rotatedImage});
+            }}
           />
         )}
       </div>
