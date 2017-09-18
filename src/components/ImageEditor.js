@@ -6,7 +6,6 @@ import FileTransferButtons from './FileTransferButtons';
 
 const CanvasExifOrientation = require('canvas-exif-orientation');
 
-const RESIZE_RATIO = 0.5;
 const ALLOW_FILE_TYPES = ['image/png', 'image/jpeg'];
 
 const createImageDataUrl = (image, mime) => {
@@ -50,6 +49,7 @@ export default class ImageEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      resizeRatio: 0.5,
       previewImageDataUrl: null,
       downloadImageFileName: null,
       fileMime: null,
@@ -61,7 +61,11 @@ export default class ImageEditor extends React.Component {
   }
 
   onImageLoad(imageDataUrl, originalFileName, originalFileMime) {
-    resizeImage(imageDataUrl, originalFileMime, RESIZE_RATIO).then(res => {
+    resizeImage(
+      imageDataUrl,
+      originalFileMime,
+      this.state.resizeRatio
+    ).then(res => {
       this.setState({
         previewImageDataUrl: res,
         /* prettier-ignore */
@@ -113,6 +117,21 @@ export default class ImageEditor extends React.Component {
           </div>
         )}
         <form className="option-setting-area">
+          <select
+            defaultValue={this.state.resizeRatio}
+            onChange={e => {
+              const {options} = e.target;
+              this.setState({
+                resizeRatio: options[options.selectedIndex].value,
+              });
+            }}
+          >
+            <option value={0.25}>25%</option>
+            <option value={0.5}>50%</option>
+            <option value={1}>100%</option>
+            <option value={1.5}>150%</option>
+            <option value={2}>200%</option>
+          </select>
           <label htmlFor="option-setting">
             <input
               id="option-setting"
