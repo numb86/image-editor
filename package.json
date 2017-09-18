@@ -1,11 +1,11 @@
 {
   "name": "image-editor",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --inline",
-    "build": "webpack -p",
+    "build": "yarn licenses generate-disclaimer > use-library.txt && webpack -p",
     "sass": "sass scss:public/css  --style expanded --watch --sourcemap=none",
     "test": "mocha --compilers js:babel-register 'src/**/__tests__/*.test.js'",
     "lint": "eslint src",
@@ -13,7 +13,7 @@
     "flow": "flow"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/numb86/image-editor.git"
