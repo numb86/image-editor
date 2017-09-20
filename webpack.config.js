@@ -2,10 +2,12 @@ const path = require('path');
 
 const config = {
   context: path.resolve(__dirname, 'src'),
-  entry: './index.js',
+  entry: {
+    'public/bundle': './index.js',
+  },
   output: {
-    path: path.resolve(__dirname, 'public'),
-    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'build'),
+    filename: '[name].js',
   },
   module: {
     rules: [
@@ -25,7 +27,7 @@ const config = {
     ],
   },
   devServer: {
-    contentBase: path.resolve(__dirname, 'public'),
+    contentBase: path.resolve(__dirname, 'build'),
     historyApiFallback: true,
   },
 };
