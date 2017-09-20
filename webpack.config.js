@@ -4,6 +4,7 @@ const config = {
   context: path.resolve(__dirname, 'src'),
   entry: {
     'public/bundle': './index.js',
+    'experiment/deterioration/deterioration': './experiment/deterioration.js',
   },
   output: {
     path: path.resolve(__dirname, 'build'),
