@@ -6,7 +6,7 @@ Canvasを使って、画像のリサイズや回転を行います。
 ```bash
 $ npm i
 $ npm start
-$ open http://localhost:8080/
+$ open http://localhost:8080/public/
 ```
 
-完成物は`public`ディレクトリに入っています。
+完成物は`build/public`ディレクトリに入っています。
