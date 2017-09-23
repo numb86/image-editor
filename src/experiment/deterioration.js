@@ -49,7 +49,7 @@ class Deterioration extends React.Component {
         <h3>jpeg　{`元画像 : ${time}回dataUrlに変換`}</h3>
         <div>
           <img
-            src="../image/bay.jpeg"
+            src="../images/bay.jpeg"
             alt="検証用の画像"
             onLoad={e => this.createDataUrl(e.target, 'image/jpeg', time)}
           />
@@ -58,7 +58,7 @@ class Deterioration extends React.Component {
         <h3>png　{`元画像 : ${time}回dataUrlに変換`}</h3>
         <div>
           <img
-            src="../image/bay.png"
+            src="../images/bay.png"
             alt="検証用の画像"
             onLoad={e => this.createDataUrl(e.target, 'image/png', time)}
           />
