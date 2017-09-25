@@ -50,6 +50,7 @@ export default class ImageEditor extends React.Component {
     super(props);
     this.state = {
       resizeRatio: 0.5,
+      rotateAngle: 0,
       previewImageDataUrl: null,
       downloadImageFileName: null,
       fileMime: null,
@@ -131,6 +132,20 @@ export default class ImageEditor extends React.Component {
             <option value={1}>100%</option>
             <option value={1.5}>150%</option>
             <option value={2}>200%</option>
+          </select>
+          <select
+            defaultValue={this.state.rotateAngle}
+            onChange={e => {
+              const {options} = e.target;
+              this.setState({
+                rotateAngle: options[options.selectedIndex].value,
+              });
+            }}
+          >
+            <option value={0}>回転しない</option>
+            <option value={90}>時計回りに90度回転</option>
+            <option value={180}>180度回転</option>
+            <option value={270}>時計回りに270度回転</option>
           </select>
           <label htmlFor="option-setting">
             <input
