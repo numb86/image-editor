@@ -49,8 +49,10 @@ export default class ImageEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      resizeRatio: 0.5,
-      rotateAngle: 0,
+      userSettings: {
+        resizeRatio: 0.5,
+        rotateAngle: 0,
+      },
       previewImageDataUrl: null,
       downloadImageFileName: null,
       fileMime: null,
@@ -65,7 +67,7 @@ export default class ImageEditor extends React.Component {
     resizeImage(
       imageDataUrl,
       originalFileMime,
-      this.state.resizeRatio
+      this.state.userSettings.resizeRatio
     ).then(res => {
       this.setState({
         previewImageDataUrl: res,
@@ -119,11 +121,13 @@ export default class ImageEditor extends React.Component {
         )}
         <form className="option-setting-area">
           <select
-            defaultValue={this.state.resizeRatio}
+            defaultValue={this.state.userSettings.resizeRatio}
             onChange={e => {
               const {options} = e.target;
               this.setState({
-                resizeRatio: options[options.selectedIndex].value,
+                userSettings: {
+                  resizeRatio: options[options.selectedIndex].value,
+                },
               });
             }}
           >
@@ -134,11 +138,13 @@ export default class ImageEditor extends React.Component {
             <option value={2}>200%</option>
           </select>
           <select
-            defaultValue={this.state.rotateAngle}
+            defaultValue={this.state.userSettings.rotateAngle}
             onChange={e => {
               const {options} = e.target;
               this.setState({
-                rotateAngle: options[options.selectedIndex].value,
+                userSettings: {
+                  rotateAngle: options[options.selectedIndex].value,
+                },
               });
             }}
           >
