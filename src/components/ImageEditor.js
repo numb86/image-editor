@@ -53,6 +53,7 @@ export default class ImageEditor extends React.Component {
         resizeRatio: 0.5,
         rotateAngle: 0,
       },
+      uploadImageDataUrl: null,
       previewImageDataUrl: null,
       downloadImageFileName: null,
       fileMime: null,
@@ -64,8 +65,9 @@ export default class ImageEditor extends React.Component {
   }
 
   onImageLoad(imageDataUrl, originalFileName, originalFileMime) {
+    this.setState({uploadImageDataUrl: imageDataUrl});
     resizeImage(
-      imageDataUrl,
+      this.state.uploadImageDataUrl,
       originalFileMime,
       this.state.userSettings.resizeRatio
     ).then(res => {
