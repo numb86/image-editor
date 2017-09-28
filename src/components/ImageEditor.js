@@ -17,10 +17,14 @@ const createImageDataUrl = (image, mime) => {
   return canvas.toDataURL(mime);
 };
 
-const rotateNinetyDegreesClockwise = (currentImage, mime) => {
-  const image = CanvasExifOrientation.drawImage(currentImage, 6);
-  return createImageDataUrl(image, mime);
-};
+const rotateNinetyDegreesClockwise = (currentImage, mime) =>
+  new Promise(resolve => {
+    const canvasElement = CanvasExifOrientation.drawImage(currentImage, 6);
+    const dataUrl = createImageDataUrl(canvasElement, mime);
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.src = dataUrl;
+  });
 
 const autoDownload = (url, fileName) => {
   const elem = document.createElement('a');
@@ -33,17 +37,6 @@ const isAllowedFileType = (uploadedFileType, allowList) => {
   const result = allowList.filter(allowFile => allowFile === uploadedFileType);
   return !!(result.length > 0);
 };
-
-const resizeImage = (imageDataUrl, mime, ratio) =>
-  new Promise(resolve => {
-    const image = new Image();
-    image.onload = () => {
-      image.width *= ratio;
-      image.height *= ratio;
-      resolve(createImageDataUrl(image, mime));
-    };
-    image.src = imageDataUrl;
-  });
 
 export default class ImageEditor extends React.Component {
   constructor(props) {
@@ -65,25 +58,12 @@ export default class ImageEditor extends React.Component {
   }
 
   onImageLoad(imageDataUrl, originalFileName, originalFileMime) {
-    this.setState({uploadImageDataUrl: imageDataUrl});
-    resizeImage(
-      this.state.uploadImageDataUrl,
-      originalFileMime,
-      this.state.userSettings.resizeRatio
-    ).then(res => {
-      this.setState({
-        previewImageDataUrl: res,
-        /* prettier-ignore */
-        downloadImageFileName: originalFileName,
-        fileMime: originalFileMime,
-        errorMessage: null,
-      });
-      if (!this.state.allowAutoDownload) return;
-      autoDownload(
-        this.state.previewImageDataUrl,
-        this.state.downloadImageFileName
-      );
+    this.setState({
+      uploadImageDataUrl: imageDataUrl,
+      downloadImageFileName: originalFileName,
+      fileMime: originalFileMime,
     });
+    this.processImage();
   }
 
   onImageSelected(fileList) {
@@ -97,6 +77,36 @@ export default class ImageEditor extends React.Component {
       this.onImageLoad(fileReader.result, file.name, file.type);
     };
     fileReader.readAsDataURL(file);
+  }
+
+  processImage() {
+    this.restoreUploadedImage()
+      .then(res => rotateNinetyDegreesClockwise(res, this.state.fileMime))
+      .then(res => {
+        res.width *= this.state.userSettings.resizeRatio;
+        res.height *= this.state.userSettings.resizeRatio;
+        return res;
+      })
+      .then(res => {
+        this.setState({
+          previewImageDataUrl: createImageDataUrl(res, this.state.fileMime),
+        });
+        if (!this.state.allowAutoDownload) return;
+        autoDownload(
+          this.state.previewImageDataUrl,
+          this.state.downloadImageFileName
+        );
+      });
+  }
+
+  restoreUploadedImage() {
+    return new Promise(resolve => {
+      const image = new Image();
+      image.onload = () => {
+        resolve(image);
+      };
+      image.src = this.state.uploadImageDataUrl;
+    });
   }
 
   render() {
