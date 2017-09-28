@@ -183,13 +183,6 @@ export default class ImageEditor extends React.Component {
           <PreviewImage
             src={previewImageDataUrl}
             onDrop={this.onImageSelected}
-            onClick={e => {
-              const rotatedImage = rotateNinetyDegreesClockwise(
-                e.target,
-                this.state.fileMime
-              );
-              this.setState({previewImageDataUrl: rotatedImage});
-            }}
           />
         )}
       </div>
