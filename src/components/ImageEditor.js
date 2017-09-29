@@ -8,6 +8,13 @@ const CanvasExifOrientation = require('canvas-exif-orientation');
 
 const ALLOW_FILE_TYPES = ['image/png', 'image/jpeg'];
 
+const ORIENTATION_NUMBER = {
+  0: 1,
+  90: 6,
+  180: 3,
+  270: 8,
+};
+
 const createImageDataUrl = (image, mime) => {
   const canvas = document.createElement('canvas');
   canvas.width = image.width;
@@ -17,9 +24,13 @@ const createImageDataUrl = (image, mime) => {
   return canvas.toDataURL(mime);
 };
 
-const rotateNinetyDegreesClockwise = (currentImage, mime) =>
+const rotateImage = (currentImage, angle, mime) =>
   new Promise(resolve => {
-    const canvasElement = CanvasExifOrientation.drawImage(currentImage, 6);
+    const orietationNumber = ORIENTATION_NUMBER[angle];
+    const canvasElement = CanvasExifOrientation.drawImage(
+      currentImage,
+      orietationNumber
+    );
     const dataUrl = createImageDataUrl(canvasElement, mime);
     const image = new Image();
     image.onload = () => resolve(image);
@@ -80,11 +91,12 @@ export default class ImageEditor extends React.Component {
   }
 
   processImage() {
+    const {rotateAngle, resizeRatio} = this.state.userSettings;
     this.restoreUploadedImage()
-      .then(res => rotateNinetyDegreesClockwise(res, this.state.fileMime))
+      .then(res => rotateImage(res, rotateAngle, this.state.fileMime))
       .then(res => {
-        res.width *= this.state.userSettings.resizeRatio;
-        res.height *= this.state.userSettings.resizeRatio;
+        res.width *= resizeRatio;
+        res.height *= resizeRatio;
         return res;
       })
       .then(res => {
@@ -107,6 +119,15 @@ export default class ImageEditor extends React.Component {
       };
       image.src = this.state.uploadImageDataUrl;
     });
+  }
+
+  changeUserSettings(key, value) {
+    const newUserSettings = Object.assign(this.state.userSettings, {
+      [key]: value,
+    });
+    this.setState({userSettings: newUserSettings});
+    if (!this.state.uploadImageDataUrl) return;
+    this.processImage();
   }
 
   render() {
@@ -136,11 +157,10 @@ export default class ImageEditor extends React.Component {
             defaultValue={this.state.userSettings.resizeRatio}
             onChange={e => {
               const {options} = e.target;
-              this.setState({
-                userSettings: {
-                  resizeRatio: options[options.selectedIndex].value,
-                },
-              });
+              this.changeUserSettings(
+                'resizeRatio',
+                +options[options.selectedIndex].value
+              );
             }}
           >
             <option value={0.25}>25%</option>
@@ -153,11 +173,10 @@ export default class ImageEditor extends React.Component {
             defaultValue={this.state.userSettings.rotateAngle}
             onChange={e => {
               const {options} = e.target;
-              this.setState({
-                userSettings: {
-                  rotateAngle: options[options.selectedIndex].value,
-                },
-              });
+              this.changeUserSettings(
+                'rotateAngle',
+                +options[options.selectedIndex].value
+              );
             }}
           >
             <option value={0}>回転しない</option>
