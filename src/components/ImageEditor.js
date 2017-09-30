@@ -122,7 +122,7 @@ export default class ImageEditor extends React.Component {
   }
 
   changeUserSettings(key, value) {
-    const newUserSettings = Object.assign(this.state.userSettings, {
+    const newUserSettings = Object.assign({}, this.state.userSettings, {
       [key]: value,
     });
     this.setState({userSettings: newUserSettings});
