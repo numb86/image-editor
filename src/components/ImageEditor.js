@@ -74,7 +74,7 @@ export default class ImageEditor extends React.Component {
       downloadImageFileName: originalFileName,
       fileMime: originalFileMime,
     });
-    this.processImage();
+    this.processImage(this.state.userSettings);
   }
 
   onImageSelected(fileList) {
@@ -90,8 +90,8 @@ export default class ImageEditor extends React.Component {
     fileReader.readAsDataURL(file);
   }
 
-  processImage() {
-    const {rotateAngle, resizeRatio} = this.state.userSettings;
+  processImage(userSettings) {
+    const {rotateAngle, resizeRatio} = userSettings;
     this.restoreUploadedImage()
       .then(res => rotateImage(res, rotateAngle, this.state.fileMime))
       .then(res => {
@@ -127,7 +127,7 @@ export default class ImageEditor extends React.Component {
     });
     this.setState({userSettings: newUserSettings});
     if (!this.state.uploadImageDataUrl) return;
-    this.processImage();
+    this.processImage(newUserSettings);
   }
 
   render() {
