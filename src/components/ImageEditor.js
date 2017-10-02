@@ -3,6 +3,7 @@ import React from 'react';
 import FileDropArea from './FileDropArea';
 import PreviewImage from './PreviewImage';
 import FileTransferButtons from './FileTransferButtons';
+import OptionSettingForm from './OptionSettingForm';
 
 const CanvasExifOrientation = require('canvas-exif-orientation');
 
@@ -137,6 +138,7 @@ export default class ImageEditor extends React.Component {
       allowAutoDownload,
       errorMessage,
     } = this.state;
+    const {resizeRatio, rotateAngle} = this.state.userSettings;
     return (
       <div>
         <FileTransferButtons
@@ -152,50 +154,21 @@ export default class ImageEditor extends React.Component {
             画像をクリックすると右回りで90度回転します。
           </div>
         )}
-        <form className="option-setting-area">
-          <select
-            defaultValue={this.state.userSettings.resizeRatio}
-            onChange={e => {
-              const {options} = e.target;
-              this.changeUserSettings(
-                'resizeRatio',
-                +options[options.selectedIndex].value
-              );
-            }}
-          >
-            <option value={0.25}>25%</option>
-            <option value={0.5}>50%</option>
-            <option value={1}>100%</option>
-            <option value={1.5}>150%</option>
-            <option value={2}>200%</option>
-          </select>
-          <select
-            defaultValue={this.state.userSettings.rotateAngle}
-            onChange={e => {
-              const {options} = e.target;
-              this.changeUserSettings(
-                'rotateAngle',
-                +options[options.selectedIndex].value
-              );
-            }}
-          >
-            <option value={0}>回転しない</option>
-            <option value={90}>時計回りに90度回転</option>
-            <option value={180}>180度回転</option>
-            <option value={270}>時計回りに270度回転</option>
-          </select>
-          <label htmlFor="option-setting">
-            <input
-              id="option-setting"
-              type="checkbox"
-              checked={allowAutoDownload}
-              onChange={e => {
-                this.setState({allowAutoDownload: e.target.checked});
-              }}
-            />
-            リサイズした画像を自動的にダウンロードする
-          </label>
-        </form>
+        <OptionSettingForm
+          resizeRatio={resizeRatio}
+          rotateAngle={rotateAngle}
+          allowAutoDownload={allowAutoDownload}
+          onChangeSelect={(e, stateName) => {
+            const {options} = e.target;
+            this.changeUserSettings(
+              stateName,
+              +options[options.selectedIndex].value
+            );
+          }}
+          onChangeCheckbox={(e, stateName) => {
+            this.setState({[stateName]: e.target.checked});
+          }}
+        />
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         {!previewImageDataUrl && <FileDropArea onDrop={this.onImageSelected} />}
         {previewImageDataUrl && (
