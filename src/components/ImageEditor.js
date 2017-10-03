@@ -47,7 +47,7 @@ const autoDownload = (url, fileName) => {
 
 const isAllowedFileType = (uploadedFileType, allowList) => {
   const result = allowList.filter(allowFile => allowFile === uploadedFileType);
-  return !!(result.length > 0);
+  return result.length > 0;
 };
 
 export default class ImageEditor extends React.Component {
