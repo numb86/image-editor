@@ -26,9 +26,9 @@ export default function OptionSettingForm(props) {
         <option value={180}>180度回転</option>
         <option value={270}>時計回りに270度回転</option>
       </select>
-      <label htmlFor="option-setting">
+      <label htmlFor="allow-auto-download">
         <input
-          id="option-setting"
+          id="allow-auto-download"
           type="checkbox"
           checked={props.allowAutoDownload}
           onChange={e => {
