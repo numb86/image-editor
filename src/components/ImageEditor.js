@@ -80,6 +80,7 @@ export default class ImageEditor extends React.Component {
 
   onImageSelected(fileList) {
     const file = fileList[0];
+    if (!file) return; // ファイルアップロードのダイアログでキャンセルした場合の対応
     if (!isAllowedFileType(file.type, ALLOW_FILE_TYPES)) {
       this.setState({errorMessage: '対応しているファイル形式はjpegとpngのみです。'});
       return;
