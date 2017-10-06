@@ -94,7 +94,11 @@ export default class ImageEditor extends React.Component {
   }
 
   processImage(userSettings) {
-    this.setState({isProcessing: true, previewImageDataUrl: null});
+    this.setState({
+      isProcessing: true,
+      previewImageDataUrl: null,
+      errorMessage: null,
+    });
     const {rotateAngle, resizeRatio} = userSettings;
     this.restoreUploadedImage()
       .then(res => rotateImage(res, rotateAngle, this.state.fileMime))
