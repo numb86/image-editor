@@ -153,12 +153,7 @@ export default class ImageEditor extends React.Component {
           previewImageDataUrl={previewImageDataUrl}
           downloadImageFileName={downloadImageFileName}
         />
-        {previewImageDataUrl && (
-          <div>
-            画像にドロップすることでも、新しい画像をアップロードできます。<br />
-            画像をクリックすると右回りで90度回転します。
-          </div>
-        )}
+        {previewImageDataUrl && <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>}
         <OptionSettingForm
           resizeRatio={resizeRatio}
           rotateAngle={rotateAngle}
