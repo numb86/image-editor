@@ -165,8 +165,8 @@ export default class ImageEditor extends React.Component {
               +options[options.selectedIndex].value
             );
           }}
-          onChangeCheckbox={(e, stateName) => {
-            this.setState({[stateName]: e.target.checked});
+          onChangeAllowAutoDownload={e => {
+            this.setState({allowAutoDownload: e.target.checked});
           }}
         />
         {errorMessage && <p className="error-message">{errorMessage}</p>}

@@ -32,7 +32,7 @@ export default function OptionSettingForm(props) {
           type="checkbox"
           checked={props.allowAutoDownload}
           onChange={e => {
-            props.onChangeCheckbox(e, 'allowAutoDownload');
+            props.onChangeAllowAutoDownload(e);
           }}
         />
         リサイズした画像を自動的にダウンロードする
