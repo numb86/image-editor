@@ -64,6 +64,7 @@ export default class ImageEditor extends React.Component {
       fileMime: null,
       allowAutoDownload: true,
       errorMessage: null,
+      isProcessing: false,
     };
     this.onImageSelected = this.onImageSelected.bind(this);
     this.onImageLoad = this.onImageLoad.bind(this);
@@ -93,6 +94,7 @@ export default class ImageEditor extends React.Component {
   }
 
   processImage(userSettings) {
+    this.setState({isProcessing: true, previewImageDataUrl: null});
     const {rotateAngle, resizeRatio} = userSettings;
     this.restoreUploadedImage()
       .then(res => rotateImage(res, rotateAngle, this.state.fileMime))
@@ -104,6 +106,7 @@ export default class ImageEditor extends React.Component {
       .then(res => {
         this.setState({
           previewImageDataUrl: createImageDataUrl(res, this.state.fileMime),
+          isProcessing: false,
         });
         if (!this.state.allowAutoDownload) return;
         autoDownload(
@@ -138,6 +141,7 @@ export default class ImageEditor extends React.Component {
       downloadImageFileName,
       allowAutoDownload,
       errorMessage,
+      isProcessing,
     } = this.state;
     const {resizeRatio, rotateAngle} = this.state.userSettings;
     return (
@@ -171,7 +175,9 @@ export default class ImageEditor extends React.Component {
           }}
         />
         {errorMessage && <p className="error-message">{errorMessage}</p>}
-        {!previewImageDataUrl && <FileDropArea onDrop={this.onImageSelected} />}
+        {!previewImageDataUrl &&
+        !isProcessing && <FileDropArea onDrop={this.onImageSelected} />}
+        {isProcessing && <div>画像生成中……</div>}
         {previewImageDataUrl && (
           <PreviewImage
             src={previewImageDataUrl}
