@@ -16,49 +16,33 @@ const ORIENTATION_NUMBER = {
   270: 8,
 };
 
-const createImageDataUrl = (image, mime) => {
-  const canvas = document.createElement('canvas');
-  canvas.width = image.width;
-  canvas.height = image.height;
-  const ctx = canvas.getContext('2d');
-  ctx.drawImage(image, 0, 0, image.width, image.height);
-  return canvas.toDataURL(mime);
+const applyNegativeFilter = currentCanvas => {
+  const ctx = currentCanvas.getContext('2d');
+  const src = ctx.getImageData(0, 0, currentCanvas.width, currentCanvas.height);
+  const dst = ctx.createImageData(currentCanvas.width, currentCanvas.height);
+  for (let i = 0; i < src.data.length; i += 4) {
+    dst.data[i] = 255 - src.data[i]; // R
+    dst.data[i + 1] = 255 - src.data[i + 1]; // G
+    dst.data[i + 2] = 255 - src.data[i + 2]; // B
+    dst.data[i + 3] = src.data[i + 3]; // A
+  }
+  ctx.putImageData(dst, 0, 0);
+  return currentCanvas;
 };
 
-const applyNegativeFilter = (currentImage, mime) =>
-  new Promise(resolve => {
-    const canvas = document.createElement('canvas');
-    canvas.width = currentImage.width;
-    canvas.height = currentImage.height;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(currentImage, 0, 0);
-    const src = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const dst = ctx.createImageData(canvas.width, canvas.height);
-    for (let i = 0; i < src.data.length; i += 4) {
-      dst.data[i] = 255 - src.data[i]; // R
-      dst.data[i + 1] = 255 - src.data[i + 1]; // G
-      dst.data[i + 2] = 255 - src.data[i + 2]; // B
-      dst.data[i + 3] = src.data[i + 3]; // A
-    }
-    ctx.putImageData(dst, 0, 0);
-    const dataUrl = canvas.toDataURL(mime);
-    const image = new Image();
-    image.onload = () => resolve(image);
-    image.src = dataUrl;
-  });
+const resizeImage = (currentCanvas, resizeRatio) => {
+  const dstCanvas = document.createElement('canvas');
+  const ctx = dstCanvas.getContext('2d');
+  dstCanvas.width = currentCanvas.width * resizeRatio;
+  dstCanvas.height = currentCanvas.height * resizeRatio;
+  ctx.drawImage(currentCanvas, 0, 0, dstCanvas.width, dstCanvas.height);
+  return dstCanvas;
+};
 
-const rotateImage = (currentImage, angle, mime) =>
-  new Promise(resolve => {
-    const orietationNumber = ORIENTATION_NUMBER[angle];
-    const canvasElement = CanvasExifOrientation.drawImage(
-      currentImage,
-      orietationNumber
-    );
-    const dataUrl = createImageDataUrl(canvasElement, mime);
-    const image = new Image();
-    image.onload = () => resolve(image);
-    image.src = dataUrl;
-  });
+const rotateImage = (currentCanvas, angle) => {
+  const orietationNumber = ORIENTATION_NUMBER[angle];
+  return CanvasExifOrientation.drawImage(currentCanvas, orietationNumber);
+};
 
 const autoDownload = (url, fileName) => {
   const elem = document.createElement('a');
@@ -122,17 +106,13 @@ export default class ImageEditor extends React.Component {
       errorMessage: null,
     });
     const {rotateAngle, resizeRatio} = userSettings;
-    this.restoreUploadedImage()
-      .then(res => rotateImage(res, rotateAngle, this.state.fileMime))
-      .then(res => applyNegativeFilter(res, this.state.fileMime))
-      .then(res => {
-        res.width *= resizeRatio;
-        res.height *= resizeRatio;
-        return res;
-      })
+    this.generateUploadedImageCanvas()
+      .then(res => rotateImage(res, rotateAngle))
+      .then(res => applyNegativeFilter(res))
+      .then(res => resizeImage(res, resizeRatio))
       .then(res => {
         this.setState({
-          previewImageDataUrl: createImageDataUrl(res, this.state.fileMime),
+          previewImageDataUrl: res.toDataURL(this.state.fileMime),
           isProcessing: false,
         });
         if (!this.state.allowAutoDownload) return;
@@ -143,11 +123,16 @@ export default class ImageEditor extends React.Component {
       });
   }
 
-  restoreUploadedImage() {
+  generateUploadedImageCanvas() {
     return new Promise(resolve => {
       const image = new Image();
       image.onload = () => {
-        resolve(image);
+        const canvas = document.createElement('canvas');
+        canvas.width = image.width;
+        canvas.height = image.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(image, 0, 0, image.width, image.height);
+        resolve(canvas);
       };
       image.src = this.state.uploadImageDataUrl;
     });
