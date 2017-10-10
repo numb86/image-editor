@@ -25,6 +25,28 @@ const createImageDataUrl = (image, mime) => {
   return canvas.toDataURL(mime);
 };
 
+const applyNegativeFilter = (currentImage, mime) =>
+  new Promise(resolve => {
+    const canvas = document.createElement('canvas');
+    canvas.width = currentImage.width;
+    canvas.height = currentImage.height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(currentImage, 0, 0);
+    const src = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const dst = ctx.createImageData(canvas.width, canvas.height);
+    for (let i = 0; i < src.data.length; i += 4) {
+      dst.data[i] = 255 - src.data[i]; // R
+      dst.data[i + 1] = 255 - src.data[i + 1]; // G
+      dst.data[i + 2] = 255 - src.data[i + 2]; // B
+      dst.data[i + 3] = src.data[i + 3]; // A
+    }
+    ctx.putImageData(dst, 0, 0);
+    const dataUrl = canvas.toDataURL(mime);
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.src = dataUrl;
+  });
+
 const rotateImage = (currentImage, angle, mime) =>
   new Promise(resolve => {
     const orietationNumber = ORIENTATION_NUMBER[angle];
@@ -102,6 +124,7 @@ export default class ImageEditor extends React.Component {
     const {rotateAngle, resizeRatio} = userSettings;
     this.restoreUploadedImage()
       .then(res => rotateImage(res, rotateAngle, this.state.fileMime))
+      .then(res => applyNegativeFilter(res, this.state.fileMime))
       .then(res => {
         res.width *= resizeRatio;
         res.height *= resizeRatio;
