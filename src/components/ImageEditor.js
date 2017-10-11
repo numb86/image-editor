@@ -30,6 +30,21 @@ const applyNegativeFilter = currentCanvas => {
   return currentCanvas;
 };
 
+const applyGrayscaleFilter = currentCanvas => {
+  const ctx = currentCanvas.getContext('2d');
+  const src = ctx.getImageData(0, 0, currentCanvas.width, currentCanvas.height);
+  const dst = ctx.createImageData(currentCanvas.width, currentCanvas.height);
+  for (let i = 0; i < src.data.length; i += 4) {
+    const pixel = (src.data[i] + src.data[i + 1] + src.data[i + 2]) / 3;
+    dst.data[i] = pixel;
+    dst.data[i + 1] = pixel;
+    dst.data[i + 2] = pixel;
+    dst.data[i + 3] = src.data[i + 3];
+  }
+  ctx.putImageData(dst, 0, 0);
+  return currentCanvas;
+};
+
 const resizeImage = (currentCanvas, resizeRatio) => {
   const dstCanvas = document.createElement('canvas');
   const ctx = dstCanvas.getContext('2d');
@@ -109,6 +124,7 @@ export default class ImageEditor extends React.Component {
     this.generateUploadedImageCanvas()
       .then(res => rotateImage(res, rotateAngle))
       .then(res => applyNegativeFilter(res))
+      .then(res => applyGrayscaleFilter(res))
       .then(res => resizeImage(res, resizeRatio))
       .then(res => {
         this.setState({
