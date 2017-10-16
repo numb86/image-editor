@@ -16,33 +16,42 @@ const ORIENTATION_NUMBER = {
   270: 8,
 };
 
-const applyNegativeFilter = currentCanvas => {
-  const ctx = currentCanvas.getContext('2d');
-  const src = ctx.getImageData(0, 0, currentCanvas.width, currentCanvas.height);
-  const dst = ctx.createImageData(currentCanvas.width, currentCanvas.height);
-  for (let i = 0; i < src.data.length; i += 4) {
-    dst.data[i] = 255 - src.data[i]; // R
-    dst.data[i + 1] = 255 - src.data[i + 1]; // G
-    dst.data[i + 2] = 255 - src.data[i + 2]; // B
-    dst.data[i + 3] = src.data[i + 3]; // A
-  }
+const transferCanvasPixelValue = (canvas, transferLogic) => {
+  const ctx = canvas.getContext('2d');
+  const src = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const dst = ctx.createImageData(canvas.width, canvas.height);
+  transferLogic(src, dst);
   ctx.putImageData(dst, 0, 0);
-  return currentCanvas;
+  return canvas;
 };
 
-const applyGrayscaleFilter = currentCanvas => {
-  const ctx = currentCanvas.getContext('2d');
-  const src = ctx.getImageData(0, 0, currentCanvas.width, currentCanvas.height);
-  const dst = ctx.createImageData(currentCanvas.width, currentCanvas.height);
-  for (let i = 0; i < src.data.length; i += 4) {
-    const pixel = (src.data[i] + src.data[i + 1] + src.data[i + 2]) / 3;
-    dst.data[i] = pixel;
-    dst.data[i + 1] = pixel;
-    dst.data[i + 2] = pixel;
-    dst.data[i + 3] = src.data[i + 3];
-  }
-  ctx.putImageData(dst, 0, 0);
-  return currentCanvas;
+const applyNegativeFilter = canvas => {
+  transferCanvasPixelValue(canvas, (src, dst) => {
+    for (let i = 0; i < src.data.length; i += 4) {
+      /* eslint-disable no-param-reassign */
+      dst.data[i] = 255 - src.data[i]; // R
+      dst.data[i + 1] = 255 - src.data[i + 1]; // G
+      dst.data[i + 2] = 255 - src.data[i + 2]; // B
+      dst.data[i + 3] = src.data[i + 3]; // A
+      /* eslint-enable no-param-reassign */
+    }
+  });
+  return canvas;
+};
+
+const applyGrayscaleFilter = canvas => {
+  transferCanvasPixelValue(canvas, (src, dst) => {
+    for (let i = 0; i < src.data.length; i += 4) {
+      /* eslint-disable no-param-reassign */
+      const pixel = (src.data[i] + src.data[i + 1] + src.data[i + 2]) / 3;
+      dst.data[i] = pixel;
+      dst.data[i + 1] = pixel;
+      dst.data[i + 2] = pixel;
+      dst.data[i + 3] = src.data[i + 3];
+      /* eslint-enable no-param-reassign */
+    }
+  });
+  return canvas;
 };
 
 const resizeImage = (currentCanvas, resizeRatio) => {
