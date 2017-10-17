@@ -26,7 +26,7 @@ const transferCanvasPixelValue = (canvas, transferLogic) => {
 };
 
 const applyNegativeFilter = canvas => {
-  transferCanvasPixelValue(canvas, (src, dst) => {
+  return transferCanvasPixelValue(canvas, (src, dst) => {
     for (let i = 0; i < src.data.length; i += 4) {
       /* eslint-disable no-param-reassign */
       dst.data[i] = 255 - src.data[i]; // R
@@ -36,11 +36,10 @@ const applyNegativeFilter = canvas => {
       /* eslint-enable no-param-reassign */
     }
   });
-  return canvas;
 };
 
 const applyGrayscaleFilter = canvas => {
-  transferCanvasPixelValue(canvas, (src, dst) => {
+  return transferCanvasPixelValue(canvas, (src, dst) => {
     for (let i = 0; i < src.data.length; i += 4) {
       /* eslint-disable no-param-reassign */
       const pixel = (src.data[i] + src.data[i + 1] + src.data[i + 2]) / 3;
@@ -51,7 +50,6 @@ const applyGrayscaleFilter = canvas => {
       /* eslint-enable no-param-reassign */
     }
   });
-  return canvas;
 };
 
 const resizeImage = (currentCanvas, resizeRatio) => {
