@@ -25,31 +25,27 @@ const transferCanvasPixelValue = (canvas, transferLogic) => {
   return canvas;
 };
 
-const applyNegativeFilter = canvas => {
-  return transferCanvasPixelValue(canvas, (src, dst) => {
-    for (let i = 0; i < src.data.length; i += 4) {
-      /* eslint-disable no-param-reassign */
-      dst.data[i] = 255 - src.data[i]; // R
-      dst.data[i + 1] = 255 - src.data[i + 1]; // G
-      dst.data[i + 2] = 255 - src.data[i + 2]; // B
-      dst.data[i + 3] = src.data[i + 3]; // A
-      /* eslint-enable no-param-reassign */
-    }
-  });
+const applyNegativeFilter = (src, dst) => {
+  for (let i = 0; i < src.data.length; i += 4) {
+    /* eslint-disable no-param-reassign */
+    dst.data[i] = 255 - src.data[i]; // R
+    dst.data[i + 1] = 255 - src.data[i + 1]; // G
+    dst.data[i + 2] = 255 - src.data[i + 2]; // B
+    dst.data[i + 3] = src.data[i + 3]; // A
+    /* eslint-enable no-param-reassign */
+  }
 };
 
-const applyGrayscaleFilter = canvas => {
-  return transferCanvasPixelValue(canvas, (src, dst) => {
-    for (let i = 0; i < src.data.length; i += 4) {
-      /* eslint-disable no-param-reassign */
-      const pixel = (src.data[i] + src.data[i + 1] + src.data[i + 2]) / 3;
-      dst.data[i] = pixel;
-      dst.data[i + 1] = pixel;
-      dst.data[i + 2] = pixel;
-      dst.data[i + 3] = src.data[i + 3];
-      /* eslint-enable no-param-reassign */
-    }
-  });
+const applyGrayscaleFilter = (src, dst) => {
+  for (let i = 0; i < src.data.length; i += 4) {
+    /* eslint-disable no-param-reassign */
+    const pixel = (src.data[i] + src.data[i + 1] + src.data[i + 2]) / 3;
+    dst.data[i] = pixel;
+    dst.data[i + 1] = pixel;
+    dst.data[i + 2] = pixel;
+    dst.data[i + 3] = src.data[i + 3];
+    /* eslint-enable no-param-reassign */
+  }
 };
 
 const resizeImage = (currentCanvas, resizeRatio) => {
@@ -130,8 +126,8 @@ export default class ImageEditor extends React.Component {
     const {rotateAngle, resizeRatio} = userSettings;
     this.generateUploadedImageCanvas()
       .then(res => rotateImage(res, rotateAngle))
-      .then(res => applyNegativeFilter(res))
-      .then(res => applyGrayscaleFilter(res))
+      .then(res => transferCanvasPixelValue(res, applyNegativeFilter))
+      .then(res => transferCanvasPixelValue(res, applyGrayscaleFilter))
       .then(res => resizeImage(res, resizeRatio))
       .then(res => {
         this.setState({
