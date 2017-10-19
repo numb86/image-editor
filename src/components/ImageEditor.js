@@ -124,11 +124,14 @@ export default class ImageEditor extends React.Component {
       errorMessage: null,
     });
     const {rotateAngle, resizeRatio} = userSettings;
+    const taskList = [
+      res => rotateImage(res, rotateAngle),
+      res => transferCanvasPixelValue(res, applyNegativeFilter),
+      res => transferCanvasPixelValue(res, applyGrayscaleFilter),
+      res => resizeImage(res, resizeRatio),
+    ];
     this.generateUploadedImageCanvas()
-      .then(res => rotateImage(res, rotateAngle))
-      .then(res => transferCanvasPixelValue(res, applyNegativeFilter))
-      .then(res => transferCanvasPixelValue(res, applyGrayscaleFilter))
-      .then(res => resizeImage(res, resizeRatio))
+      .then(res => taskList.reduce((canvas, task) => task(canvas), res))
       .then(res => {
         this.setState({
           previewImageDataUrl: res.toDataURL(this.state.fileMime),
