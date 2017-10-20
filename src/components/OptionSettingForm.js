@@ -1,5 +1,7 @@
 import React from 'react';
 
+import {IMAGE_TONE_LIST} from '../userSetting/colorTone';
+
 export default function OptionSettingForm(props) {
   return (
     <form className="option-setting-area">
@@ -25,6 +27,18 @@ export default function OptionSettingForm(props) {
         <option value={90}>時計回りに90度回転</option>
         <option value={180}>180度回転</option>
         <option value={270}>時計回りに270度回転</option>
+      </select>
+      <select
+        defaultValue={props.colorToneId}
+        onChange={e => {
+          props.onChangeSelect(e, 'colorToneId');
+        }}
+      >
+        {IMAGE_TONE_LIST.map(i => (
+          <option key={i.id} value={i.id}>
+            {i.label}
+          </option>
+        ))}
       </select>
       <label htmlFor="allow-auto-download">
         <input

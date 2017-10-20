@@ -5,6 +5,8 @@ import PreviewImage from './PreviewImage';
 import FileTransferButtons from './FileTransferButtons';
 import OptionSettingForm from './OptionSettingForm';
 
+import {COLOR_TONE_NONE_ID} from '../userSetting/colorTone';
+
 const CanvasExifOrientation = require('canvas-exif-orientation');
 
 const ALLOW_FILE_TYPES = ['image/png', 'image/jpeg'];
@@ -81,6 +83,7 @@ export default class ImageEditor extends React.Component {
       userSettings: {
         resizeRatio: 0.5,
         rotateAngle: 0,
+        colorToneId: COLOR_TONE_NONE_ID,
       },
       uploadImageDataUrl: null,
       previewImageDataUrl: null,
@@ -123,13 +126,16 @@ export default class ImageEditor extends React.Component {
       previewImageDataUrl: null,
       errorMessage: null,
     });
-    const {rotateAngle, resizeRatio} = userSettings;
+    const {rotateAngle, resizeRatio, colorToneId} = userSettings;
     const taskList = [
       res => rotateImage(res, rotateAngle),
-      res => transferCanvasPixelValue(res, applyNegativeFilter),
-      res => transferCanvasPixelValue(res, applyGrayscaleFilter),
       res => resizeImage(res, resizeRatio),
     ];
+    if (colorToneId === 1) {
+      taskList.push(res => transferCanvasPixelValue(res, applyNegativeFilter));
+    } else if (colorToneId === 2) {
+      taskList.push(res => transferCanvasPixelValue(res, applyGrayscaleFilter));
+    }
     this.generateUploadedImageCanvas()
       .then(res => taskList.reduce((canvas, task) => task(canvas), res))
       .then(res => {
@@ -177,7 +183,7 @@ export default class ImageEditor extends React.Component {
       errorMessage,
       isProcessing,
     } = this.state;
-    const {resizeRatio, rotateAngle} = this.state.userSettings;
+    const {resizeRatio, rotateAngle, colorToneId} = this.state.userSettings;
     return (
       <div>
         <FileTransferButtons
@@ -191,6 +197,7 @@ export default class ImageEditor extends React.Component {
         <OptionSettingForm
           resizeRatio={resizeRatio}
           rotateAngle={rotateAngle}
+          colorToneId={colorToneId}
           allowAutoDownload={allowAutoDownload}
           onChangeSelect={(e, stateName) => {
             const {options} = e.target;
