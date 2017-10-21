@@ -6,8 +6,8 @@ import FileTransferButtons from './FileTransferButtons';
 import OptionSettingForm from './OptionSettingForm';
 
 import {COLOR_TONE_NONE_ID, COLOR_TONE_LIST} from '../userSetting/colorTone';
-import resizeImage from '../userSetting/resize';
-import rotateImage from '../userSetting/rotate';
+import {resizeImage} from '../userSetting/resize';
+import {rotateImage} from '../userSetting/rotate';
 
 const ALLOW_FILE_TYPES = ['image/png', 'image/jpeg'];
 
