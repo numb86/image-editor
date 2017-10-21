@@ -1,6 +1,8 @@
 import React from 'react';
 
-import {IMAGE_TONE_LIST} from '../userSetting/colorTone';
+import {COLOR_TONE_LIST} from '../userSetting/colorTone';
+import {RESIZE_LIST} from '../userSetting/resize';
+import {ROTATE_LIST} from '../userSetting/rotate';
 
 export default function OptionSettingForm(props) {
   return (
@@ -11,11 +13,11 @@ export default function OptionSettingForm(props) {
           props.onChangeSelect(e, 'resizeRatio');
         }}
       >
-        <option value={0.25}>25%</option>
-        <option value={0.5}>50%</option>
-        <option value={1}>100%</option>
-        <option value={1.5}>150%</option>
-        <option value={2}>200%</option>
+        {RESIZE_LIST.map(r => (
+          <option key={r.ratio} value={r.ratio}>
+            {r.label}
+          </option>
+        ))}
       </select>
       <select
         defaultValue={props.rotateAngle}
@@ -23,10 +25,11 @@ export default function OptionSettingForm(props) {
           props.onChangeSelect(e, 'rotateAngle');
         }}
       >
-        <option value={0}>回転しない</option>
-        <option value={90}>時計回りに90度回転</option>
-        <option value={180}>180度回転</option>
-        <option value={270}>時計回りに270度回転</option>
+        {ROTATE_LIST.map(r => (
+          <option key={r.angle} value={r.angle}>
+            {r.label}
+          </option>
+        ))}
       </select>
       <select
         defaultValue={props.colorToneId}
@@ -34,7 +37,7 @@ export default function OptionSettingForm(props) {
           props.onChangeSelect(e, 'colorToneId');
         }}
       >
-        {IMAGE_TONE_LIST.map(i => (
+        {COLOR_TONE_LIST.map(i => (
           <option key={i.id} value={i.id}>
             {i.label}
           </option>
