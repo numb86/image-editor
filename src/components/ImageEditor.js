@@ -96,8 +96,8 @@ export default class ImageEditor extends React.Component {
     });
     const {rotateAngle, resizeRatio, colorToneId} = userSettings;
     const taskList = [
-      res => rotateImage(res, rotateAngle),
-      res => resizeImage(res, resizeRatio),
+      canvas => rotateImage(canvas, rotateAngle),
+      canvas => resizeImage(canvas, resizeRatio),
     ];
     const colorToneFunc = COLOR_TONE_LIST.filter(t => t.id === colorToneId)[0]
       .func;
