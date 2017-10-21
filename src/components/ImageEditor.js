@@ -74,13 +74,12 @@ export default class ImageEditor extends React.Component {
       errorMessage: null,
     });
     const {rotateAngle, resizeRatio, colorToneId} = userSettings;
-    const taskList = [
-      canvas => rotateImage(canvas, rotateAngle),
-      canvas => resizeImage(canvas, resizeRatio),
-    ];
+    const taskList = [];
     const colorToneFunc = COLOR_TONE_LIST.filter(t => t.id === colorToneId)[0]
       .func;
     if (colorToneFunc) taskList.push(colorToneFunc);
+    taskList.push(canvas => rotateImage(canvas, rotateAngle));
+    taskList.push(canvas => resizeImage(canvas, resizeRatio));
     this.generateUploadedImageCanvas()
       .then(res => taskList.reduce((canvas, task) => task(canvas), res))
       .then(res => {
