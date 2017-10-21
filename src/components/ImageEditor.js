@@ -6,31 +6,10 @@ import FileTransferButtons from './FileTransferButtons';
 import OptionSettingForm from './OptionSettingForm';
 
 import {COLOR_TONE_NONE_ID, COLOR_TONE_LIST} from '../userSetting/colorTone';
-
-const CanvasExifOrientation = require('canvas-exif-orientation');
+import resizeImage from '../userSetting/resize';
+import rotateImage from '../userSetting/rotate';
 
 const ALLOW_FILE_TYPES = ['image/png', 'image/jpeg'];
-
-const ORIENTATION_NUMBER = {
-  0: 1,
-  90: 6,
-  180: 3,
-  270: 8,
-};
-
-const resizeImage = (currentCanvas, resizeRatio) => {
-  const dstCanvas = document.createElement('canvas');
-  const ctx = dstCanvas.getContext('2d');
-  dstCanvas.width = currentCanvas.width * resizeRatio;
-  dstCanvas.height = currentCanvas.height * resizeRatio;
-  ctx.drawImage(currentCanvas, 0, 0, dstCanvas.width, dstCanvas.height);
-  return dstCanvas;
-};
-
-const rotateImage = (currentCanvas, angle) => {
-  const orietationNumber = ORIENTATION_NUMBER[angle];
-  return CanvasExifOrientation.drawImage(currentCanvas, orietationNumber);
-};
 
 const autoDownload = (url, fileName) => {
   const elem = document.createElement('a');
