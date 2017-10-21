@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {IMAGE_TONE_LIST} from '../userSetting/colorTone';
+import {COLOR_TONE_LIST} from '../userSetting/colorTone';
 
 export default function OptionSettingForm(props) {
   return (
@@ -34,7 +34,7 @@ export default function OptionSettingForm(props) {
           props.onChangeSelect(e, 'colorToneId');
         }}
       >
-        {IMAGE_TONE_LIST.map(i => (
+        {COLOR_TONE_LIST.map(i => (
           <option key={i.id} value={i.id}>
             {i.label}
           </option>

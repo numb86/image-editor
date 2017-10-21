@@ -5,7 +5,7 @@ import PreviewImage from './PreviewImage';
 import FileTransferButtons from './FileTransferButtons';
 import OptionSettingForm from './OptionSettingForm';
 
-import {COLOR_TONE_NONE_ID} from '../userSetting/colorTone';
+import {COLOR_TONE_NONE_ID, COLOR_TONE_LIST} from '../userSetting/colorTone';
 
 const CanvasExifOrientation = require('canvas-exif-orientation');
 
@@ -16,38 +16,6 @@ const ORIENTATION_NUMBER = {
   90: 6,
   180: 3,
   270: 8,
-};
-
-const transferCanvasPixelValue = (canvas, transferLogic) => {
-  const ctx = canvas.getContext('2d');
-  const src = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const dst = ctx.createImageData(canvas.width, canvas.height);
-  transferLogic(src, dst);
-  ctx.putImageData(dst, 0, 0);
-  return canvas;
-};
-
-const applyNegativeFilter = (src, dst) => {
-  for (let i = 0; i < src.data.length; i += 4) {
-    /* eslint-disable no-param-reassign */
-    dst.data[i] = 255 - src.data[i]; // R
-    dst.data[i + 1] = 255 - src.data[i + 1]; // G
-    dst.data[i + 2] = 255 - src.data[i + 2]; // B
-    dst.data[i + 3] = src.data[i + 3]; // A
-    /* eslint-enable no-param-reassign */
-  }
-};
-
-const applyGrayscaleFilter = (src, dst) => {
-  for (let i = 0; i < src.data.length; i += 4) {
-    /* eslint-disable no-param-reassign */
-    const pixel = (src.data[i] + src.data[i + 1] + src.data[i + 2]) / 3;
-    dst.data[i] = pixel;
-    dst.data[i + 1] = pixel;
-    dst.data[i + 2] = pixel;
-    dst.data[i + 3] = src.data[i + 3];
-    /* eslint-enable no-param-reassign */
-  }
 };
 
 const resizeImage = (currentCanvas, resizeRatio) => {
@@ -131,11 +99,9 @@ export default class ImageEditor extends React.Component {
       res => rotateImage(res, rotateAngle),
       res => resizeImage(res, resizeRatio),
     ];
-    if (colorToneId === 1) {
-      taskList.push(res => transferCanvasPixelValue(res, applyNegativeFilter));
-    } else if (colorToneId === 2) {
-      taskList.push(res => transferCanvasPixelValue(res, applyGrayscaleFilter));
-    }
+    const colorToneFunc = COLOR_TONE_LIST.filter(t => t.id === colorToneId)[0]
+      .func;
+    if (colorToneFunc) taskList.push(colorToneFunc);
     this.generateUploadedImageCanvas()
       .then(res => taskList.reduce((canvas, task) => task(canvas), res))
       .then(res => {
