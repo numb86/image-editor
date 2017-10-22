@@ -8,6 +8,7 @@ import OptionSettingForm from './OptionSettingForm';
 import {COLOR_TONE_NONE_ID, COLOR_TONE_LIST} from '../userSetting/colorTone';
 import {resizeImage} from '../userSetting/resize';
 import {rotateImage} from '../userSetting/rotate';
+import fillText from '../userSetting/text';
 
 const ALLOW_FILE_TYPES = ['image/png', 'image/jpeg'];
 
@@ -80,6 +81,7 @@ export default class ImageEditor extends React.Component {
     if (colorToneFunc) taskList.push(colorToneFunc);
     taskList.push(canvas => rotateImage(canvas, rotateAngle));
     taskList.push(canvas => resizeImage(canvas, resizeRatio));
+    taskList.push(canvas => fillText(canvas));
     this.generateUploadedImageCanvas()
       .then(res => taskList.reduce((canvas, task) => task(canvas), res))
       .then(res => {
