@@ -75,14 +75,14 @@ export default class ImageEditor extends React.Component {
       previewImageDataUrl: null,
       errorMessage: null,
     });
-    const {rotateAngle, resizeRatio, colorToneId} = userSettings;
+    const {rotateAngle, resizeRatio, colorToneId, text} = userSettings;
     const taskList = [];
     const colorToneFunc = COLOR_TONE_LIST.filter(t => t.id === colorToneId)[0]
       .func;
     if (colorToneFunc) taskList.push(colorToneFunc);
     taskList.push(canvas => rotateImage(canvas, rotateAngle));
     taskList.push(canvas => resizeImage(canvas, resizeRatio));
-    taskList.push(canvas => fillText(canvas));
+    taskList.push(canvas => fillText(canvas, text));
     this.generateUploadedImageCanvas()
       .then(res => taskList.reduce((canvas, task) => task(canvas), res))
       .then(res => {
@@ -118,7 +118,7 @@ export default class ImageEditor extends React.Component {
       [key]: value,
     });
     this.setState({userSettings: newUserSettings});
-    if (!this.state.uploadImageDataUrl) return;
+    if (key === 'text' || !this.state.uploadImageDataUrl) return;
     this.processImage(newUserSettings);
   }
 
@@ -146,12 +146,21 @@ export default class ImageEditor extends React.Component {
           downloadImageFileName={downloadImageFileName}
         />
         <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>
-        <input
-          type="text"
-          placeholder="テキストを入力"
-          value={text}
-          onChange={e => this.changeUserSettings('text', e.target.value)}
-        />
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            if (!this.state.uploadImageDataUrl) return;
+            this.processImage(this.state.userSettings);
+          }}
+        >
+          <input
+            type="text"
+            placeholder="テキストを入力"
+            value={text}
+            onChange={e => this.changeUserSettings('text', e.target.value)}
+          />
+          <input type="submit" value="決定" />
+        </form>
         <OptionSettingForm
           resizeRatio={resizeRatio}
           rotateAngle={rotateAngle}
