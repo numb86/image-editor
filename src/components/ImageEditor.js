@@ -32,6 +32,7 @@ export default class ImageEditor extends React.Component {
         resizeRatio: 0.5,
         rotateAngle: 0,
         colorToneId: COLOR_TONE_NONE_ID,
+        text: '',
       },
       uploadImageDataUrl: null,
       previewImageDataUrl: null,
@@ -129,7 +130,12 @@ export default class ImageEditor extends React.Component {
       errorMessage,
       isProcessing,
     } = this.state;
-    const {resizeRatio, rotateAngle, colorToneId} = this.state.userSettings;
+    const {
+      resizeRatio,
+      rotateAngle,
+      colorToneId,
+      text,
+    } = this.state.userSettings;
     return (
       <div>
         <FileTransferButtons
@@ -140,6 +146,12 @@ export default class ImageEditor extends React.Component {
           downloadImageFileName={downloadImageFileName}
         />
         <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>
+        <input
+          type="text"
+          placeholder="テキストを入力"
+          value={text}
+          onChange={e => this.changeUserSettings('text', e.target.value)}
+        />
         <OptionSettingForm
           resizeRatio={resizeRatio}
           rotateAngle={rotateAngle}
