@@ -3,6 +3,7 @@ import React from 'react';
 import FileDropArea from './FileDropArea';
 import PreviewImage from './PreviewImage';
 import FileTransferButtons from './FileTransferButtons';
+import TextForm from './TextForm';
 import OptionSettingForm from './OptionSettingForm';
 
 import {COLOR_TONE_NONE_ID, COLOR_TONE_LIST} from '../userSetting/colorTone';
@@ -146,21 +147,15 @@ export default class ImageEditor extends React.Component {
           downloadImageFileName={downloadImageFileName}
         />
         <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>
-        <form
+        <TextForm
+          text={text}
           onSubmit={e => {
             e.preventDefault();
             if (!this.state.uploadImageDataUrl) return;
             this.processImage(this.state.userSettings);
           }}
-        >
-          <input
-            type="text"
-            placeholder="テキストを入力"
-            value={text}
-            onChange={e => this.changeUserSettings('text', e.target.value)}
-          />
-          <input type="submit" value="決定" />
-        </form>
+          onChange={e => this.changeUserSettings('text', e.target.value)}
+        />
         <OptionSettingForm
           resizeRatio={resizeRatio}
           rotateAngle={rotateAngle}
