@@ -1,6 +1,11 @@
+// @flow
 import React from 'react';
 
-export default function TextForm(props) {
+export default function TextForm(props: {
+  text: string,
+  onSubmit: (e: Event) => void,
+  onChange: (e: Event) => void,
+}) {
   return (
     <form onSubmit={e => props.onSubmit(e)}>
       <input

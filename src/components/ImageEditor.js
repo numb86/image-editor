@@ -154,7 +154,12 @@ export default class ImageEditor extends React.Component {
             if (!this.state.uploadImageDataUrl) return;
             this.processImage(this.state.userSettings);
           }}
-          onChange={e => this.changeUserSettings('text', e.target.value)}
+          onChange={e => {
+            if (!e.target.value) {
+              throw new Error('e.target.value is not found.');
+            }
+            this.changeUserSettings('text', e.target.value);
+          }}
         />
         <OptionSettingForm
           resizeRatio={resizeRatio}
