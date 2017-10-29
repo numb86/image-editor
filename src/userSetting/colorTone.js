@@ -13,24 +13,20 @@ function transferCanvasPixelValue(canvas, transferLogic) {
 
 function applyNegativeFilter(src, dst) {
   for (let i = 0; i < src.data.length; i += 4) {
-    /* eslint-disable no-param-reassign */
     dst.data[i] = 255 - src.data[i]; // R
     dst.data[i + 1] = 255 - src.data[i + 1]; // G
     dst.data[i + 2] = 255 - src.data[i + 2]; // B
     dst.data[i + 3] = src.data[i + 3]; // A
-    /* eslint-enable no-param-reassign */
   }
 }
 
 function applyGrayscaleFilter(src, dst) {
   for (let i = 0; i < src.data.length; i += 4) {
-    /* eslint-disable no-param-reassign */
     const pixel = (src.data[i] + src.data[i + 1] + src.data[i + 2]) / 3;
     dst.data[i] = pixel;
     dst.data[i + 1] = pixel;
     dst.data[i + 2] = pixel;
     dst.data[i + 3] = src.data[i + 3];
-    /* eslint-enable no-param-reassign */
   }
 }
 
