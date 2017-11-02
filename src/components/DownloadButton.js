@@ -1,6 +1,10 @@
+// @flow
 import React from 'react';
 
-export default function DownloadButton(props) {
+export default function DownloadButton(props: {
+  href: string | null,
+  download: string | null,
+}) {
   if (!props.href) return null;
   return (
     <div className="download-button">

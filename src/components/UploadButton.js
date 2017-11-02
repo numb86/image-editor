@@ -1,6 +1,9 @@
+// @flow
 import React from 'react';
 
-export default function UploadButton(props) {
+export default function UploadButton(props: {
+  onChange: (files: FileList) => void,
+}) {
   return (
     <form className="upload-button">
       <label htmlFor="image-upload-input">
