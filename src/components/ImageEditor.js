@@ -140,8 +140,8 @@ export default class ImageEditor extends React.Component {
     return (
       <div>
         <FileTransferButtons
-          onImageSelected={e => {
-            this.onImageSelected(e.target.files);
+          onImageSelected={files => {
+            this.onImageSelected(files);
           }}
           previewImageDataUrl={previewImageDataUrl}
           downloadImageFileName={downloadImageFileName}
