@@ -1,10 +1,18 @@
+// @flow
 import React from 'react';
 
 import {COLOR_TONE_LIST} from '../userSetting/colorTone';
 import {RESIZE_LIST} from '../userSetting/resize';
 import {ROTATE_LIST} from '../userSetting/rotate';
 
-export default function OptionSettingForm(props) {
+export default function OptionSettingForm(props: {
+  resizeRatio: number,
+  rotateAngle: number,
+  colorToneId: number,
+  allowAutoDownload: boolean,
+  onChangeSelect: (options: HTMLOptionsCollection, stateName: string) => void,
+  onChangeAllowAutoDownload: (checked: boolean) => void,
+}) {
   return (
     <form className="option-setting-area">
       <select
