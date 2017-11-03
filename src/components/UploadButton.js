@@ -1,6 +1,9 @@
+// @flow
 import React from 'react';
 
-export default function UploadButton(props) {
+export default function UploadButton(props: {
+  onChange: (files: FileList) => void,
+}) {
   return (
     <form className="upload-button">
       <label htmlFor="image-upload-input">
@@ -9,7 +12,7 @@ export default function UploadButton(props) {
           id="image-upload-input"
           type="file"
           accept="image/*"
-          onChange={props.onChange}
+          onChange={e => props.onChange(e.target.files)}
         />
       </label>
     </form>

@@ -140,9 +140,7 @@ export default class ImageEditor extends React.Component {
     return (
       <div>
         <FileTransferButtons
-          onImageSelected={e => {
-            this.onImageSelected(e.target.files);
-          }}
+          onImageSelected={this.onImageSelected}
           previewImageDataUrl={previewImageDataUrl}
           downloadImageFileName={downloadImageFileName}
         />
@@ -161,15 +159,14 @@ export default class ImageEditor extends React.Component {
           rotateAngle={rotateAngle}
           colorToneId={colorToneId}
           allowAutoDownload={allowAutoDownload}
-          onChangeSelect={(e, stateName) => {
-            const {options} = e.target;
+          onChangeSelect={(options, stateName) => {
             this.changeUserSettings(
               stateName,
               +options[options.selectedIndex].value
             );
           }}
-          onChangeAllowAutoDownload={e => {
-            this.setState({allowAutoDownload: e.target.checked});
+          onChangeAllowAutoDownload={checked => {
+            this.setState({allowAutoDownload: checked});
           }}
         />
         {errorMessage && <p className="error-message">{errorMessage}</p>}

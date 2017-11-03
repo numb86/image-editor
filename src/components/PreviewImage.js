@@ -1,11 +1,23 @@
+// @flow
 import React from 'react';
 import ClassNames from 'classnames';
 
+type Prop = {
+  src: string | null,
+  onDrop: (files: FileList) => void,
+};
+
+type State = {
+  isDragOver: boolean,
+};
+
 export default class FileDropArea extends React.Component {
-  constructor(props) {
+  constructor(props: Prop) {
     super(props);
     this.state = {isDragOver: false};
   }
+  state: State;
+  props: Prop;
   render() {
     const classNames = ClassNames({
       'file-drag-over-area': this.state.isDragOver,

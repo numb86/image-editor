@@ -1,16 +1,24 @@
+// @flow
 import React from 'react';
 
 import {COLOR_TONE_LIST} from '../userSetting/colorTone';
 import {RESIZE_LIST} from '../userSetting/resize';
 import {ROTATE_LIST} from '../userSetting/rotate';
 
-export default function OptionSettingForm(props) {
+export default function OptionSettingForm(props: {
+  resizeRatio: number,
+  rotateAngle: number,
+  colorToneId: number,
+  allowAutoDownload: boolean,
+  onChangeSelect: (options: HTMLOptionsCollection, stateName: string) => void,
+  onChangeAllowAutoDownload: (checked: boolean) => void,
+}) {
   return (
     <form className="option-setting-area">
       <select
         defaultValue={props.resizeRatio}
         onChange={e => {
-          props.onChangeSelect(e, 'resizeRatio');
+          props.onChangeSelect(e.target.options, 'resizeRatio');
         }}
       >
         {RESIZE_LIST.map(r => (
@@ -22,7 +30,7 @@ export default function OptionSettingForm(props) {
       <select
         defaultValue={props.rotateAngle}
         onChange={e => {
-          props.onChangeSelect(e, 'rotateAngle');
+          props.onChangeSelect(e.target.options, 'rotateAngle');
         }}
       >
         {ROTATE_LIST.map(r => (
@@ -34,7 +42,7 @@ export default function OptionSettingForm(props) {
       <select
         defaultValue={props.colorToneId}
         onChange={e => {
-          props.onChangeSelect(e, 'colorToneId');
+          props.onChangeSelect(e.target.options, 'colorToneId');
         }}
       >
         {COLOR_TONE_LIST.map(i => (
@@ -49,7 +57,7 @@ export default function OptionSettingForm(props) {
           type="checkbox"
           checked={props.allowAutoDownload}
           onChange={e => {
-            props.onChangeAllowAutoDownload(e);
+            props.onChangeAllowAutoDownload(e.target.checked);
           }}
         />
         リサイズした画像を自動的にダウンロードする
