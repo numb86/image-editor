@@ -1,9 +1,14 @@
+// @flow
 export const COLOR_TONE_NONE_ID = 0;
 const COLOR_TONE_NEGATIVE_ID = 1;
 const COLOR_TONE_GRAY_SCALE_ID = 2;
 
-function transferCanvasPixelValue(canvas, transferLogic) {
+function transferCanvasPixelValue(
+  canvas: HTMLCanvasElement,
+  transferLogic: (src: ImageData, dst: ImageData) => void
+): HTMLCanvasElement {
   const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('ctx is null.');
   const src = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const dst = ctx.createImageData(canvas.width, canvas.height);
   transferLogic(src, dst);
@@ -11,7 +16,7 @@ function transferCanvasPixelValue(canvas, transferLogic) {
   return canvas;
 }
 
-function applyNegativeFilter(src, dst) {
+function applyNegativeFilter(src: ImageData, dst: ImageData): void {
   for (let i = 0; i < src.data.length; i += 4) {
     dst.data[i] = 255 - src.data[i]; // R
     dst.data[i + 1] = 255 - src.data[i + 1]; // G
@@ -20,7 +25,7 @@ function applyNegativeFilter(src, dst) {
   }
 }
 
-function applyGrayscaleFilter(src, dst) {
+function applyGrayscaleFilter(src: ImageData, dst: ImageData): void {
   for (let i = 0; i < src.data.length; i += 4) {
     const pixel = (src.data[i] + src.data[i + 1] + src.data[i + 2]) / 3;
     dst.data[i] = pixel;
@@ -39,11 +44,13 @@ export const COLOR_TONE_LIST = [
   {
     id: COLOR_TONE_NEGATIVE_ID,
     label: 'ネガポジ反転',
-    func: canvas => transferCanvasPixelValue(canvas, applyNegativeFilter),
+    func: (canvas: HTMLCanvasElement) =>
+      transferCanvasPixelValue(canvas, applyNegativeFilter),
   },
   {
     id: COLOR_TONE_GRAY_SCALE_ID,
     label: 'グレースケール',
-    func: canvas => transferCanvasPixelValue(canvas, applyGrayscaleFilter),
+    func: (canvas: HTMLCanvasElement) =>
+      transferCanvasPixelValue(canvas, applyGrayscaleFilter),
   },
 ];
