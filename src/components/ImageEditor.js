@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 
 import FileDropArea from './FileDropArea';
@@ -13,20 +14,41 @@ import fillText from '../userSetting/text';
 
 const ALLOW_FILE_TYPES = ['image/png', 'image/jpeg'];
 
-const autoDownload = (url, fileName) => {
+function autoDownload(url: string, fileName: string): void {
   const elem = document.createElement('a');
   elem.href = url;
   elem.download = fileName;
   elem.click();
-};
+}
 
-const isAllowedFileType = (uploadedFileType, allowList) => {
+function isAllowedFileType(
+  uploadedFileType: string,
+  allowList: string[]
+): boolean {
   const result = allowList.filter(allowFile => allowFile === uploadedFileType);
   return result.length > 0;
+}
+
+type Props = void;
+
+type State = {
+  userSettings: {
+    resizeRatio: number,
+    rotateAngle: number,
+    colorToneId: number,
+    text: string,
+  },
+  uploadImageDataUrl: string | null,
+  previewImageDataUrl: string | null,
+  downloadImageFileName: string | null,
+  fileMime: string | null,
+  allowAutoDownload: boolean,
+  errorMessage: string | null,
+  isProcessing: boolean,
 };
 
-export default class ImageEditor extends React.Component {
-  constructor(props) {
+export default class ImageEditor extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       userSettings: {
@@ -46,8 +68,13 @@ export default class ImageEditor extends React.Component {
     this.onImageSelected = this.onImageSelected.bind(this);
     this.onImageLoad = this.onImageLoad.bind(this);
   }
-
-  onImageLoad(imageDataUrl, originalFileName, originalFileMime) {
+  onImageSelected: Function;
+  onImageLoad: Function;
+  onImageLoad(
+    imageDataUrl: string,
+    originalFileName: string,
+    originalFileMime: string
+  ): void {
     this.setState({
       uploadImageDataUrl: imageDataUrl,
       downloadImageFileName: originalFileName,
@@ -56,7 +83,7 @@ export default class ImageEditor extends React.Component {
     this.processImage(this.state.userSettings);
   }
 
-  onImageSelected(fileList) {
+  onImageSelected(fileList: FileList): void {
     const file = fileList[0];
     if (!file) return; // ファイルアップロードのダイアログでキャンセルした場合の対応
     if (!isAllowedFileType(file.type, ALLOW_FILE_TYPES)) {
@@ -70,7 +97,7 @@ export default class ImageEditor extends React.Component {
     fileReader.readAsDataURL(file);
   }
 
-  processImage(userSettings) {
+  processImage(userSettings: $PropertyType<State, 'userSettings'>): void {
     this.setState({
       isProcessing: true,
       previewImageDataUrl: null,
@@ -99,7 +126,7 @@ export default class ImageEditor extends React.Component {
       });
   }
 
-  generateUploadedImageCanvas() {
+  generateUploadedImageCanvas(): Promise<HTMLCanvasElement> {
     return new Promise(resolve => {
       const image = new Image();
       image.onload = () => {
@@ -107,6 +134,7 @@ export default class ImageEditor extends React.Component {
         canvas.width = image.width;
         canvas.height = image.height;
         const ctx = canvas.getContext('2d');
+        if (!ctx) throw new Error('ctx is null.');
         ctx.drawImage(image, 0, 0, image.width, image.height);
         resolve(canvas);
       };
@@ -114,7 +142,7 @@ export default class ImageEditor extends React.Component {
     });
   }
 
-  changeUserSettings(key, value) {
+  changeUserSettings(key: string, value: string | number): void {
     const newUserSettings = Object.assign({}, this.state.userSettings, {
       [key]: value,
     });
