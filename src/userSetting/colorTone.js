@@ -44,13 +44,15 @@ export const COLOR_TONE_LIST = [
   {
     id: COLOR_TONE_NEGATIVE_ID,
     label: 'ネガポジ反転',
-    func: (canvas: HTMLCanvasElement) =>
-      transferCanvasPixelValue(canvas, applyNegativeFilter),
+    func(canvas: HTMLCanvasElement): HTMLCanvasElement {
+      return transferCanvasPixelValue(canvas, applyNegativeFilter);
+    },
   },
   {
     id: COLOR_TONE_GRAY_SCALE_ID,
     label: 'グレースケール',
-    func: (canvas: HTMLCanvasElement) =>
-      transferCanvasPixelValue(canvas, applyGrayscaleFilter),
+    func(canvas: HTMLCanvasElement): HTMLCanvasElement {
+      return transferCanvasPixelValue(canvas, applyGrayscaleFilter);
+    },
   },
 ];
