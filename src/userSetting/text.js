@@ -1,11 +1,10 @@
 // @flow
-
-type Canvas = HTMLCanvasElement & {
-  getContext: ('2d') => CanvasRenderingContext2D,
-};
-
-export default function fillText(currentCanvas: Canvas, text: string): Canvas {
+export default function fillText(
+  currentCanvas: HTMLCanvasElement,
+  text: string
+): HTMLCanvasElement {
   const ctx = currentCanvas.getContext('2d');
+  if (!ctx) throw new Error('ctx is null.');
   ctx.font = '30px Lato';
   ctx.fillText(text, 0, 30);
   return currentCanvas;

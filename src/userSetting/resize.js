@@ -1,6 +1,11 @@
-export function resizeImage(currentCanvas, resizeRatio) {
+// @flow
+export function resizeImage(
+  currentCanvas: HTMLCanvasElement,
+  resizeRatio: number
+): HTMLCanvasElement {
   const dstCanvas = document.createElement('canvas');
   const ctx = dstCanvas.getContext('2d');
+  if (!ctx) throw new Error('ctx is null.');
   dstCanvas.width = currentCanvas.width * resizeRatio;
   dstCanvas.height = currentCanvas.height * resizeRatio;
   ctx.drawImage(currentCanvas, 0, 0, dstCanvas.width, dstCanvas.height);

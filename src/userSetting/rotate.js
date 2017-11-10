@@ -1,13 +1,19 @@
+// @flow
 const CanvasExifOrientation = require('canvas-exif-orientation');
 
 const ORIENTATION_NUMBER = {
-  0: 1,
-  90: 6,
-  180: 3,
-  270: 8,
+  /* eslint-disable no-useless-computed-key */
+  [0]: 1,
+  [90]: 6,
+  [180]: 3,
+  [270]: 8,
+  /* eslint-enable no-useless-computed-key */
 };
 
-export function rotateImage(currentCanvas, angle) {
+export function rotateImage(
+  currentCanvas: HTMLCanvasElement,
+  angle: number
+): HTMLCanvasElement {
   const orietationNumber = ORIENTATION_NUMBER[angle];
   return CanvasExifOrientation.drawImage(currentCanvas, orietationNumber);
 }
