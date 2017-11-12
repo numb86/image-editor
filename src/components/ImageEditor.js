@@ -114,15 +114,24 @@ export default class ImageEditor extends React.Component<Props, State> {
     this.generateUploadedImageCanvas()
       .then(res => taskList.reduce((canvas, task) => task(canvas), res))
       .then(res => {
+        const {
+          fileMime,
+          allowAutoDownload,
+          previewImageDataUrl,
+          downloadImageFileName,
+        } = this.state;
+        if (!fileMime) throw new Error('fileMime is null.');
         this.setState({
-          previewImageDataUrl: res.toDataURL(this.state.fileMime),
+          previewImageDataUrl: res.toDataURL(fileMime),
           isProcessing: false,
         });
-        if (!this.state.allowAutoDownload) return;
-        autoDownload(
-          this.state.previewImageDataUrl,
-          this.state.downloadImageFileName
-        );
+        if (!allowAutoDownload) return;
+        if (!previewImageDataUrl || !downloadImageFileName) {
+          throw new Error(
+            'previewImageDataUrl or downloadImageFileName is null.'
+          );
+        }
+        autoDownload(previewImageDataUrl, downloadImageFileName);
       });
   }
 
@@ -138,6 +147,9 @@ export default class ImageEditor extends React.Component<Props, State> {
         ctx.drawImage(image, 0, 0, image.width, image.height);
         resolve(canvas);
       };
+      if (!this.state.uploadImageDataUrl) {
+        throw new Error('uploadImageDataUrl is null');
+      }
       image.src = this.state.uploadImageDataUrl;
     });
   }
