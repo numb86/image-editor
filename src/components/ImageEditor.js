@@ -114,17 +114,17 @@ export default class ImageEditor extends React.Component<Props, State> {
     this.generateUploadedImageCanvas()
       .then(res => taskList.reduce((canvas, task) => task(canvas), res))
       .then(res => {
-        const {
-          fileMime,
-          allowAutoDownload,
-          previewImageDataUrl,
-          downloadImageFileName,
-        } = this.state;
+        const {fileMime} = this.state;
         if (!fileMime) throw new Error('fileMime is null.');
         this.setState({
           previewImageDataUrl: res.toDataURL(fileMime),
           isProcessing: false,
         });
+        const {
+          allowAutoDownload,
+          previewImageDataUrl,
+          downloadImageFileName,
+        } = this.state;
         if (!allowAutoDownload) return;
         if (!previewImageDataUrl || !downloadImageFileName) {
           throw new Error(
