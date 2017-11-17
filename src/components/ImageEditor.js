@@ -12,9 +12,11 @@ import {resizeImage} from '../userSetting/resize';
 import {rotateImage} from '../userSetting/rotate';
 import fillText from '../userSetting/text';
 
-const MIME_PING = 'image/png';
-const MIME_JPEG = 'image/jpeg';
+const MIME_PING: 'image/png' = 'image/png';
+const MIME_JPEG: 'image/jpeg' = 'image/jpeg';
 const ALLOW_FILE_TYPES = [MIME_PING, MIME_JPEG];
+
+type AllowFileList = typeof MIME_PING | typeof MIME_JPEG;
 
 function autoDownload(url: string, fileName: string): void {
   const elem = document.createElement('a');
@@ -25,7 +27,7 @@ function autoDownload(url: string, fileName: string): void {
 
 function isAllowedFileType(
   uploadedFileType: string,
-  allowList: string[]
+  allowList: Array<AllowFileList>
 ): boolean {
   const result = allowList.filter(allowFile => allowFile === uploadedFileType);
   return result.length > 0;
@@ -43,7 +45,7 @@ type State = {
   uploadImageDataUrl: string | null,
   previewImageDataUrl: string | null,
   downloadImageFileName: string | null,
-  fileMime: string | null,
+  fileMime: AllowFileList | null,
   allowAutoDownload: boolean,
   errorMessage: string | null,
   isProcessing: boolean,
@@ -75,7 +77,7 @@ export default class ImageEditor extends React.Component<Props, State> {
   onImageLoad(
     imageDataUrl: string,
     originalFileName: string,
-    originalFileMime: string
+    originalFileMime: AllowFileList
   ): void {
     this.setState({
       uploadImageDataUrl: imageDataUrl,
