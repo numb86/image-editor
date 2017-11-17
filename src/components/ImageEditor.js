@@ -12,7 +12,9 @@ import {resizeImage} from '../userSetting/resize';
 import {rotateImage} from '../userSetting/rotate';
 import fillText from '../userSetting/text';
 
-const ALLOW_FILE_TYPES = ['image/png', 'image/jpeg'];
+const MIME_PING = 'image/png';
+const MIME_JPEG = 'image/jpeg';
+const ALLOW_FILE_TYPES = [MIME_PING, MIME_JPEG];
 
 function autoDownload(url: string, fileName: string): void {
   const elem = document.createElement('a');
