@@ -27,7 +27,8 @@
     "babel-preset-flow": "^6.23.0",
     "babel-preset-power-assert": "^1.0.0",
     "babel-preset-react": "^6.24.1",
-    "enzyme": "^2.9.1",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-config-prettier": "^2.3.0",
@@ -40,15 +41,15 @@
     "mocha": "^3.5.0",
     "power-assert": "^1.4.4",
     "prettier": "^1.6.0",
-    "react-test-renderer": "^15.6.1",
+    "react-test-renderer": "^16.1.1",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
     "canvas-exif-orientation": "^0.4.0",
     "classnames": "^2.2.5",
-    "react": "^15.6.1",
-    "react-dom": "^15.5.4",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
     "react-router-dom": "^4.1.1"
   }
 }
