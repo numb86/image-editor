@@ -191,8 +191,7 @@ export default class ImageEditor extends React.Component<Props, State> {
         <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>
         <TextForm
           text={text}
-          onSubmit={e => {
-            e.preventDefault();
+          onSubmit={() => {
             if (!this.state.uploadImageDataUrl) return;
             this.processImage(this.state.userSettings);
           }}
