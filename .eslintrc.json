@@ -14,7 +14,8 @@
     "FileReader": false,
     "Image": false,
     "describe": false,
-    "it": false
+    "it": false,
+    "beforeEach": false
   },
   "rules": {
     "react/jsx-filename-extension": 0,
