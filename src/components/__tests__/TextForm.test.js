@@ -10,18 +10,23 @@ describe('TextForm', () => {
   let onChange;
   let wrapper;
   let textBox;
+  const PROPS_TEXT_VALUE = 'foo';
   beforeEach(() => {
     onSubmit = spy();
     onChange = spy();
     wrapper = shallow(
-      <TextForm text={'foo'} onSubmit={onSubmit} onChange={onChange} />
+      <TextForm
+        text={PROPS_TEXT_VALUE}
+        onSubmit={onSubmit}
+        onChange={onChange}
+      />
     );
     textBox = wrapper.find('input').first();
   });
 
   it('props.textの値がテキストボックスの値になる', () => {
     assert(textBox.prop('type') === 'text');
-    assert(textBox.prop('value') === 'foo');
+    assert(textBox.prop('value') === PROPS_TEXT_VALUE);
   });
 
   it('changeイベントによってprops.onChangeが実行される', () => {
