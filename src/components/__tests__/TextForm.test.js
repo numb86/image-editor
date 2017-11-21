@@ -27,13 +27,13 @@ describe('TextForm', () => {
     assert(textBox.prop('value') === 'foo');
   });
 
-  it('onChange', () => {
+  it('changeイベントによってprops.onChangeが実行される', () => {
     const newValue = 'hogehoge';
     textBox.simulate('change', {target: {value: newValue}});
     assert(text === newValue);
   });
 
-  it('onSubmit', () => {
+  it('formの送信やEnterの押下でprops.onSubmitが実行される', () => {
     assert(wrapper.find('input').get(1).props.type === 'submit');
     assert(submitCount === 0);
     wrapper.find('form').simulate('submit', {preventDefault() {}});
