@@ -14,23 +14,23 @@ export function resizeImage(
 
 export const RESIZE_LIST = [
   {
-    ratio: 0.25,
+    value: 0.25,
     label: '25%',
   },
   {
-    ratio: 0.5,
+    value: 0.5,
     label: '50%',
   },
   {
-    ratio: 1,
+    value: 1,
     label: '100%',
   },
   {
-    ratio: 1.5,
+    value: 1.5,
     label: '150%',
   },
   {
-    ratio: 2,
+    value: 2,
     label: '200%',
   },
 ];

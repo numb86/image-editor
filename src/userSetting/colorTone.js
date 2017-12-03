@@ -38,11 +38,13 @@ function applyGrayscaleFilter(src: ImageData, dst: ImageData): void {
 export const COLOR_TONE_LIST = [
   {
     id: COLOR_TONE_NONE_ID,
+    value: COLOR_TONE_NONE_ID,
     label: '色調変更なし',
     func: null,
   },
   {
     id: COLOR_TONE_NEGATIVE_ID,
+    value: COLOR_TONE_NEGATIVE_ID,
     label: 'ネガポジ反転',
     func(canvas: HTMLCanvasElement): HTMLCanvasElement {
       return transferCanvasPixelValue(canvas, applyNegativeFilter);
@@ -50,6 +52,7 @@ export const COLOR_TONE_LIST = [
   },
   {
     id: COLOR_TONE_GRAY_SCALE_ID,
+    value: COLOR_TONE_GRAY_SCALE_ID,
     label: 'グレースケール',
     func(canvas: HTMLCanvasElement): HTMLCanvasElement {
       return transferCanvasPixelValue(canvas, applyGrayscaleFilter);

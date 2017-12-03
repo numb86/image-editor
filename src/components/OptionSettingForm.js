@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
 
+import SelectBox from './SelectBox';
+
 import {COLOR_TONE_LIST} from '../userSetting/colorTone';
 import {RESIZE_LIST} from '../userSetting/resize';
 import {ROTATE_LIST} from '../userSetting/rotate';
@@ -15,42 +17,24 @@ export default function OptionSettingForm(props: {
 }) {
   return (
     <form className="option-setting-area">
-      <select
+      <SelectBox
         defaultValue={props.resizeRatio}
-        onChange={e => {
-          props.onChangeSelect(e.target.options, 'resizeRatio');
-        }}
-      >
-        {RESIZE_LIST.map(r => (
-          <option key={r.ratio} value={r.ratio}>
-            {r.label}
-          </option>
-        ))}
-      </select>
-      <select
+        onChange={props.onChangeSelect}
+        stateName="resizeRatio"
+        optionList={RESIZE_LIST}
+      />
+      <SelectBox
         defaultValue={props.rotateAngle}
-        onChange={e => {
-          props.onChangeSelect(e.target.options, 'rotateAngle');
-        }}
-      >
-        {ROTATE_LIST.map(r => (
-          <option key={r.angle} value={r.angle}>
-            {r.label}
-          </option>
-        ))}
-      </select>
-      <select
+        onChange={props.onChangeSelect}
+        stateName="rotateAngle"
+        optionList={ROTATE_LIST}
+      />
+      <SelectBox
         defaultValue={props.colorToneId}
-        onChange={e => {
-          props.onChangeSelect(e.target.options, 'colorToneId');
-        }}
-      >
-        {COLOR_TONE_LIST.map(i => (
-          <option key={i.id} value={i.id}>
-            {i.label}
-          </option>
-        ))}
-      </select>
+        onChange={props.onChangeSelect}
+        stateName="colorToneId"
+        optionList={COLOR_TONE_LIST}
+      />
       <label htmlFor="allow-auto-download">
         <input
           id="allow-auto-download"
