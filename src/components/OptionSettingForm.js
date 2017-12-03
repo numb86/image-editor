@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
 
+import SelectBox from './SelectBox';
+
 import {COLOR_TONE_LIST} from '../userSetting/colorTone';
 import {RESIZE_LIST} from '../userSetting/resize';
 import {ROTATE_LIST} from '../userSetting/rotate';
@@ -15,18 +17,12 @@ export default function OptionSettingForm(props: {
 }) {
   return (
     <form className="option-setting-area">
-      <select
+      <SelectBox
         defaultValue={props.resizeRatio}
-        onChange={e => {
-          props.onChangeSelect(e.target.options, 'resizeRatio');
-        }}
-      >
-        {RESIZE_LIST.map(r => (
-          <option key={r.ratio} value={r.ratio}>
-            {r.label}
-          </option>
-        ))}
-      </select>
+        onChange={props.onChangeSelect}
+        stateName="resizeRatio"
+        optionList={RESIZE_LIST}
+      />
       <select
         defaultValue={props.rotateAngle}
         onChange={e => {
