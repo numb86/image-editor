@@ -20,19 +20,19 @@ export function rotateImage(
 
 export const ROTATE_LIST = [
   {
-    angle: 0,
+    value: 0,
     label: '回転しない',
   },
   {
-    angle: 90,
+    value: 90,
     label: '時計回りに90度回転',
   },
   {
-    angle: 180,
+    value: 180,
     label: '180度回転',
   },
   {
-    angle: 270,
+    value: 270,
     label: '時計回りに270度回転',
   },
 ];

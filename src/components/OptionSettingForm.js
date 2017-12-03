@@ -23,30 +23,18 @@ export default function OptionSettingForm(props: {
         stateName="resizeRatio"
         optionList={RESIZE_LIST}
       />
-      <select
+      <SelectBox
         defaultValue={props.rotateAngle}
-        onChange={e => {
-          props.onChangeSelect(e.target.options, 'rotateAngle');
-        }}
-      >
-        {ROTATE_LIST.map(r => (
-          <option key={r.angle} value={r.angle}>
-            {r.label}
-          </option>
-        ))}
-      </select>
-      <select
+        onChange={props.onChangeSelect}
+        stateName="rotateAngle"
+        optionList={ROTATE_LIST}
+      />
+      <SelectBox
         defaultValue={props.colorToneId}
-        onChange={e => {
-          props.onChangeSelect(e.target.options, 'colorToneId');
-        }}
-      >
-        {COLOR_TONE_LIST.map(i => (
-          <option key={i.id} value={i.id}>
-            {i.label}
-          </option>
-        ))}
-      </select>
+        onChange={props.onChangeSelect}
+        stateName="colorToneId"
+        optionList={COLOR_TONE_LIST}
+      />
       <label htmlFor="allow-auto-download">
         <input
           id="allow-auto-download"
