@@ -1,6 +1,9 @@
+// @flow
 import React from 'react';
 
-export default function HeaderSubMenu({selectMenu}) {
+import type {SelectMenu} from './Header';
+
+export default function HeaderSubMenu({selectMenu}: {selectMenu: SelectMenu}) {
   return (
     <div className="header-sub-menu">
       {selectMenu === 'sketch' && 'スケッチ'}

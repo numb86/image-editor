@@ -1,17 +1,27 @@
+// @flow
 import React from 'react';
 import ClassNames from 'classnames';
 
 import HeaderSubMenu from './HeaderSubMenu';
 
-export default class Header extends React.Component {
-  constructor(props) {
+export type SelectMenu = 'sketch' | 'resizeAndRotate' | 'colorTone';
+
+type Props = {||};
+
+type State = {
+  selectMenu: SelectMenu,
+};
+
+export default class Header extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {selectMenu: 'sketch'};
     this.onClickTextButton = this.onClickTextButton.bind(this);
   }
-  onClickTextButton(target) {
-    this.setState({selectMenu: target});
+  onClickTextButton(selectMenu: SelectMenu) {
+    this.setState({selectMenu});
   }
+  onClickTextButton: Function;
   render() {
     const {selectMenu} = this.state;
     return (
