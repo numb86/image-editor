@@ -4,19 +4,26 @@ import ClassNames from 'classnames';
 
 import HeaderSubMenu from './HeaderSubMenu';
 
-export type SelectMenu = 'sketch' | 'resizeAndRotate' | 'colorTone';
+const SELECT_MENU_SKETCH: 'sketch' = 'sketch';
+const SELECT_MENU_RESIZE_AND_ROTATE: 'resizeAndRotate' = 'resizeAndRotate';
+const SELECT_MENU_COLOR_TONE: 'colorTone' = 'colorTone';
+
+export type SelectMenu =
+  | typeof SELECT_MENU_SKETCH
+  | typeof SELECT_MENU_RESIZE_AND_ROTATE
+  | typeof SELECT_MENU_COLOR_TONE;
+
+const TEXT_BUTTON_LIST = [
+  {value: SELECT_MENU_SKETCH, label: 'スケッチ'},
+  {value: SELECT_MENU_RESIZE_AND_ROTATE, label: 'リサイズと回転'},
+  {value: SELECT_MENU_COLOR_TONE, label: '色調変更'},
+];
 
 type Props = {||};
 
 type State = {
   selectedTextMenu: SelectMenu,
 };
-
-const TEXT_BUTTON_LIST = [
-  {value: 'sketch', label: 'スケッチ'},
-  {value: 'resizeAndRotate', label: 'リサイズと回転'},
-  {value: 'colorTone', label: '色調変更'},
-];
 
 export default class Header extends React.Component<Props, State> {
   constructor(props: Props) {
