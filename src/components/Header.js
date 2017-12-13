@@ -9,7 +9,7 @@ export type SelectMenu = 'sketch' | 'resizeAndRotate' | 'colorTone';
 type Props = {||};
 
 type State = {
-  selectMenu: SelectMenu,
+  selectedTextMenu: SelectMenu,
 };
 
 const TEXT_BUTTON_LIST = [
@@ -21,15 +21,15 @@ const TEXT_BUTTON_LIST = [
 export default class Header extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {selectMenu: 'sketch'};
+    this.state = {selectedTextMenu: 'sketch'};
     this.onClickTextButton = this.onClickTextButton.bind(this);
   }
-  onClickTextButton(selectMenu: SelectMenu) {
-    this.setState({selectMenu});
+  onClickTextButton(selectedTextMenu: SelectMenu) {
+    this.setState({selectedTextMenu});
   }
   onClickTextButton: Function;
   render() {
-    const {selectMenu} = this.state;
+    const {selectedTextMenu} = this.state;
     return (
       <div className="header">
         <div className="header-menu">
@@ -43,7 +43,8 @@ export default class Header extends React.Component<Props, State> {
               className={ClassNames(
                 'header-menu-button header-menu-button__text',
                 {
-                  'header-menu-button__text-active': selectMenu === text.value,
+                  'header-menu-button__text-active':
+                    selectedTextMenu === text.value,
                 }
               )}
               onClick={() => this.onClickTextButton(text.value)}
@@ -52,7 +53,7 @@ export default class Header extends React.Component<Props, State> {
             </button>
           ))}
         </div>
-        <HeaderSubMenu selectMenu={selectMenu} />
+        <HeaderSubMenu selectMenu={selectedTextMenu} />
       </div>
     );
   }
