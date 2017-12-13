@@ -47,7 +47,7 @@ export default class Header extends React.Component<Props, State> {
                     selectedTextMenu === text.value,
                 }
               )}
-              onClick={() => this.onClickTextButton(text.value)}
+              onClick={() => this.onClickTextButton((text.value: SelectMenu))}
             >
               {text.label}
             </button>
