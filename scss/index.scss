@@ -2,6 +2,59 @@ $file-transfer-button-font-size: 16px;
 $button-font-color: #fff;
 $error-message-font-color: #f36;
 
+body {
+  margin: 0;
+}
+
+.header {
+  position: fixed;
+  width: 100%;
+}
+
+.header-menu {
+  background-color: #00a7ea;
+  height: 44px;
+}
+
+.header-menu-button {
+  color: #fff;
+  background-color: transparent;
+  cursor: pointer;
+
+  &__icon {
+    border: none;
+    width: 50px;
+    height: 32px;
+    padding: 0px;
+    margin-top: 6px;
+    font-size: 22px;
+  }
+
+  &__text {
+    border: 2px solid #fff;
+    border-radius: 30px;
+    width: 146px;
+    height: 28px;
+    margin: 5px 18px;
+    padding: 0px;
+    font-size: 15px;
+    &-active {
+      color: #000;
+      border: 2px solid #000;
+    }
+  }
+
+}
+.header-menu-button:hover {
+  color: #0068b7;
+}
+
+.header-sub-menu {
+  color: #000;
+  background-color: #d2f8ff;
+  height: 28px;
+}
+
 .file-drop-area {
   width: 600px;
   height: 400px;

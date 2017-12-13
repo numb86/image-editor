@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --inline",
     "build": "yarn licenses generate-disclaimer > use-library.txt && webpack -p",
-    "sass": "sass scss:public/css  --style expanded --watch --sourcemap=none",
+    "sass": "sass scss:build/public/css  --style expanded --watch --sourcemap=none",
     "test": "mocha --compilers js:babel-register --require setup_test.js 'src/**/__tests__/*.test.js'",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",

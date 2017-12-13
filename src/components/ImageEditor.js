@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 
+import Header from './Header';
 import FileDropArea from './FileDropArea';
 import PreviewImage from './PreviewImage';
 import FileTransferButtons from './FileTransferButtons';
@@ -183,6 +184,7 @@ export default class ImageEditor extends React.Component<Props, State> {
     } = this.state.userSettings;
     return (
       <div>
+        <Header />
         <FileTransferButtons
           onImageSelected={this.onImageSelected}
           previewImageDataUrl={previewImageDataUrl}
