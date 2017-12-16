@@ -19,7 +19,9 @@ const TEXT_BUTTON_LIST = [
   {value: SELECT_MENU_COLOR_TONE, label: '色調変更'},
 ];
 
-type Props = {||};
+type Props = {
+  onImageSelected: (files: FileList) => void,
+};
 
 type State = {
   selectedTextMenu: SelectMenu,
@@ -42,7 +44,17 @@ export default class Header extends React.Component<Props, State> {
         <div className="header-menu">
           <button className="fa fa-undo header-menu-button header-menu-button__icon" />
           <button className="fa fa-repeat header-menu-button header-menu-button__icon" />
-          <button className="fa fa-upload header-menu-button header-menu-button__icon" />
+          <label
+            htmlFor="image-upload-input"
+            className="fa fa-upload header-menu-button header-menu-button__icon"
+          >
+            <input
+              id="image-upload-input"
+              type="file"
+              accept="image/*"
+              onChange={e => this.props.onImageSelected(e.target.files)}
+            />
+          </label>
           <button className="fa fa-download header-menu-button header-menu-button__icon" />
           {TEXT_BUTTON_LIST.map(text => (
             <button

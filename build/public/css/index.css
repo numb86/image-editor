@@ -16,6 +16,7 @@ body {
   color: #fff;
   background-color: transparent;
   cursor: pointer;
+  text-align: center;
 }
 .header-menu-button__icon {
   border: none;
@@ -24,6 +25,9 @@ body {
   padding: 0px;
   margin-top: 6px;
   font-size: 22px;
+}
+.header-menu-button__icon input {
+  display: none;
 }
 .header-menu-button__text {
   border: 2px solid #fff;

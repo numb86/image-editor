@@ -7,20 +7,12 @@ import FileTransferButtons from '../FileTransferButtons';
 describe('FileTransferButtons', () => {
   const wrapper = shallow(
     <FileTransferButtons
-      onImageSelected={() => 'called onImageSelected'}
       previewImageDataUrl="called previewImageDataUrl"
       downloadImageFileName="called downloadImageFileName"
     />
   );
-  it('UploadButtonとDownloadButtonがレンダリングされる', () => {
-    assert(wrapper.find('UploadButton').length === 1);
+  it('DownloadButtonがレンダリングされる', () => {
     assert(wrapper.find('DownloadButton').length === 1);
-  });
-  it('porps.onImageSelectedがUploadButtonに渡される', () => {
-    assert(
-      wrapper.find('UploadButton').prop('onChange')() ===
-        'called onImageSelected'
-    );
   });
   it('porps.previewImageDataUrlとprops.downloadImageFileNameがDownloadButtonに渡される', () => {
     assert(
