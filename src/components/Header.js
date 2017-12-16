@@ -21,6 +21,8 @@ const TEXT_BUTTON_LIST = [
 
 type Props = {
   onImageSelected: (files: FileList) => void,
+  previewImageDataUrl: string | null,
+  downloadImageFileName: string | null,
 };
 
 type State = {
@@ -39,6 +41,11 @@ export default class Header extends React.Component<Props, State> {
   onClickTextButton: Function;
   render() {
     const {selectedTextMenu} = this.state;
+    const {
+      onImageSelected,
+      previewImageDataUrl,
+      downloadImageFileName,
+    } = this.props;
     return (
       <div className="header">
         <div className="header-menu">
@@ -52,10 +59,12 @@ export default class Header extends React.Component<Props, State> {
               id="image-upload-input"
               type="file"
               accept="image/*"
-              onChange={e => this.props.onImageSelected(e.target.files)}
+              onChange={e => onImageSelected(e.target.files)}
             />
           </label>
-          <button className="fa fa-download header-menu-button header-menu-button__icon" />
+          <a href={previewImageDataUrl} download={downloadImageFileName}>
+            <i className="fa fa-download header-menu-button header-menu-button__icon" />
+          </a>
           {TEXT_BUTTON_LIST.map(text => (
             <button
               key={text.value}
