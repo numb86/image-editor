@@ -184,8 +184,7 @@ export default class ImageEditor extends React.Component<Props, State> {
     } = this.state.userSettings;
     return (
       <div>
-        <Header onImageSelected={this.onImageSelected} />
-        <FileTransferButtons
+        <Header
           onImageSelected={this.onImageSelected}
           previewImageDataUrl={previewImageDataUrl}
           downloadImageFileName={downloadImageFileName}
