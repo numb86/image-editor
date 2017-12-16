@@ -4,7 +4,6 @@ import React from 'react';
 import Header from './Header';
 import FileDropArea from './FileDropArea';
 import PreviewImage from './PreviewImage';
-import FileTransferButtons from './FileTransferButtons';
 import TextForm from './TextForm';
 import OptionSettingForm from './OptionSettingForm';
 
