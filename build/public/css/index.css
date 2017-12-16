@@ -65,50 +65,12 @@ body {
   opacity: 0.3;
 }
 
-.file-transfer-button, .upload-button, .download-button {
+.file-transfer-button {
   width: 160px;
   height: 30px;
   border-radius: 4px;
   text-align: center;
   cursor: pointer;
-}
-
-.upload-button {
-  background-color: #3c3;
-}
-.upload-button label {
-  width: 100%;
-  height: 100%;
-  display: block;
-  font-size: 16px;
-  line-height: 32px;
-  color: #fff;
-  cursor: pointer;
-}
-.upload-button input {
-  display: none;
-}
-
-.download-button {
-  background-color: #09f;
-}
-.download-button a {
-  width: 100%;
-  height: 100%;
-  font-size: 16px;
-  line-height: 32px;
-  color: #fff;
-  text-decoration: none;
-  display: block;
-}
-
-.file-transfer-button-area {
-  height: 30px;
-}
-.file-transfer-button-area .download-button {
-  position: relative;
-  top: -30px;
-  left: 180px;
 }
 
 .option-setting-area {

@@ -79,45 +79,6 @@ body {
   cursor: pointer;
 }
 
-.upload-button {
-  @extend .file-transfer-button;
-  background-color: #3c3;
-  label {
-    width: 100%;
-    height: 100%;
-    display: block;
-    font-size: $file-transfer-button-font-size;
-    line-height: $file-transfer-button-font-size * 2;
-    color: $button-font-color;
-    cursor: pointer;
-  }
-  input {
-    display: none;
-  }
-}
-.download-button {
-  @extend .file-transfer-button;
-  background-color: #09f;
-  a {
-    width: 100%;
-    height: 100%;
-    font-size: $file-transfer-button-font-size;
-    line-height: $file-transfer-button-font-size * 2;
-    color: $button-font-color;
-    text-decoration: none;
-    display: block;
-  }
-}
-
-.file-transfer-button-area {
-  height: 30px;
-  .download-button {
-    position: relative;
-    top: -30px;
-    left: 180px;
-  }
-}
-
 .option-setting-area {
   margin: 20px 0 30px 0;
   label {
