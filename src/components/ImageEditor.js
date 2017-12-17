@@ -164,17 +164,19 @@ export default class ImageEditor extends React.Component<Props, State> {
             );
           }}
         />
-        <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-        {!previewImageDataUrl &&
-        !isProcessing && <FileDropArea onDrop={this.onImageSelected} />}
-        {isProcessing && <div>画像生成中……</div>}
-        {previewImageDataUrl && (
-          <PreviewImage
-            src={previewImageDataUrl}
-            onDrop={this.onImageSelected}
-          />
-        )}
+        <div className="main-area">
+          <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {!previewImageDataUrl &&
+          !isProcessing && <FileDropArea onDrop={this.onImageSelected} />}
+          {isProcessing && <div>画像生成中……</div>}
+          {previewImageDataUrl && (
+            <PreviewImage
+              src={previewImageDataUrl}
+              onDrop={this.onImageSelected}
+            />
+          )}
+        </div>
       </div>
     );
   }

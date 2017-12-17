@@ -1,6 +1,8 @@
 $file-transfer-button-font-size: 16px;
 $button-font-color: #fff;
 $error-message-font-color: #f36;
+$header-menu-height: 44px;
+$header-sub-menu-height: 28px;
 
 body {
   margin: 0;
@@ -13,7 +15,7 @@ body {
 
 .header-menu {
   background-color: #00a7ea;
-  height: 44px;
+  height: $header-menu-height;
 }
 
 .header-menu-button {
@@ -56,7 +58,13 @@ body {
 .header-sub-menu {
   color: #000;
   background-color: #d2f8ff;
-  height: 28px;
+  height: $header-sub-menu-height;
+}
+
+.main-area {
+  position: relative;
+  top: $header-menu-height + $header-sub-menu-height + 10px;
+  left: 10px;
 }
 
 .file-drop-area {

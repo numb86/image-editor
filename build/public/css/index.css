@@ -53,6 +53,12 @@ body {
   height: 28px;
 }
 
+.main-area {
+  position: relative;
+  top: 82px;
+  left: 10px;
+}
+
 .file-drop-area {
   width: 600px;
   height: 400px;
