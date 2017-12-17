@@ -187,6 +187,15 @@ export default class ImageEditor extends React.Component<Props, State> {
           onImageSelected={this.onImageSelected}
           previewImageDataUrl={previewImageDataUrl}
           downloadImageFileName={downloadImageFileName}
+          resizeRatio={resizeRatio}
+          rotateAngle={rotateAngle}
+          colorToneId={colorToneId}
+          onChangeImageSetting={(options, stateName) => {
+            this.changeUserSettings(
+              stateName,
+              +options[options.selectedIndex].value
+            );
+          }}
         />
         <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>
         <TextForm
@@ -198,16 +207,7 @@ export default class ImageEditor extends React.Component<Props, State> {
           onChange={textValue => this.changeUserSettings('text', textValue)}
         />
         <OptionSettingForm
-          resizeRatio={resizeRatio}
-          rotateAngle={rotateAngle}
-          colorToneId={colorToneId}
           allowAutoDownload={allowAutoDownload}
-          onChangeSelect={(options, stateName) => {
-            this.changeUserSettings(
-              stateName,
-              +options[options.selectedIndex].value
-            );
-          }}
           onChangeAllowAutoDownload={checked => {
             this.setState({allowAutoDownload: checked});
           }}

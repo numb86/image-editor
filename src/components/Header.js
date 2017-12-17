@@ -23,6 +23,13 @@ type Props = {
   onImageSelected: (files: FileList) => void,
   previewImageDataUrl: string | null,
   downloadImageFileName: string | null,
+  resizeRatio: number,
+  rotateAngle: number,
+  colorToneId: number,
+  onChangeImageSetting: (
+    options: HTMLOptionsCollection,
+    stateName: string
+  ) => void,
 };
 
 type State = {
@@ -45,6 +52,10 @@ export default class Header extends React.Component<Props, State> {
       onImageSelected,
       previewImageDataUrl,
       downloadImageFileName,
+      resizeRatio,
+      rotateAngle,
+      colorToneId,
+      onChangeImageSetting,
     } = this.props;
     return (
       <div className="header">
@@ -81,7 +92,13 @@ export default class Header extends React.Component<Props, State> {
             </button>
           ))}
         </div>
-        <HeaderSubMenu selectMenu={selectedTextMenu} />
+        <HeaderSubMenu
+          selectMenu={selectedTextMenu}
+          resizeRatio={resizeRatio}
+          rotateAngle={rotateAngle}
+          colorToneId={colorToneId}
+          onChangeImageSetting={onChangeImageSetting}
+        />
       </div>
     );
   }
