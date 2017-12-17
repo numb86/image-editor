@@ -4,13 +4,11 @@ import React from 'react';
 import Header from './Header';
 import FileDropArea from './FileDropArea';
 import PreviewImage from './PreviewImage';
-import TextForm from './TextForm';
 import OptionSettingForm from './OptionSettingForm';
 
 import {COLOR_TONE_NONE_ID, COLOR_TONE_LIST} from '../userSetting/colorTone';
 import {resizeImage} from '../userSetting/resize';
 import {rotateImage} from '../userSetting/rotate';
-import fillText from '../userSetting/text';
 
 const MIME_PING: 'image/png' = 'image/png';
 const MIME_JPEG: 'image/jpeg' = 'image/jpeg';
@@ -40,7 +38,6 @@ type State = {
     resizeRatio: number,
     rotateAngle: number,
     colorToneId: number,
-    text: string,
   },
   uploadImageDataUrl: string | null,
   previewImageDataUrl: string | null,
@@ -59,7 +56,6 @@ export default class ImageEditor extends React.Component<Props, State> {
         resizeRatio: 0.5,
         rotateAngle: 0,
         colorToneId: COLOR_TONE_NONE_ID,
-        text: '',
       },
       uploadImageDataUrl: null,
       previewImageDataUrl: null,
@@ -107,14 +103,13 @@ export default class ImageEditor extends React.Component<Props, State> {
       previewImageDataUrl: null,
       errorMessage: null,
     });
-    const {rotateAngle, resizeRatio, colorToneId, text} = userSettings;
+    const {rotateAngle, resizeRatio, colorToneId} = userSettings;
     const taskList = [];
     const colorToneFunc = COLOR_TONE_LIST.filter(t => t.id === colorToneId)[0]
       .func;
     if (colorToneFunc) taskList.push(colorToneFunc);
     taskList.push(canvas => rotateImage(canvas, rotateAngle));
     taskList.push(canvas => resizeImage(canvas, resizeRatio));
-    taskList.push(canvas => fillText(canvas, text));
     this.generateUploadedImageCanvas()
       .then(res => taskList.reduce((canvas, task) => task(canvas), res))
       .then(res => {
@@ -158,12 +153,12 @@ export default class ImageEditor extends React.Component<Props, State> {
     });
   }
 
-  changeUserSettings(key: string, value: string | number): void {
+  changeUserSettings(key: string, value: number): void {
     const newUserSettings = Object.assign({}, this.state.userSettings, {
       [key]: value,
     });
     this.setState({userSettings: newUserSettings});
-    if (key === 'text' || !this.state.uploadImageDataUrl) return;
+    if (!this.state.uploadImageDataUrl) return;
     this.processImage(newUserSettings);
   }
 
@@ -175,12 +170,7 @@ export default class ImageEditor extends React.Component<Props, State> {
       errorMessage,
       isProcessing,
     } = this.state;
-    const {
-      resizeRatio,
-      rotateAngle,
-      colorToneId,
-      text,
-    } = this.state.userSettings;
+    const {resizeRatio, rotateAngle, colorToneId} = this.state.userSettings;
     return (
       <div>
         <Header
@@ -198,14 +188,6 @@ export default class ImageEditor extends React.Component<Props, State> {
           }}
         />
         <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>
-        <TextForm
-          text={text}
-          onSubmit={() => {
-            if (!this.state.uploadImageDataUrl) return;
-            this.processImage(this.state.userSettings);
-          }}
-          onChange={textValue => this.changeUserSettings('text', textValue)}
-        />
         <OptionSettingForm
           allowAutoDownload={allowAutoDownload}
           onChangeAllowAutoDownload={checked => {
