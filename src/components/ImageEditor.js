@@ -4,7 +4,6 @@ import React from 'react';
 import Header from './Header';
 import FileDropArea from './FileDropArea';
 import PreviewImage from './PreviewImage';
-import OptionSettingForm from './OptionSettingForm';
 
 import {COLOR_TONE_NONE_ID, COLOR_TONE_LIST} from '../userSetting/colorTone';
 import {resizeImage} from '../userSetting/resize';
@@ -15,13 +14,6 @@ const MIME_JPEG: 'image/jpeg' = 'image/jpeg';
 const ALLOW_FILE_TYPES = [MIME_PING, MIME_JPEG];
 
 type AllowFileList = typeof MIME_PING | typeof MIME_JPEG;
-
-function autoDownload(url: string, fileName: string): void {
-  const elem = document.createElement('a');
-  elem.href = url;
-  elem.download = fileName;
-  elem.click();
-}
 
 function isAllowedFileType(
   uploadedFileType: string,
@@ -43,7 +35,6 @@ type State = {
   previewImageDataUrl: string | null,
   downloadImageFileName: string | null,
   fileMime: AllowFileList | null,
-  allowAutoDownload: boolean,
   errorMessage: string | null,
   isProcessing: boolean,
 };
@@ -61,7 +52,6 @@ export default class ImageEditor extends React.Component<Props, State> {
       previewImageDataUrl: null,
       downloadImageFileName: null,
       fileMime: null,
-      allowAutoDownload: true,
       errorMessage: null,
       isProcessing: false,
     };
@@ -119,18 +109,6 @@ export default class ImageEditor extends React.Component<Props, State> {
           previewImageDataUrl: res.toDataURL(fileMime),
           isProcessing: false,
         });
-        const {
-          allowAutoDownload,
-          previewImageDataUrl,
-          downloadImageFileName,
-        } = this.state;
-        if (!allowAutoDownload) return;
-        if (!previewImageDataUrl || !downloadImageFileName) {
-          throw new Error(
-            'previewImageDataUrl or downloadImageFileName is null.'
-          );
-        }
-        autoDownload(previewImageDataUrl, downloadImageFileName);
       });
   }
 
@@ -166,7 +144,6 @@ export default class ImageEditor extends React.Component<Props, State> {
     const {
       previewImageDataUrl,
       downloadImageFileName,
-      allowAutoDownload,
       errorMessage,
       isProcessing,
     } = this.state;
@@ -188,12 +165,6 @@ export default class ImageEditor extends React.Component<Props, State> {
           }}
         />
         <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>
-        <OptionSettingForm
-          allowAutoDownload={allowAutoDownload}
-          onChangeAllowAutoDownload={checked => {
-            this.setState({allowAutoDownload: checked});
-          }}
-        />
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         {!previewImageDataUrl &&
         !isProcessing && <FileDropArea onDrop={this.onImageSelected} />}
