@@ -30,12 +30,14 @@ export default function HeaderSubMenu({
       {selectMenu === 'sketch' && 'この機能はまだ実装されていません'}
       {selectMenu === 'resizeAndRotate' && (
         <form>
+          <span>リサイズ：</span>
           <SelectBox
             defaultValue={resizeRatio}
             onChange={onChangeImageSetting}
             stateName="resizeRatio"
             optionList={RESIZE_LIST}
           />
+          <span>回転：</span>
           <SelectBox
             defaultValue={rotateAngle}
             onChange={onChangeImageSetting}
@@ -46,6 +48,7 @@ export default function HeaderSubMenu({
       )}
       {selectMenu === 'colorTone' && (
         <form>
+          <span>色調変更：</span>
           <SelectBox
             defaultValue={colorToneId}
             onChange={onChangeImageSetting}
