@@ -3,14 +3,12 @@ import React from 'react';
 
 import SelectBox from './SelectBox';
 
-import {COLOR_TONE_LIST} from '../userSetting/colorTone';
 import {RESIZE_LIST} from '../userSetting/resize';
 import {ROTATE_LIST} from '../userSetting/rotate';
 
 export default function OptionSettingForm(props: {
   resizeRatio: number,
   rotateAngle: number,
-  colorToneId: number,
   allowAutoDownload: boolean,
   onChangeSelect: (options: HTMLOptionsCollection, stateName: string) => void,
   onChangeAllowAutoDownload: (checked: boolean) => void,
@@ -28,12 +26,6 @@ export default function OptionSettingForm(props: {
         onChange={props.onChangeSelect}
         stateName="rotateAngle"
         optionList={ROTATE_LIST}
-      />
-      <SelectBox
-        defaultValue={props.colorToneId}
-        onChange={props.onChangeSelect}
-        stateName="colorToneId"
-        optionList={COLOR_TONE_LIST}
       />
       <label htmlFor="allow-auto-download">
         <input
