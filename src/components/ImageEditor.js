@@ -150,6 +150,19 @@ export default class ImageEditor extends React.Component<Props, State> {
     const {resizeRatio, rotateAngle, colorToneId} = this.state.userSettings;
     return (
       <div>
+        <div className="main-area">
+          <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {!previewImageDataUrl &&
+          !isProcessing && <FileDropArea onDrop={this.onImageSelected} />}
+          {isProcessing && <div>画像生成中……</div>}
+          {previewImageDataUrl && (
+            <PreviewImage
+              src={previewImageDataUrl}
+              onDrop={this.onImageSelected}
+            />
+          )}
+        </div>
         <Header
           onImageSelected={this.onImageSelected}
           previewImageDataUrl={previewImageDataUrl}
@@ -164,19 +177,6 @@ export default class ImageEditor extends React.Component<Props, State> {
             );
           }}
         />
-        <div className="main-area">
-          <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
-          {!previewImageDataUrl &&
-          !isProcessing && <FileDropArea onDrop={this.onImageSelected} />}
-          {isProcessing && <div>画像生成中……</div>}
-          {previewImageDataUrl && (
-            <PreviewImage
-              src={previewImageDataUrl}
-              onDrop={this.onImageSelected}
-            />
-          )}
-        </div>
       </div>
     );
   }
