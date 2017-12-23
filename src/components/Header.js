@@ -30,6 +30,8 @@ type Props = {
     options: HTMLOptionsCollection,
     stateName: string
   ) => void,
+  undo: () => void,
+  redo: () => void,
 };
 
 type State = {
@@ -56,12 +58,20 @@ export default class Header extends React.Component<Props, State> {
       rotateAngle,
       colorToneId,
       onChangeImageSetting,
+      undo,
+      redo,
     } = this.props;
     return (
       <div className="header">
         <div className="header-menu">
-          <button className="fa fa-undo header-menu-button header-menu-button__icon" />
-          <button className="fa fa-repeat header-menu-button header-menu-button__icon" />
+          <button
+            className="fa fa-undo header-menu-button header-menu-button__icon"
+            onClick={undo}
+          />
+          <button
+            className="fa fa-repeat header-menu-button header-menu-button__icon"
+            onClick={redo}
+          />
           <label
             htmlFor="image-upload-input"
             className="fa fa-upload header-menu-button header-menu-button__icon"

@@ -8,6 +8,7 @@ import PreviewImage from './PreviewImage';
 import {COLOR_TONE_NONE_ID, COLOR_TONE_LIST} from '../userSetting/colorTone';
 import {resizeImage} from '../userSetting/resize';
 import {rotateImage} from '../userSetting/rotate';
+import ImageHistory from '../ImageHistory/ImageHistory';
 
 const MIME_PING: 'image/png' = 'image/png';
 const MIME_JPEG: 'image/jpeg' = 'image/jpeg';
@@ -37,6 +38,7 @@ type State = {
   fileMime: AllowFileList | null,
   errorMessage: string | null,
   isProcessing: boolean,
+  imageHistory: ImageHistory,
 };
 
 export default class ImageEditor extends React.Component<Props, State> {
@@ -54,11 +56,13 @@ export default class ImageEditor extends React.Component<Props, State> {
       fileMime: null,
       errorMessage: null,
       isProcessing: false,
+      imageHistory: new ImageHistory(),
     };
     this.onImageSelected = this.onImageSelected.bind(this);
     this.onImageLoad = this.onImageLoad.bind(this);
+    this.showImageFromImageHistory = this.showImageFromImageHistory.bind(this);
   }
-  onImageSelected: Function;
+
   onImageLoad: Function;
   onImageLoad(
     imageDataUrl: string,
@@ -73,6 +77,7 @@ export default class ImageEditor extends React.Component<Props, State> {
     this.processImage(this.state.userSettings);
   }
 
+  onImageSelected: Function;
   onImageSelected(fileList: FileList): void {
     const file = fileList[0];
     if (!file) return; // ファイルアップロードのダイアログでキャンセルした場合の対応
@@ -109,6 +114,7 @@ export default class ImageEditor extends React.Component<Props, State> {
           previewImageDataUrl: res.toDataURL(fileMime),
           isProcessing: false,
         });
+        this.state.imageHistory.update(res.toDataURL(fileMime));
       });
   }
 
@@ -140,12 +146,21 @@ export default class ImageEditor extends React.Component<Props, State> {
     this.processImage(newUserSettings);
   }
 
+  showImageFromImageHistory: Function;
+  showImageFromImageHistory() {
+    const {previewImageDataUrl, imageHistory} = this.state;
+    const targetImage = imageHistory.get();
+    if (targetImage === previewImageDataUrl) return;
+    this.setState({previewImageDataUrl: targetImage});
+  }
+
   render() {
     const {
       previewImageDataUrl,
       downloadImageFileName,
       errorMessage,
       isProcessing,
+      imageHistory,
     } = this.state;
     const {resizeRatio, rotateAngle, colorToneId} = this.state.userSettings;
     return (
@@ -175,6 +190,14 @@ export default class ImageEditor extends React.Component<Props, State> {
               stateName,
               +options[options.selectedIndex].value
             );
+          }}
+          undo={() => {
+            imageHistory.back();
+            this.showImageFromImageHistory();
+          }}
+          redo={() => {
+            imageHistory.forward();
+            this.showImageFromImageHistory();
           }}
         />
       </div>
