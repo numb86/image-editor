@@ -49,6 +49,8 @@ describe('ImageHistory', () => {
       imageHistory.update(stringQwerty);
       imageHistory.position = 1;
       assert(imageHistory.get() === stringAbc);
+      imageHistory.position = 0;
+      assert(imageHistory.get() === stringQwerty);
     });
     it('historyが空ならnullを返す', () => {
       assert(imageHistory.history.length === 0);

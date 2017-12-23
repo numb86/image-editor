@@ -17,7 +17,7 @@ export default class ImageHistory {
     this.position = 0;
   }
   get(): string | null {
-    if (this.history.length === 0 || !this.position) return null;
+    if (this.history.length === 0 || this.position === null) return null;
     return this.history[this.position];
   }
   back() {
