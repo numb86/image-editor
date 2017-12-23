@@ -4,26 +4,16 @@ import React from 'react';
 import Header from './Header';
 import FileDropArea from './FileDropArea';
 import PreviewImage from './PreviewImage';
-import TextForm from './TextForm';
-import OptionSettingForm from './OptionSettingForm';
 
 import {COLOR_TONE_NONE_ID, COLOR_TONE_LIST} from '../userSetting/colorTone';
 import {resizeImage} from '../userSetting/resize';
 import {rotateImage} from '../userSetting/rotate';
-import fillText from '../userSetting/text';
 
 const MIME_PING: 'image/png' = 'image/png';
 const MIME_JPEG: 'image/jpeg' = 'image/jpeg';
 const ALLOW_FILE_TYPES = [MIME_PING, MIME_JPEG];
 
 type AllowFileList = typeof MIME_PING | typeof MIME_JPEG;
-
-function autoDownload(url: string, fileName: string): void {
-  const elem = document.createElement('a');
-  elem.href = url;
-  elem.download = fileName;
-  elem.click();
-}
 
 function isAllowedFileType(
   uploadedFileType: string,
@@ -40,13 +30,11 @@ type State = {
     resizeRatio: number,
     rotateAngle: number,
     colorToneId: number,
-    text: string,
   },
   uploadImageDataUrl: string | null,
   previewImageDataUrl: string | null,
   downloadImageFileName: string | null,
   fileMime: AllowFileList | null,
-  allowAutoDownload: boolean,
   errorMessage: string | null,
   isProcessing: boolean,
 };
@@ -59,13 +47,11 @@ export default class ImageEditor extends React.Component<Props, State> {
         resizeRatio: 0.5,
         rotateAngle: 0,
         colorToneId: COLOR_TONE_NONE_ID,
-        text: '',
       },
       uploadImageDataUrl: null,
       previewImageDataUrl: null,
       downloadImageFileName: null,
       fileMime: null,
-      allowAutoDownload: true,
       errorMessage: null,
       isProcessing: false,
     };
@@ -107,14 +93,13 @@ export default class ImageEditor extends React.Component<Props, State> {
       previewImageDataUrl: null,
       errorMessage: null,
     });
-    const {rotateAngle, resizeRatio, colorToneId, text} = userSettings;
+    const {rotateAngle, resizeRatio, colorToneId} = userSettings;
     const taskList = [];
     const colorToneFunc = COLOR_TONE_LIST.filter(t => t.id === colorToneId)[0]
       .func;
     if (colorToneFunc) taskList.push(colorToneFunc);
     taskList.push(canvas => rotateImage(canvas, rotateAngle));
     taskList.push(canvas => resizeImage(canvas, resizeRatio));
-    taskList.push(canvas => fillText(canvas, text));
     this.generateUploadedImageCanvas()
       .then(res => taskList.reduce((canvas, task) => task(canvas), res))
       .then(res => {
@@ -124,18 +109,6 @@ export default class ImageEditor extends React.Component<Props, State> {
           previewImageDataUrl: res.toDataURL(fileMime),
           isProcessing: false,
         });
-        const {
-          allowAutoDownload,
-          previewImageDataUrl,
-          downloadImageFileName,
-        } = this.state;
-        if (!allowAutoDownload) return;
-        if (!previewImageDataUrl || !downloadImageFileName) {
-          throw new Error(
-            'previewImageDataUrl or downloadImageFileName is null.'
-          );
-        }
-        autoDownload(previewImageDataUrl, downloadImageFileName);
       });
   }
 
@@ -158,12 +131,12 @@ export default class ImageEditor extends React.Component<Props, State> {
     });
   }
 
-  changeUserSettings(key: string, value: string | number): void {
+  changeUserSettings(key: string, value: number): void {
     const newUserSettings = Object.assign({}, this.state.userSettings, {
       [key]: value,
     });
     this.setState({userSettings: newUserSettings});
-    if (key === 'text' || !this.state.uploadImageDataUrl) return;
+    if (!this.state.uploadImageDataUrl) return;
     this.processImage(newUserSettings);
   }
 
@@ -171,18 +144,25 @@ export default class ImageEditor extends React.Component<Props, State> {
     const {
       previewImageDataUrl,
       downloadImageFileName,
-      allowAutoDownload,
       errorMessage,
       isProcessing,
     } = this.state;
-    const {
-      resizeRatio,
-      rotateAngle,
-      colorToneId,
-      text,
-    } = this.state.userSettings;
+    const {resizeRatio, rotateAngle, colorToneId} = this.state.userSettings;
     return (
       <div>
+        <div className="main-area">
+          <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {!previewImageDataUrl &&
+          !isProcessing && <FileDropArea onDrop={this.onImageSelected} />}
+          {isProcessing && <div>画像生成中……</div>}
+          {previewImageDataUrl && (
+            <PreviewImage
+              src={previewImageDataUrl}
+              onDrop={this.onImageSelected}
+            />
+          )}
+        </div>
         <Header
           onImageSelected={this.onImageSelected}
           previewImageDataUrl={previewImageDataUrl}
@@ -197,31 +177,6 @@ export default class ImageEditor extends React.Component<Props, State> {
             );
           }}
         />
-        <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>
-        <TextForm
-          text={text}
-          onSubmit={() => {
-            if (!this.state.uploadImageDataUrl) return;
-            this.processImage(this.state.userSettings);
-          }}
-          onChange={textValue => this.changeUserSettings('text', textValue)}
-        />
-        <OptionSettingForm
-          allowAutoDownload={allowAutoDownload}
-          onChangeAllowAutoDownload={checked => {
-            this.setState({allowAutoDownload: checked});
-          }}
-        />
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-        {!previewImageDataUrl &&
-        !isProcessing && <FileDropArea onDrop={this.onImageSelected} />}
-        {isProcessing && <div>画像生成中……</div>}
-        {previewImageDataUrl && (
-          <PreviewImage
-            src={previewImageDataUrl}
-            onDrop={this.onImageSelected}
-          />
-        )}
       </div>
     );
   }
