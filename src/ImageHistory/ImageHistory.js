@@ -27,7 +27,7 @@ export default class ImageHistory {
   }
   forward() {
     if (this.history.length === 0) return;
-    if (this.position === 0 || !this.position) return;
+    if (!this.position) return;
     this.position = this.position - 1;
   }
 }
