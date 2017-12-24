@@ -157,7 +157,10 @@ export default class ImageEditor extends React.Component<Props, State> {
     const historyData = imageHistory.get();
     if (!historyData) return;
     if (historyData.editedData === previewImageDataUrl) return;
-    this.setState({previewImageDataUrl: historyData.editedData});
+    this.setState({
+      previewImageDataUrl: historyData.editedData,
+      uploadImageDataUrl: historyData.originalData,
+    });
   }
 
   render() {
