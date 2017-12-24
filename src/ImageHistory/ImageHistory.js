@@ -1,22 +1,27 @@
 // @flow
 
+type ImageHistoryElem = {
+  originalData: string,
+  editedData: string,
+};
+
 export default class ImageHistory {
   constructor() {
     this.history = [];
     this.position = null;
   }
-  history: string[];
+  history: ImageHistoryElem[];
   position: number | null;
-  update(imageDataUrl: string) {
+  update(updateData: ImageHistoryElem) {
     if (this.position && this.position > 0) {
       this.history = this.history.filter(
         (e, index) => index >= ((this.position: any): number)
       );
     }
-    this.history.unshift(imageDataUrl);
+    this.history.unshift(updateData);
     this.position = 0;
   }
-  get(): string | null {
+  get(): ImageHistoryElem | null {
     if (this.history.length === 0 || this.position === null) return null;
     return this.history[this.position];
   }
