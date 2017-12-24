@@ -1,29 +1,20 @@
 // @flow
 import React from 'react';
 
+import Header from './Header';
 import FileDropArea from './FileDropArea';
 import PreviewImage from './PreviewImage';
-import FileTransferButtons from './FileTransferButtons';
-import TextForm from './TextForm';
-import OptionSettingForm from './OptionSettingForm';
 
 import {COLOR_TONE_NONE_ID, COLOR_TONE_LIST} from '../userSetting/colorTone';
 import {resizeImage} from '../userSetting/resize';
 import {rotateImage} from '../userSetting/rotate';
-import fillText from '../userSetting/text';
+import ImageHistory from '../ImageHistory/ImageHistory';
 
 const MIME_PING: 'image/png' = 'image/png';
 const MIME_JPEG: 'image/jpeg' = 'image/jpeg';
 const ALLOW_FILE_TYPES = [MIME_PING, MIME_JPEG];
 
 type AllowFileList = typeof MIME_PING | typeof MIME_JPEG;
-
-function autoDownload(url: string, fileName: string): void {
-  const elem = document.createElement('a');
-  elem.href = url;
-  elem.download = fileName;
-  elem.click();
-}
 
 function isAllowedFileType(
   uploadedFileType: string,
@@ -40,15 +31,14 @@ type State = {
     resizeRatio: number,
     rotateAngle: number,
     colorToneId: number,
-    text: string,
   },
   uploadImageDataUrl: string | null,
   previewImageDataUrl: string | null,
   downloadImageFileName: string | null,
   fileMime: AllowFileList | null,
-  allowAutoDownload: boolean,
   errorMessage: string | null,
   isProcessing: boolean,
+  imageHistory: ImageHistory,
 };
 
 export default class ImageEditor extends React.Component<Props, State> {
@@ -59,20 +49,20 @@ export default class ImageEditor extends React.Component<Props, State> {
         resizeRatio: 0.5,
         rotateAngle: 0,
         colorToneId: COLOR_TONE_NONE_ID,
-        text: '',
       },
       uploadImageDataUrl: null,
       previewImageDataUrl: null,
       downloadImageFileName: null,
       fileMime: null,
-      allowAutoDownload: true,
       errorMessage: null,
       isProcessing: false,
+      imageHistory: new ImageHistory(),
     };
     this.onImageSelected = this.onImageSelected.bind(this);
     this.onImageLoad = this.onImageLoad.bind(this);
+    this.showImageFromImageHistory = this.showImageFromImageHistory.bind(this);
   }
-  onImageSelected: Function;
+
   onImageLoad: Function;
   onImageLoad(
     imageDataUrl: string,
@@ -87,6 +77,7 @@ export default class ImageEditor extends React.Component<Props, State> {
     this.processImage(this.state.userSettings);
   }
 
+  onImageSelected: Function;
   onImageSelected(fileList: FileList): void {
     const file = fileList[0];
     if (!file) return; // ファイルアップロードのダイアログでキャンセルした場合の対応
@@ -107,35 +98,27 @@ export default class ImageEditor extends React.Component<Props, State> {
       previewImageDataUrl: null,
       errorMessage: null,
     });
-    const {rotateAngle, resizeRatio, colorToneId, text} = userSettings;
+    const {rotateAngle, resizeRatio, colorToneId} = userSettings;
     const taskList = [];
     const colorToneFunc = COLOR_TONE_LIST.filter(t => t.id === colorToneId)[0]
       .func;
     if (colorToneFunc) taskList.push(colorToneFunc);
     taskList.push(canvas => rotateImage(canvas, rotateAngle));
     taskList.push(canvas => resizeImage(canvas, resizeRatio));
-    taskList.push(canvas => fillText(canvas, text));
     this.generateUploadedImageCanvas()
       .then(res => taskList.reduce((canvas, task) => task(canvas), res))
       .then(res => {
-        const {fileMime} = this.state;
+        const {fileMime, uploadImageDataUrl} = this.state;
         if (!fileMime) throw new Error('fileMime is null.');
+        if (!uploadImageDataUrl) throw new Error('uploadImageDataUrl is null.');
         this.setState({
           previewImageDataUrl: res.toDataURL(fileMime),
           isProcessing: false,
         });
-        const {
-          allowAutoDownload,
-          previewImageDataUrl,
-          downloadImageFileName,
-        } = this.state;
-        if (!allowAutoDownload) return;
-        if (!previewImageDataUrl || !downloadImageFileName) {
-          throw new Error(
-            'previewImageDataUrl or downloadImageFileName is null.'
-          );
-        }
-        autoDownload(previewImageDataUrl, downloadImageFileName);
+        this.state.imageHistory.update({
+          originalData: uploadImageDataUrl,
+          editedData: res.toDataURL(fileMime),
+        });
       });
   }
 
@@ -151,77 +134,81 @@ export default class ImageEditor extends React.Component<Props, State> {
         ctx.drawImage(image, 0, 0, image.width, image.height);
         resolve(canvas);
       };
-      if (!this.state.uploadImageDataUrl) {
+      const {uploadImageDataUrl} = this.state;
+      if (!uploadImageDataUrl) {
         throw new Error('uploadImageDataUrl is null');
       }
-      image.src = this.state.uploadImageDataUrl;
+      image.src = uploadImageDataUrl;
     });
   }
 
-  changeUserSettings(key: string, value: string | number): void {
+  changeUserSettings(key: string, value: number): void {
     const newUserSettings = Object.assign({}, this.state.userSettings, {
       [key]: value,
     });
     this.setState({userSettings: newUserSettings});
-    if (key === 'text' || !this.state.uploadImageDataUrl) return;
+    if (!this.state.uploadImageDataUrl) return;
     this.processImage(newUserSettings);
+  }
+
+  showImageFromImageHistory: Function;
+  showImageFromImageHistory() {
+    const {previewImageDataUrl, imageHistory} = this.state;
+    const historyData = imageHistory.get();
+    if (!historyData) return;
+    if (historyData.editedData === previewImageDataUrl) return;
+    this.setState({
+      previewImageDataUrl: historyData.editedData,
+      uploadImageDataUrl: historyData.originalData,
+    });
   }
 
   render() {
     const {
       previewImageDataUrl,
       downloadImageFileName,
-      allowAutoDownload,
       errorMessage,
       isProcessing,
+      imageHistory,
     } = this.state;
-    const {
-      resizeRatio,
-      rotateAngle,
-      colorToneId,
-      text,
-    } = this.state.userSettings;
+    const {resizeRatio, rotateAngle, colorToneId} = this.state.userSettings;
     return (
       <div>
-        <FileTransferButtons
+        <div className="main-area">
+          <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {!previewImageDataUrl &&
+          !isProcessing && <FileDropArea onDrop={this.onImageSelected} />}
+          {isProcessing && <div>画像生成中……</div>}
+          {previewImageDataUrl && (
+            <PreviewImage
+              src={previewImageDataUrl}
+              onDrop={this.onImageSelected}
+            />
+          )}
+        </div>
+        <Header
           onImageSelected={this.onImageSelected}
           previewImageDataUrl={previewImageDataUrl}
           downloadImageFileName={downloadImageFileName}
-        />
-        <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>
-        <TextForm
-          text={text}
-          onSubmit={() => {
-            if (!this.state.uploadImageDataUrl) return;
-            this.processImage(this.state.userSettings);
-          }}
-          onChange={textValue => this.changeUserSettings('text', textValue)}
-        />
-        <OptionSettingForm
           resizeRatio={resizeRatio}
           rotateAngle={rotateAngle}
           colorToneId={colorToneId}
-          allowAutoDownload={allowAutoDownload}
-          onChangeSelect={(options, stateName) => {
+          onChangeImageSetting={(options, stateName) => {
             this.changeUserSettings(
               stateName,
               +options[options.selectedIndex].value
             );
           }}
-          onChangeAllowAutoDownload={checked => {
-            this.setState({allowAutoDownload: checked});
+          undo={() => {
+            imageHistory.back();
+            this.showImageFromImageHistory();
+          }}
+          redo={() => {
+            imageHistory.forward();
+            this.showImageFromImageHistory();
           }}
         />
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-        {!previewImageDataUrl &&
-        !isProcessing && <FileDropArea onDrop={this.onImageSelected} />}
-        {isProcessing && <div>画像生成中……</div>}
-        {previewImageDataUrl && (
-          <PreviewImage
-            src={previewImageDataUrl}
-            onDrop={this.onImageSelected}
-          />
-        )}
       </div>
     );
   }

@@ -1,3 +1,65 @@
+body {
+  margin: 0;
+}
+
+.header {
+  position: fixed;
+  width: 100%;
+  top: 0px;
+}
+
+.header-menu {
+  background-color: #00a7ea;
+  height: 44px;
+}
+
+.header-menu-button {
+  color: #fff;
+  background-color: transparent;
+  cursor: pointer;
+  text-align: center;
+}
+.header-menu-button__icon {
+  border: none;
+  width: 50px;
+  height: 32px;
+  padding: 0px;
+  margin-top: 6px;
+  font-size: 22px;
+}
+.header-menu-button__icon input {
+  display: none;
+}
+.header-menu-button__text {
+  border: 2px solid #fff;
+  border-radius: 30px;
+  width: 146px;
+  height: 28px;
+  margin: 5px 18px;
+  padding: 0px;
+  font-size: 15px;
+}
+.header-menu-button__text-active {
+  color: #000;
+  border: 2px solid #000;
+}
+
+.header-menu-button:hover {
+  color: #0068b7;
+}
+
+.header-sub-menu {
+  color: #000;
+  background-color: #d2f8ff;
+  height: 28px;
+}
+
+.main-area {
+  position: relative;
+  top: 82px;
+  left: 10px;
+}
+
 .file-drop-area {
   width: 600px;
   height: 400px;
@@ -10,57 +72,11 @@
   opacity: 0.3;
 }
 
-.file-transfer-button, .upload-button, .download-button {
+.file-transfer-button {
   width: 160px;
   height: 30px;
   border-radius: 4px;
   text-align: center;
-  cursor: pointer;
-}
-
-.upload-button {
-  background-color: #3c3;
-}
-.upload-button label {
-  width: 100%;
-  height: 100%;
-  display: block;
-  font-size: 16px;
-  line-height: 32px;
-  color: #fff;
-  cursor: pointer;
-}
-.upload-button input {
-  display: none;
-}
-
-.download-button {
-  background-color: #09f;
-}
-.download-button a {
-  width: 100%;
-  height: 100%;
-  font-size: 16px;
-  line-height: 32px;
-  color: #fff;
-  text-decoration: none;
-  display: block;
-}
-
-.file-transfer-button-area {
-  height: 30px;
-}
-.file-transfer-button-area .download-button {
-  position: relative;
-  top: -30px;
-  left: 180px;
-}
-
-.option-setting-area {
-  margin: 20px 0 30px 0;
-}
-.option-setting-area label {
-  padding: 10px 0;
   cursor: pointer;
 }
 
