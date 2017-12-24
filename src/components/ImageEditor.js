@@ -108,13 +108,17 @@ export default class ImageEditor extends React.Component<Props, State> {
     this.generateUploadedImageCanvas()
       .then(res => taskList.reduce((canvas, task) => task(canvas), res))
       .then(res => {
-        const {fileMime} = this.state;
+        const {fileMime, uploadImageDataUrl} = this.state;
         if (!fileMime) throw new Error('fileMime is null.');
+        if (!uploadImageDataUrl) throw new Error('uploadImageDataUrl is null.');
         this.setState({
           previewImageDataUrl: res.toDataURL(fileMime),
           isProcessing: false,
         });
-        this.state.imageHistory.update(res.toDataURL(fileMime));
+        this.state.imageHistory.update({
+          originalData: uploadImageDataUrl,
+          editedData: res.toDataURL(fileMime),
+        });
       });
   }
 
@@ -130,10 +134,11 @@ export default class ImageEditor extends React.Component<Props, State> {
         ctx.drawImage(image, 0, 0, image.width, image.height);
         resolve(canvas);
       };
-      if (!this.state.uploadImageDataUrl) {
+      const {uploadImageDataUrl} = this.state;
+      if (!uploadImageDataUrl) {
         throw new Error('uploadImageDataUrl is null');
       }
-      image.src = this.state.uploadImageDataUrl;
+      image.src = uploadImageDataUrl;
     });
   }
 
@@ -149,9 +154,10 @@ export default class ImageEditor extends React.Component<Props, State> {
   showImageFromImageHistory: Function;
   showImageFromImageHistory() {
     const {previewImageDataUrl, imageHistory} = this.state;
-    const targetImage = imageHistory.get();
-    if (targetImage === previewImageDataUrl) return;
-    this.setState({previewImageDataUrl: targetImage});
+    const historyData = imageHistory.get();
+    if (!historyData) return;
+    if (historyData.editedData === previewImageDataUrl) return;
+    this.setState({previewImageDataUrl: historyData.editedData});
   }
 
   render() {
