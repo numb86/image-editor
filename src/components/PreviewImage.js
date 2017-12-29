@@ -11,7 +11,7 @@ type State = {
   isDragOver: boolean,
 };
 
-export default class FileDropArea extends React.Component<Props, State> {
+export default class PreviewImage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {isDragOver: false};
