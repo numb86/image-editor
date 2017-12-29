@@ -187,7 +187,7 @@ export default class ImageEditor extends React.Component<Props, State> {
               onDrop={this.onImageSelected}
             />
           )}
-          <SketchCanvas />
+          {previewImageDataUrl && <SketchCanvas />}
         </div>
         <Header
           onImageSelected={this.onImageSelected}
