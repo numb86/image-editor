@@ -3,6 +3,17 @@ import React from 'react';
 const SKETCH_CANVAS_COMPONENT_ID = 'sketch-canvas';
 
 export default class SketchCanvas extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      isDrawing: false,
+      startPoint: {x: 0, y: 0},
+      currentPoint: {x: 0, y: 0},
+    };
+    this.canvasElement = null;
+    this.ctx = null;
+    this.canvasStartPosition = null;
+  }
   componentDidMount() {
     this.canvasElement = document.querySelector(
       `#${SKETCH_CANVAS_COMPONENT_ID}`
@@ -10,37 +21,41 @@ export default class SketchCanvas extends React.Component {
     this.ctx = this.canvasElement.getContext('2d');
     const {x, y} = this.canvasElement.getBoundingClientRect();
     this.canvasStartPosition = {x, y};
-    this.startPoint = {x: 0, y: 0};
-    this.currentPoint = {x: 0, y: 0};
-    this.isDrawing = false;
   }
   setStartPoint(mouseEventPageX, mouseEventPageY) {
-    this.startPoint = {
-      x: mouseEventPageX - this.canvasStartPosition.x,
-      y: mouseEventPageY - this.canvasStartPosition.y,
-    };
+    this.setState({
+      startPoint: {
+        x: mouseEventPageX - this.canvasStartPosition.x,
+        y: mouseEventPageY - this.canvasStartPosition.y,
+      },
+    });
   }
   setCurrentPoint(mouseEventPageX, mouseEventPageY) {
-    this.currentPoint = {
-      x: mouseEventPageX - this.canvasStartPosition.x,
-      y: mouseEventPageY - this.canvasStartPosition.y,
-    };
+    this.setState({
+      currentPoint: {
+        x: mouseEventPageX - this.canvasStartPosition.x,
+        y: mouseEventPageY - this.canvasStartPosition.y,
+      },
+    });
   }
   startDraw() {
-    this.isDrawing = true;
+    this.setState({isDrawing: true});
   }
   stopDraw() {
-    this.isDrawing = false;
+    this.setState({isDrawing: false});
   }
   drawLine() {
-    const {ctx, startPoint, currentPoint} = this;
+    const {ctx} = this;
+    const {startPoint, currentPoint} = this.state;
     ctx.beginPath();
     ctx.moveTo(startPoint.x, startPoint.y);
     ctx.lineTo(currentPoint.x, currentPoint.y);
     ctx.stroke();
   }
   switchCurrentPointToStartPoint() {
-    this.startPoint = this.currentPoint;
+    this.setState({
+      startPoint: this.state.currentPoint,
+    });
   }
   changeSetting(key, value) {
     this.ctx[key] = value;
@@ -58,7 +73,7 @@ export default class SketchCanvas extends React.Component {
           this.setStartPoint(e.pageX, e.pageY);
         }}
         onMouseMove={e => {
-          if (!this.isDrawing) return;
+          if (!this.state.isDrawing) return;
           this.setCurrentPoint(e.pageX, e.pageY);
           this.drawLine();
           this.switchCurrentPointToStartPoint();
