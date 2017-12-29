@@ -175,8 +175,8 @@ export default class ImageEditor extends React.Component<Props, State> {
     const {resizeRatio, rotateAngle, colorToneId} = this.state.userSettings;
     return (
       <div>
-        <div className="main-area">
-          <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>
+        <div>
+          <div className="upload-guidance">画像にドロップすることでも、新しい画像をアップロードできます。</div>
           {errorMessage && <p className="error-message">{errorMessage}</p>}
           {!previewImageDataUrl &&
           !isProcessing && <FileDropArea onDrop={this.onImageSelected} />}

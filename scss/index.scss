@@ -62,7 +62,7 @@ body {
   height: $header-sub-menu-height;
 }
 
-.main-area {
+.upload-guidance {
   position: relative;
   top: $header-menu-height + $header-sub-menu-height + 10px;
   left: 10px;
@@ -73,6 +73,15 @@ body {
   height: 400px;
   box-sizing: border-box;
   border: 2px solid #ddd;
+  position: relative;
+  top: 100px;
+  left: 10px;
+}
+
+.upload-image {
+  position: relative;
+  top: 100px;
+  left: 10px;
 }
 
 .file-drag-over-area {

@@ -18,6 +18,7 @@ export default class FileDropArea extends React.Component<Props, State> {
   }
   render() {
     const classNames = ClassNames({
+      'upload-image': true,
       'file-drag-over-area': this.state.isDragOver,
     });
     return (
