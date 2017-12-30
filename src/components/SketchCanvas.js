@@ -65,9 +65,13 @@ export default class SketchCanvas extends React.Component {
     ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
   }
   render() {
+    const style = this.props.show
+      ? {visibility: 'visible'}
+      : {visibility: 'hidden'};
     return (
       <canvas
         id={SKETCH_CANVAS_COMPONENT_ID}
+        style={style}
         onMouseDown={e => {
           this.startDraw();
           this.setStartPoint(e.pageX, e.pageY);
