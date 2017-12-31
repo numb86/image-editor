@@ -4,7 +4,6 @@ import React from 'react';
 import Header from './Header';
 import FileDropArea from './FileDropArea';
 import PreviewImage from './PreviewImage';
-import SketchCanvas from './SketchCanvas';
 
 import {COLOR_TONE_NONE_ID, COLOR_TONE_LIST} from '../userSetting/colorTone';
 import {resizeImage} from '../userSetting/resize';
@@ -187,7 +186,6 @@ export default class ImageEditor extends React.Component<Props, State> {
               onDrop={this.onImageSelected}
             />
           )}
-          {previewImageDataUrl && <SketchCanvas />}
         </div>
         <Header
           onImageSelected={this.onImageSelected}
