@@ -5,8 +5,8 @@ const SKETCH_CANVAS_COMPONENT_ID = 'sketch-canvas';
 let previousData = null;
 
 export default class SketchCanvas extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       isDrawing: false,
       startPoint: {x: 0, y: 0},
@@ -81,9 +81,12 @@ export default class SketchCanvas extends React.Component {
     ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
   }
   render() {
+    const {width, height} = this.props.size;
     return (
       <canvas
         id={SKETCH_CANVAS_COMPONENT_ID}
+        width={width}
+        height={height}
         onMouseDown={e => {
           this.startDraw();
           this.setStartPoint(e.pageX, e.pageY);

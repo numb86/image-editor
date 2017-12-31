@@ -11,15 +11,18 @@ type Props = {
 
 type State = {
   isDragOver: boolean,
+  sketchCanvasSize: {width: number, height: number},
 };
 
 export default class PreviewImage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {isDragOver: false};
+    this.state = {isDragOver: false, sketchCanvasSize: {width: 0, height: 0}};
   }
   componentDidMount() {
-    this.getUpdatedImageSize().then(res => console.log(res));
+    this.getUpdatedImageSize().then(res => {
+      this.setState({sketchCanvasSize: res});
+    });
   }
   getUpdatedImageSize() {
     return new Promise(resolve => {
@@ -61,7 +64,7 @@ export default class PreviewImage extends React.Component<Props, State> {
             this.setState({isDragOver: false});
           }}
         />
-        <SketchCanvas />
+        <SketchCanvas size={this.state.sketchCanvasSize} />
       </div>
     );
   }
