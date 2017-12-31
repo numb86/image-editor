@@ -80,13 +80,21 @@ export default class SketchCanvas extends React.Component {
     const {ctx, canvasElement} = this;
     ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
   }
+  changeCanvasSize(imageWidth, imageHeight) {
+    const {canvasElement} = this;
+    if (!canvasElement) return;
+    const {width: currentWidth, height: currentHeight} = canvasElement;
+    if (imageWidth === currentWidth && imageHeight === currentHeight) return;
+    this.canvasElement.width = imageWidth;
+    this.canvasElement.height = imageHeight;
+    if (previousData) this.restoreImage(previousData);
+  }
   render() {
     const {width, height} = this.props.size;
+    this.changeCanvasSize(width, height);
     return (
       <canvas
         id={SKETCH_CANVAS_COMPONENT_ID}
-        width={width}
-        height={height}
         onMouseDown={e => {
           this.startDraw();
           this.setStartPoint(e.pageX, e.pageY);
