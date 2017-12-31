@@ -10,7 +10,6 @@ export default class SketchCanvas extends React.Component {
     this.state = {
       isDrawing: false,
       startPoint: {x: 0, y: 0},
-      currentPoint: {x: 0, y: 0},
     };
     this.canvasElement = null;
     this.ctx = null;
@@ -36,13 +35,11 @@ export default class SketchCanvas extends React.Component {
       },
     });
   }
-  setCurrentPoint(mouseEventPageX, mouseEventPageY) {
-    this.setState({
-      currentPoint: {
-        x: mouseEventPageX - this.canvasStartPosition.x,
-        y: mouseEventPageY - this.canvasStartPosition.y,
-      },
-    });
+  getCurrentPoint(mouseEventPageX, mouseEventPageY) {
+    return {
+      x: mouseEventPageX - this.canvasStartPosition.x,
+      y: mouseEventPageY - this.canvasStartPosition.y,
+    };
   }
   restoreImage(data) {
     const image = new Image();
@@ -63,17 +60,17 @@ export default class SketchCanvas extends React.Component {
   stopDraw() {
     this.setState({isDrawing: false});
   }
-  drawLine() {
+  drawLine(currentPoint) {
     const {ctx} = this;
-    const {startPoint, currentPoint} = this.state;
+    const {startPoint} = this.state;
     ctx.beginPath();
     ctx.moveTo(startPoint.x, startPoint.y);
     ctx.lineTo(currentPoint.x, currentPoint.y);
     ctx.stroke();
   }
-  switchCurrentPointToStartPoint() {
+  switchCurrentPointToStartPoint(currentPoint) {
     this.setState({
-      startPoint: this.state.currentPoint,
+      startPoint: currentPoint,
     });
   }
   changeSetting(key, value) {
@@ -93,9 +90,9 @@ export default class SketchCanvas extends React.Component {
         }}
         onMouseMove={e => {
           if (!this.state.isDrawing) return;
-          this.setCurrentPoint(e.pageX, e.pageY);
-          this.drawLine();
-          this.switchCurrentPointToStartPoint();
+          const currentPoint = this.getCurrentPoint(e.pageX, e.pageY);
+          this.drawLine(currentPoint);
+          this.switchCurrentPointToStartPoint(currentPoint);
         }}
         onMouseUp={() => {
           this.stopDraw();
