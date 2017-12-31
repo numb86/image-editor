@@ -16,6 +16,20 @@ export default class PreviewImage extends React.Component<Props, State> {
     super(props);
     this.state = {isDragOver: false};
   }
+  componentDidMount() {
+    this.getUpdatedImageSize().then(res => console.log(res));
+  }
+  getUpdatedImageSize() {
+    return new Promise(resolve => {
+      const src = this.props.src;
+      const image = new Image();
+      image.onload = () => {
+        const {width, height} = image;
+        resolve({width, height});
+      };
+      image.src = src;
+    });
+  }
   render() {
     const classNames = ClassNames({
       'upload-image': true,
