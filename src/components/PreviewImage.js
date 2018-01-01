@@ -5,7 +5,7 @@ import ClassNames from 'classnames';
 import SketchCanvas from './SketchCanvas';
 
 type Props = {
-  src: string | null,
+  src: string,
   onDrop: (files: FileList) => void,
 };
 
@@ -24,7 +24,7 @@ export default class PreviewImage extends React.Component<Props, State> {
       this.setState({sketchCanvasSize: res});
     });
   }
-  getUpdatedImageSize() {
+  getUpdatedImageSize(): Promise<{width: number, height: number}> {
     return new Promise(resolve => {
       const image = new Image();
       image.onload = () => {

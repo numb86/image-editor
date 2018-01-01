@@ -177,7 +177,9 @@ export default class ImageEditor extends React.Component<Props, State> {
         <div>
           <div className="upload-guidance">
             画像にドロップすることでも、新しい画像をアップロードできます。
-            {errorMessage && <span className="error-message">{errorMessage}</span>}
+            {errorMessage && (
+              <span className="error-message">{errorMessage}</span>
+            )}
           </div>
           {!previewImageDataUrl &&
           !isProcessing && <FileDropArea onDrop={this.onImageSelected} />}
