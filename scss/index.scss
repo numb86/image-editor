@@ -87,6 +87,7 @@ body {
 
 .upload-image {
   @include image-position;
+  user-select: none;
 }
 
 #sketch-canvas {
