@@ -95,13 +95,17 @@ export default class ImageEditor extends React.Component<Props, State> {
     fileReader.readAsDataURL(file);
   }
 
-  getSynthesisImageUrl() {
+  getSynthesisImageUrl(): Promise<string | null> {
     const {previewImageDataUrl} = this.state;
-    if (!previewImageDataUrl) return null;
+    if (!previewImageDataUrl) return Promise.resolve(null);
     const sketchCanvas = document.querySelector(
       `#${SKETCH_CANVAS_COMPONENT_ID}`
     );
-    return synthesizeImages([previewImageDataUrl, sketchCanvas.toDataURL()]);
+    if (!sketchCanvas) throw new Error('sketchCanvas is null.');
+    return synthesizeImages([
+      previewImageDataUrl,
+      ((sketchCanvas: any): HTMLCanvasElement).toDataURL(),
+    ]);
   }
 
   changeUserSettings(key: string, value: number): void {
@@ -225,6 +229,9 @@ export default class ImageEditor extends React.Component<Props, State> {
           download={() => {
             this.getSynthesisImageUrl().then(res => {
               if (!res) return;
+              if (!downloadImageFileName) {
+                throw new Error('downloadImageFileName is null.');
+              }
               const elem = document.createElement('a');
               elem.download = downloadImageFileName;
               elem.href = res;
