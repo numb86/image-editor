@@ -125,10 +125,12 @@ export default class SketchCanvas extends React.Component<Props, State> {
       <canvas
         id={SKETCH_CANVAS_COMPONENT_ID}
         onMouseDown={e => {
+          e.preventDefault();
           this.startDraw();
           this.setStartPoint(e.pageX, e.pageY);
         }}
         onMouseMove={e => {
+          e.preventDefault();
           if (!this.state.isDrawing) return;
           const currentPoint = this.getCurrentPoint(e.pageX, e.pageY);
           this.drawLine(currentPoint);
