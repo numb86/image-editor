@@ -95,6 +95,36 @@ export default class ImageEditor extends React.Component<Props, State> {
     fileReader.readAsDataURL(file);
   }
 
+  getSynthesisImageUrl() {
+    const {previewImageDataUrl} = this.state;
+    if (!previewImageDataUrl) return null;
+    const sketchCanvas = document.querySelector(
+      `#${SKETCH_CANVAS_COMPONENT_ID}`
+    );
+    return synthesizeImages([previewImageDataUrl, sketchCanvas.toDataURL()]);
+  }
+
+  changeUserSettings(key: string, value: number): void {
+    const newUserSettings = Object.assign({}, this.state.userSettings, {
+      [key]: value,
+    });
+    this.setState({userSettings: newUserSettings});
+    if (!this.state.uploadImageDataUrl) return;
+    this.processImage(newUserSettings);
+  }
+
+  showImageFromImageHistory: Function;
+  showImageFromImageHistory() {
+    const {previewImageDataUrl, imageHistory} = this.state;
+    const historyData = imageHistory.get();
+    if (!historyData) return;
+    if (historyData.editedData === previewImageDataUrl) return;
+    this.setState({
+      previewImageDataUrl: historyData.editedData,
+      uploadImageDataUrl: historyData.originalData,
+    });
+  }
+
   processImage(userSettings: $PropertyType<State, 'userSettings'>): void {
     this.setState({
       isProcessing: true,
@@ -143,36 +173,6 @@ export default class ImageEditor extends React.Component<Props, State> {
       }
       image.src = uploadImageDataUrl;
     });
-  }
-
-  changeUserSettings(key: string, value: number): void {
-    const newUserSettings = Object.assign({}, this.state.userSettings, {
-      [key]: value,
-    });
-    this.setState({userSettings: newUserSettings});
-    if (!this.state.uploadImageDataUrl) return;
-    this.processImage(newUserSettings);
-  }
-
-  showImageFromImageHistory: Function;
-  showImageFromImageHistory() {
-    const {previewImageDataUrl, imageHistory} = this.state;
-    const historyData = imageHistory.get();
-    if (!historyData) return;
-    if (historyData.editedData === previewImageDataUrl) return;
-    this.setState({
-      previewImageDataUrl: historyData.editedData,
-      uploadImageDataUrl: historyData.originalData,
-    });
-  }
-
-  getSynthesisImageUrl() {
-    const {previewImageDataUrl} = this.state;
-    if (!previewImageDataUrl) return null;
-    const sketchCanvas = document.querySelector(
-      `#${SKETCH_CANVAS_COMPONENT_ID}`
-    );
-    return synthesizeImages([previewImageDataUrl, sketchCanvas.toDataURL()]);
   }
 
   render() {
