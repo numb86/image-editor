@@ -21,8 +21,6 @@ const TEXT_BUTTON_LIST = [
 
 type Props = {
   onImageSelected: (files: FileList) => void,
-  previewImageDataUrl: string | null,
-  downloadImageFileName: string | null,
   resizeRatio: number,
   rotateAngle: number,
   colorToneId: number,
@@ -32,6 +30,7 @@ type Props = {
   ) => void,
   undo: () => void,
   redo: () => void,
+  download: () => void,
 };
 
 type State = {
@@ -52,14 +51,13 @@ export default class Header extends React.Component<Props, State> {
     const {selectedTextMenu} = this.state;
     const {
       onImageSelected,
-      previewImageDataUrl,
-      downloadImageFileName,
       resizeRatio,
       rotateAngle,
       colorToneId,
       onChangeImageSetting,
       undo,
       redo,
+      download,
     } = this.props;
     return (
       <div className="header">
@@ -83,9 +81,10 @@ export default class Header extends React.Component<Props, State> {
               onChange={e => onImageSelected(e.target.files)}
             />
           </label>
-          <a href={previewImageDataUrl} download={downloadImageFileName}>
-            <i className="fa fa-download header-menu-button header-menu-button__icon" />
-          </a>
+          <button
+            className="fa fa-download header-menu-button header-menu-button__icon"
+            onClick={download}
+          />
           {TEXT_BUTTON_LIST.map(text => (
             <button
               key={text.value}
