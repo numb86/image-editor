@@ -1,4 +1,5 @@
-function loadImage(dataUrl) {
+// @flow
+function loadImage(dataUrl: string): Promise<Image> {
   return new Promise(resolve => {
     const image = new Image();
     image.onload = () => resolve(image);
@@ -6,7 +7,9 @@ function loadImage(dataUrl) {
   });
 }
 
-function generateBaseCanvas(baseImage) {
+function generateBaseCanvas(
+  baseImage: string
+): Promise<{canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D}> {
   return loadImage(baseImage).then(image => {
     const canvas = document.createElement('canvas');
     canvas.width = image.width;
@@ -17,7 +20,9 @@ function generateBaseCanvas(baseImage) {
   });
 }
 
-export default function synthesizeImages(dataUrlList) {
+export default function synthesizeImages(
+  dataUrlList: string[]
+): Promise<string> {
   return generateBaseCanvas(dataUrlList[0])
     .then(({canvas, ctx}) => {
       dataUrlList.shift();
