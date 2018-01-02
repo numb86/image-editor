@@ -24,7 +24,6 @@ export default class SketchCanvas extends React.Component<Props, State> {
     this.canvasElement = null;
     this.ctx = null;
     this.canvasStartPosition = null;
-    if (previousData) this.restoreImage(previousData);
   }
 
   componentDidMount() {
@@ -35,6 +34,7 @@ export default class SketchCanvas extends React.Component<Props, State> {
     this.ctx = canvasElement.getContext('2d');
     const {x, y} = ((canvasElement.getBoundingClientRect(): any): DOMRect);
     this.canvasStartPosition = {x, y};
+    if (previousData) this.restoreImage(previousData);
   }
   componentWillUnmount() {
     if (!this.canvasElement) throw new Error('this.canvasElement is null.');
@@ -125,10 +125,12 @@ export default class SketchCanvas extends React.Component<Props, State> {
       <canvas
         id={SKETCH_CANVAS_COMPONENT_ID}
         onMouseDown={e => {
+          e.preventDefault();
           this.startDraw();
           this.setStartPoint(e.pageX, e.pageY);
         }}
         onMouseMove={e => {
+          e.preventDefault();
           if (!this.state.isDrawing) return;
           const currentPoint = this.getCurrentPoint(e.pageX, e.pageY);
           this.drawLine(currentPoint);
