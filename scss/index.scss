@@ -94,6 +94,7 @@ body {
   position: absolute;
   top: $upload-image-top + $upload-guidance-height;
   left: 10px;
+  cursor: crosshair;
 }
 
 .file-drag-over-area {
