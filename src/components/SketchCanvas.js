@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-const SKETCH_CANVAS_COMPONENT_ID = 'sketch-canvas';
+export const SKETCH_CANVAS_COMPONENT_ID = 'sketch-canvas';
 
 let previousData = null;
 

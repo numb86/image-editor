@@ -10,6 +10,9 @@ import {resizeImage} from '../userSetting/resize';
 import {rotateImage} from '../userSetting/rotate';
 import ImageHistory from '../ImageHistory/ImageHistory';
 
+import synthesizeImages from '../synthesizeImages';
+import {SKETCH_CANVAS_COMPONENT_ID} from './SketchCanvas';
+
 const MIME_PING: 'image/png' = 'image/png';
 const MIME_JPEG: 'image/jpeg' = 'image/jpeg';
 const ALLOW_FILE_TYPES = [MIME_PING, MIME_JPEG];
@@ -92,6 +95,40 @@ export default class ImageEditor extends React.Component<Props, State> {
     fileReader.readAsDataURL(file);
   }
 
+  getSynthesisImageUrl(): Promise<string | null> {
+    const {previewImageDataUrl} = this.state;
+    if (!previewImageDataUrl) return Promise.resolve(null);
+    const sketchCanvas = document.querySelector(
+      `#${SKETCH_CANVAS_COMPONENT_ID}`
+    );
+    if (!sketchCanvas) throw new Error('sketchCanvas is null.');
+    return synthesizeImages([
+      previewImageDataUrl,
+      ((sketchCanvas: any): HTMLCanvasElement).toDataURL(),
+    ]);
+  }
+
+  changeUserSettings(key: string, value: number): void {
+    const newUserSettings = Object.assign({}, this.state.userSettings, {
+      [key]: value,
+    });
+    this.setState({userSettings: newUserSettings});
+    if (!this.state.uploadImageDataUrl) return;
+    this.processImage(newUserSettings);
+  }
+
+  showImageFromImageHistory: Function;
+  showImageFromImageHistory() {
+    const {previewImageDataUrl, imageHistory} = this.state;
+    const historyData = imageHistory.get();
+    if (!historyData) return;
+    if (historyData.editedData === previewImageDataUrl) return;
+    this.setState({
+      previewImageDataUrl: historyData.editedData,
+      uploadImageDataUrl: historyData.originalData,
+    });
+  }
+
   processImage(userSettings: $PropertyType<State, 'userSettings'>): void {
     this.setState({
       isProcessing: true,
@@ -142,27 +179,6 @@ export default class ImageEditor extends React.Component<Props, State> {
     });
   }
 
-  changeUserSettings(key: string, value: number): void {
-    const newUserSettings = Object.assign({}, this.state.userSettings, {
-      [key]: value,
-    });
-    this.setState({userSettings: newUserSettings});
-    if (!this.state.uploadImageDataUrl) return;
-    this.processImage(newUserSettings);
-  }
-
-  showImageFromImageHistory: Function;
-  showImageFromImageHistory() {
-    const {previewImageDataUrl, imageHistory} = this.state;
-    const historyData = imageHistory.get();
-    if (!historyData) return;
-    if (historyData.editedData === previewImageDataUrl) return;
-    this.setState({
-      previewImageDataUrl: historyData.editedData,
-      uploadImageDataUrl: historyData.originalData,
-    });
-  }
-
   render() {
     const {
       previewImageDataUrl,
@@ -193,8 +209,6 @@ export default class ImageEditor extends React.Component<Props, State> {
         </div>
         <Header
           onImageSelected={this.onImageSelected}
-          previewImageDataUrl={previewImageDataUrl}
-          downloadImageFileName={downloadImageFileName}
           resizeRatio={resizeRatio}
           rotateAngle={rotateAngle}
           colorToneId={colorToneId}
@@ -211,6 +225,18 @@ export default class ImageEditor extends React.Component<Props, State> {
           redo={() => {
             imageHistory.forward();
             this.showImageFromImageHistory();
+          }}
+          download={() => {
+            this.getSynthesisImageUrl().then(res => {
+              if (!res) return;
+              if (!downloadImageFileName) {
+                throw new Error('downloadImageFileName is null.');
+              }
+              const elem = document.createElement('a');
+              elem.download = downloadImageFileName;
+              elem.href = res;
+              elem.click();
+            });
           }}
         />
       </div>
