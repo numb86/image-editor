@@ -202,7 +202,12 @@ export default class ImageEditor extends React.Component<Props, State> {
             <FileDropArea onDrop={this.onImageSelected} isWrapImage={false} />
           )}
           {isProcessing && <div>画像生成中……</div>}
-          {previewImageDataUrl && <PreviewImage src={previewImageDataUrl} />}
+          {previewImageDataUrl && (
+            <PreviewImage
+              src={previewImageDataUrl}
+              onDrop={this.onImageSelected}
+            />
+          )}
         </div>
         <Header
           onImageSelected={this.onImageSelected}

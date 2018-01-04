@@ -50,6 +50,7 @@ export default class FileDropArea extends React.Component<Props, State> {
         }}
       >
         {!isWrapImage && <span>ここに画像をドロップすることでもアップロードできます</span>}
+        {isWrapImage && this.props.children}
       </div>
     );
   }

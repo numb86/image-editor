@@ -2,9 +2,11 @@
 import React from 'react';
 
 import SketchCanvas from './SketchCanvas';
+import FileDropArea from './FileDropArea';
 
 type Props = {
   src: string,
+  onDrop: (files: FileList) => void,
 };
 
 type State = {
@@ -33,10 +35,14 @@ export default class PreviewImage extends React.Component<Props, State> {
   }
   render() {
     return (
-      <div>
+      <FileDropArea
+        onDrop={this.props.onDrop}
+        isWrapImage
+        size={this.state.sketchCanvasSize}
+      >
         <img src={this.props.src} alt="プレビュー画像" className="upload-image" />
         <SketchCanvas size={this.state.sketchCanvasSize} />
-      </div>
+      </FileDropArea>
     );
   }
 }
