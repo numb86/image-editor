@@ -3,6 +3,7 @@ import React from 'react';
 import ClassNames from 'classnames';
 
 type Props = {
+  size: {width: number, height: number},
   onDrop: (files: FileList) => void,
 };
 
@@ -11,6 +12,9 @@ type State = {
 };
 
 export default class FileDropArea extends React.Component<Props, State> {
+  static defaultProps = {
+    size: {width: 600, height: 400},
+  };
   constructor(props: Props) {
     super(props);
     this.state = {isDragOver: false};
@@ -20,9 +24,11 @@ export default class FileDropArea extends React.Component<Props, State> {
       'file-drop-area': true,
       'file-drag-over-area': this.state.isDragOver,
     });
+    const {width, height} = this.props.size;
     return (
       <div
         className={classNames}
+        style={{width, height}}
         onDrop={e => {
           e.preventDefault();
           this.setState({isDragOver: false});

@@ -79,8 +79,6 @@ body {
 
 .file-drop-area {
   @include image-position;
-  width: 600px;
-  height: 400px;
   box-sizing: border-box;
   border: 2px solid #ddd;
 }
