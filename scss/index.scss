@@ -71,27 +71,20 @@ body {
   height: $upload-guidance-height;
 }
 
-@mixin image-position {
+.file-drop-area {
   position: relative;
   top: $upload-image-top;
   left: 10px;
-}
-
-.file-drop-area {
-  @include image-position;
-  box-sizing: border-box;
-  border: 2px solid #ddd;
+  background-color: #ddd;
 }
 
 .upload-image {
-  @include image-position;
+  position: absolute;
   user-select: none;
 }
 
 #sketch-canvas {
   position: absolute;
-  top: $upload-image-top + $upload-guidance-height;
-  left: 10px;
   cursor: crosshair;
 }
 
