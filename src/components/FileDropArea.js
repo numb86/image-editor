@@ -1,4 +1,5 @@
 // @flow
+//  React.Node という型を指定するためにはこのようにReactをimportする必要がある
 import * as React from 'react';
 import ClassNames from 'classnames';
 
