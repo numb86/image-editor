@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
-import ClassNames from 'classnames';
 
 import SketchCanvas from './SketchCanvas';
+import FileDropArea from './FileDropArea';
 
 type Props = {
   src: string,
@@ -10,18 +10,17 @@ type Props = {
 };
 
 type State = {
-  isDragOver: boolean,
-  sketchCanvasSize: {width: number, height: number},
+  imageSize: {width: number, height: number},
 };
 
 export default class PreviewImage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {isDragOver: false, sketchCanvasSize: {width: 0, height: 0}};
+    this.state = {imageSize: {width: 0, height: 0}};
   }
   componentDidMount() {
     this.getUpdatedImageSize().then(res => {
-      this.setState({sketchCanvasSize: res});
+      this.setState({imageSize: res});
     });
   }
   getUpdatedImageSize(): Promise<{width: number, height: number}> {
@@ -35,36 +34,11 @@ export default class PreviewImage extends React.Component<Props, State> {
     });
   }
   render() {
-    const classNames = ClassNames({
-      'upload-image': true,
-      'file-drag-over-area': this.state.isDragOver,
-    });
     return (
-      <div>
-        <img
-          src={this.props.src}
-          alt="プレビュー画像"
-          className={classNames}
-          onDrop={e => {
-            e.preventDefault();
-            this.setState({isDragOver: false});
-            this.props.onDrop(e.dataTransfer.files);
-          }}
-          onDragOver={e => {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'copy';
-          }}
-          onDragEnter={e => {
-            e.preventDefault();
-            this.setState({isDragOver: true});
-          }}
-          onDragLeave={e => {
-            e.preventDefault();
-            this.setState({isDragOver: false});
-          }}
-        />
-        <SketchCanvas size={this.state.sketchCanvasSize} />
-      </div>
+      <FileDropArea onDrop={this.props.onDrop} size={this.state.imageSize}>
+        <img src={this.props.src} alt="プレビュー画像" className="upload-image" />
+        <SketchCanvas size={this.state.imageSize} />
+      </FileDropArea>
     );
   }
 }
