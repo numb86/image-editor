@@ -1,10 +1,11 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import ClassNames from 'classnames';
 
 type Props = {
   size: {width: number, height: number},
   onDrop: (files: FileList) => void,
+  children?: React.Node,
   isWrapImage: boolean,
 };
 
