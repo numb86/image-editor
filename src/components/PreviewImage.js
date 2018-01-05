@@ -10,17 +10,17 @@ type Props = {
 };
 
 type State = {
-  sketchCanvasSize: {width: number, height: number},
+  imageSize: {width: number, height: number},
 };
 
 export default class PreviewImage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {sketchCanvasSize: {width: 0, height: 0}};
+    this.state = {imageSize: {width: 0, height: 0}};
   }
   componentDidMount() {
     this.getUpdatedImageSize().then(res => {
-      this.setState({sketchCanvasSize: res});
+      this.setState({imageSize: res});
     });
   }
   getUpdatedImageSize(): Promise<{width: number, height: number}> {
@@ -38,10 +38,10 @@ export default class PreviewImage extends React.Component<Props, State> {
       <FileDropArea
         onDrop={this.props.onDrop}
         isWrapImage
-        size={this.state.sketchCanvasSize}
+        size={this.state.imageSize}
       >
         <img src={this.props.src} alt="プレビュー画像" className="upload-image" />
-        <SketchCanvas size={this.state.sketchCanvasSize} />
+        <SketchCanvas size={this.state.imageSize} />
       </FileDropArea>
     );
   }
