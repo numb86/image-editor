@@ -35,11 +35,7 @@ export default class PreviewImage extends React.Component<Props, State> {
   }
   render() {
     return (
-      <FileDropArea
-        onDrop={this.props.onDrop}
-        isWrapImage
-        size={this.state.imageSize}
-      >
+      <FileDropArea onDrop={this.props.onDrop} size={this.state.imageSize}>
         <img src={this.props.src} alt="プレビュー画像" className="upload-image" />
         <SketchCanvas size={this.state.imageSize} />
       </FileDropArea>

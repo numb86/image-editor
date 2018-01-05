@@ -7,7 +7,6 @@ type Props = {
   size: {width: number, height: number},
   onDrop: (files: FileList) => void,
   children?: React.Node,
-  isWrapImage: boolean,
 };
 
 type State = {
@@ -23,7 +22,7 @@ export default class FileDropArea extends React.Component<Props, State> {
     this.state = {isDragOver: false};
   }
   render() {
-    const {isWrapImage} = this.props;
+    const {children} = this.props;
     const {width, height} = this.props.size;
     const classNames = ClassNames({
       'file-drop-area': true,
@@ -51,8 +50,8 @@ export default class FileDropArea extends React.Component<Props, State> {
           this.setState({isDragOver: false});
         }}
       >
-        {!isWrapImage && <span>ここに画像をドロップすることでもアップロードできます</span>}
-        {isWrapImage && this.props.children}
+        {!children && <span>ここに画像をドロップすることでもアップロードできます</span>}
+        {children}
       </div>
     );
   }
