@@ -24,11 +24,11 @@ export default class FileDropArea extends React.Component<Props, State> {
   }
   render() {
     const {isWrapImage} = this.props;
+    const {width, height} = this.props.size;
     const classNames = ClassNames({
       'file-drop-area': true,
       'file-drag-over-area': this.state.isDragOver,
     });
-    const {width, height} = this.props.size;
     return (
       <div
         className={classNames}
