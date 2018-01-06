@@ -19,6 +19,12 @@ function getCtx(canvasElement) {
   return canvasElement.getContext('2d') || null;
 }
 
+function changeSetting(ctx, key, event) {
+  const {options} = event.target;
+  const {value} = options[options.selectedIndex];
+  Object.assign(ctx, {[key]: value});
+}
+
 export default function SketchSetting({
   getSketchCanvasElement,
 }: {
@@ -29,11 +35,9 @@ export default function SketchSetting({
       <span>
         ペンの色：<select
           onChange={e => {
-            const {options} = e.target;
             const ctx = getCtx(getSketchCanvasElement());
             if (!ctx) return;
-            const {value} = options[options.selectedIndex];
-            Object.assign(ctx, {strokeStyle: value});
+            changeSetting(ctx, 'strokeStyle', e);
           }}
         >
           {SKETCH_PEN_COLOR_LIST.map(i => (
@@ -42,11 +46,9 @@ export default function SketchSetting({
         </select>
         ペンの幅：<select
           onChange={e => {
-            const {options} = e.target;
             const ctx = getCtx(getSketchCanvasElement());
             if (!ctx) return;
-            const {value} = options[options.selectedIndex];
-            Object.assign(ctx, {lineWidth: value});
+            changeSetting(ctx, 'lineWidth', e);
           }}
         >
           {SKETCH_PEN_WIDTH_LIST.map(i => (
