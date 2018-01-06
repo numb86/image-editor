@@ -238,6 +238,7 @@ export default class ImageEditor extends React.Component<Props, State> {
               elem.click();
             });
           }}
+          getSketchCanvasElement={getSketchCanvasElement}
         />
       </div>
     );

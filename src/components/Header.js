@@ -32,6 +32,7 @@ type Props = {
   undo: () => void,
   redo: () => void,
   download: () => void,
+  getSketchCanvasElement: () => HTMLCanvasElement | null,
 };
 
 type State = {
@@ -59,6 +60,7 @@ export default class Header extends React.Component<Props, State> {
       undo,
       redo,
       download,
+      getSketchCanvasElement,
     } = this.props;
     return (
       <div className="header">
@@ -109,7 +111,7 @@ export default class Header extends React.Component<Props, State> {
           colorToneId={colorToneId}
           onChangeImageSetting={onChangeImageSetting}
         >
-          <SketchSetting />
+          <SketchSetting getSketchCanvasElement={getSketchCanvasElement} />
         </HeaderSubMenu>
       </div>
     );
