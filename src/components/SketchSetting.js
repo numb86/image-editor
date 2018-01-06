@@ -54,6 +54,15 @@ export default function SketchSetting({
           ))}
         </select>
       </span>
+      <button
+        onClick={() => {
+          const canvasElement = getSketchCanvasElement();
+          const ctx = canvasElement.getContext('2d');
+          ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+        }}
+      >
+        スケッチした内容を全て消去
+      </button>
     </span>
   );
 }
