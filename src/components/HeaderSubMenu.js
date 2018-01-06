@@ -1,5 +1,6 @@
 // @flow
-import React from 'react';
+//  React.Node という型を指定するためにはこのようにReactをimportする必要がある
+import * as React from 'react';
 
 import SelectBox from './SelectBox';
 
@@ -15,6 +16,7 @@ export default function HeaderSubMenu({
   rotateAngle,
   colorToneId,
   onChangeImageSetting,
+  children,
 }: {
   selectMenu: SelectMenu,
   resizeRatio: number,
@@ -24,10 +26,11 @@ export default function HeaderSubMenu({
     options: HTMLOptionsCollection,
     stateName: string
   ) => void,
+  children: React.Node,
 }) {
   return (
     <div className="header-sub-menu">
-      {selectMenu === 'sketch' && 'この機能はまだ実装されていません'}
+      {selectMenu === 'sketch' && children}
       {selectMenu === 'resizeAndRotate' && (
         <form>
           <span>リサイズ：</span>

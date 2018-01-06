@@ -3,6 +3,7 @@ import React from 'react';
 import ClassNames from 'classnames';
 
 import HeaderSubMenu from './HeaderSubMenu';
+import SketchSetting from './SketchSetting';
 
 const SELECT_MENU_SKETCH: 'sketch' = 'sketch';
 const SELECT_MENU_RESIZE_AND_ROTATE: 'resizeAndRotate' = 'resizeAndRotate';
@@ -107,7 +108,9 @@ export default class Header extends React.Component<Props, State> {
           rotateAngle={rotateAngle}
           colorToneId={colorToneId}
           onChangeImageSetting={onChangeImageSetting}
-        />
+        >
+          <SketchSetting />
+        </HeaderSubMenu>
       </div>
     );
   }
