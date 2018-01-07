@@ -14,13 +14,19 @@ const SKETCH_PEN_WIDTH_LIST = [
   {value: 5, label: '太'},
 ];
 
-function getCtx(canvasElement) {
+function getCtx(
+  canvasElement: HTMLCanvasElement | null
+): CanvasRenderingContext2D | null {
   if (!canvasElement) return null;
   return canvasElement.getContext('2d') || null;
 }
 
-function changeSetting(ctx, key, event) {
-  const {options} = event.target;
+function changeSetting(
+  ctx: CanvasRenderingContext2D,
+  key: string,
+  event: SyntheticEvent<HTMLSelectElement>
+): void {
+  const {options} = event.currentTarget;
   const {value} = options[options.selectedIndex];
   Object.assign(ctx, {[key]: value});
 }
@@ -59,7 +65,9 @@ export default function SketchSetting({
       <button
         onClick={() => {
           const canvasElement = getSketchCanvasElement();
+          if (!canvasElement) return;
           const ctx = canvasElement.getContext('2d');
+          if (!ctx) return;
           ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
         }}
       >
