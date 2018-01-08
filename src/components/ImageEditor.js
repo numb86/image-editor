@@ -27,6 +27,12 @@ function isAllowedFileType(
   return result.length > 0;
 }
 
+function getSketchCanvasElement(): HTMLCanvasElement | null {
+  const sketchCanvas = document.querySelector(`#${SKETCH_CANVAS_COMPONENT_ID}`);
+  if (!sketchCanvas) return null;
+  return ((sketchCanvas: any): HTMLCanvasElement);
+}
+
 type Props = void;
 
 type State = {
@@ -97,15 +103,9 @@ export default class ImageEditor extends React.Component<Props, State> {
 
   getSynthesisImageUrl(): Promise<string | null> {
     const {previewImageDataUrl} = this.state;
-    if (!previewImageDataUrl) return Promise.resolve(null);
-    const sketchCanvas = document.querySelector(
-      `#${SKETCH_CANVAS_COMPONENT_ID}`
-    );
-    if (!sketchCanvas) throw new Error('sketchCanvas is null.');
-    return synthesizeImages([
-      previewImageDataUrl,
-      ((sketchCanvas: any): HTMLCanvasElement).toDataURL(),
-    ]);
+    const sketchCanvas = getSketchCanvasElement();
+    if (!previewImageDataUrl || !sketchCanvas) return Promise.resolve(null);
+    return synthesizeImages([previewImageDataUrl, sketchCanvas.toDataURL()]);
   }
 
   changeUserSettings(key: string, value: number): void {
@@ -238,6 +238,7 @@ export default class ImageEditor extends React.Component<Props, State> {
               elem.click();
             });
           }}
+          getSketchCanvasElement={getSketchCanvasElement}
         />
       </div>
     );

@@ -3,6 +3,7 @@ import React from 'react';
 import ClassNames from 'classnames';
 
 import HeaderSubMenu from './HeaderSubMenu';
+import SketchSetting from './SketchSetting';
 
 const SELECT_MENU_SKETCH: 'sketch' = 'sketch';
 const SELECT_MENU_RESIZE_AND_ROTATE: 'resizeAndRotate' = 'resizeAndRotate';
@@ -31,6 +32,7 @@ type Props = {
   undo: () => void,
   redo: () => void,
   download: () => void,
+  getSketchCanvasElement: () => HTMLCanvasElement | null,
 };
 
 type State = {
@@ -58,6 +60,7 @@ export default class Header extends React.Component<Props, State> {
       undo,
       redo,
       download,
+      getSketchCanvasElement,
     } = this.props;
     return (
       <div className="header">
@@ -107,7 +110,9 @@ export default class Header extends React.Component<Props, State> {
           rotateAngle={rotateAngle}
           colorToneId={colorToneId}
           onChangeImageSetting={onChangeImageSetting}
-        />
+        >
+          <SketchSetting getSketchCanvasElement={getSketchCanvasElement} />
+        </HeaderSubMenu>
       </div>
     );
   }
