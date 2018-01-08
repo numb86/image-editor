@@ -68,18 +68,16 @@ export default function SketchSetting({
 }) {
   return (
     <span>
-      <span>
-        ペンの色：<SelectSketchSetting
-          propName="strokeStyle"
-          options={SKETCH_PEN_COLOR_LIST}
-          getSketchCanvasElement={getSketchCanvasElement}
-        />
-        ペンの幅：<SelectSketchSetting
-          propName="lineWidth"
-          options={SKETCH_PEN_WIDTH_LIST}
-          getSketchCanvasElement={getSketchCanvasElement}
-        />
-      </span>
+      ペンの色：<SelectSketchSetting
+        propName="strokeStyle"
+        options={SKETCH_PEN_COLOR_LIST}
+        getSketchCanvasElement={getSketchCanvasElement}
+      />
+      ペンの幅：<SelectSketchSetting
+        propName="lineWidth"
+        options={SKETCH_PEN_WIDTH_LIST}
+        getSketchCanvasElement={getSketchCanvasElement}
+      />
       <button
         onClick={() => {
           const canvasElement = getSketchCanvasElement();
