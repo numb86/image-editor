@@ -15,9 +15,8 @@ const SKETCH_PEN_WIDTH_LIST = [
 ];
 
 function getCtx(
-  canvasElement: HTMLCanvasElement | null
+  canvasElement: HTMLCanvasElement
 ): CanvasRenderingContext2D | null {
-  if (!canvasElement) return null;
   return canvasElement.getContext('2d') || null;
 }
 
@@ -41,7 +40,9 @@ export default function SketchSetting({
       <span>
         ペンの色：<select
           onChange={e => {
-            const ctx = getCtx(getSketchCanvasElement());
+            const canvasElement = getSketchCanvasElement();
+            if (!canvasElement) return;
+            const ctx = getCtx(canvasElement);
             if (!ctx) return;
             changeSetting(ctx, 'strokeStyle', e);
           }}
@@ -52,7 +53,9 @@ export default function SketchSetting({
         </select>
         ペンの幅：<select
           onChange={e => {
-            const ctx = getCtx(getSketchCanvasElement());
+            const canvasElement = getSketchCanvasElement();
+            if (!canvasElement) return;
+            const ctx = getCtx(canvasElement);
             if (!ctx) return;
             changeSetting(ctx, 'lineWidth', e);
           }}
