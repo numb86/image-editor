@@ -1,6 +1,11 @@
 // @flow
 import React from 'react';
 
+type SketchOptionList = {
+  value: string | number,
+  label: string,
+};
+
 const SKETCH_PEN_COLOR_LIST = [
   {value: 'black', label: '黒'},
   {value: 'red', label: '赤'},
@@ -30,6 +35,32 @@ function changeSetting(
   Object.assign(ctx, {[key]: value});
 }
 
+function SelectSketchSetting({
+  propName,
+  options,
+  getSketchCanvasElement,
+}: {
+  propName: string,
+  options: SketchOptionList[],
+  getSketchCanvasElement: () => HTMLCanvasElement | null,
+}) {
+  return (
+    <select
+      onChange={e => {
+        const canvasElement = getSketchCanvasElement();
+        if (!canvasElement) return;
+        const ctx = getCtx(canvasElement);
+        if (!ctx) return;
+        changeSetting(ctx, propName, e);
+      }}
+    >
+      {options.map(i => (
+        <option key={i.value} value={i.value}>{`${i.label}`}</option>
+      ))}
+    </select>
+  );
+}
+
 export default function SketchSetting({
   getSketchCanvasElement,
 }: {
@@ -38,32 +69,16 @@ export default function SketchSetting({
   return (
     <span>
       <span>
-        ペンの色：<select
-          onChange={e => {
-            const canvasElement = getSketchCanvasElement();
-            if (!canvasElement) return;
-            const ctx = getCtx(canvasElement);
-            if (!ctx) return;
-            changeSetting(ctx, 'strokeStyle', e);
-          }}
-        >
-          {SKETCH_PEN_COLOR_LIST.map(i => (
-            <option key={i.value} value={i.value}>{`${i.label}`}</option>
-          ))}
-        </select>
-        ペンの幅：<select
-          onChange={e => {
-            const canvasElement = getSketchCanvasElement();
-            if (!canvasElement) return;
-            const ctx = getCtx(canvasElement);
-            if (!ctx) return;
-            changeSetting(ctx, 'lineWidth', e);
-          }}
-        >
-          {SKETCH_PEN_WIDTH_LIST.map(i => (
-            <option key={i.value} value={i.value}>{`${i.label}`}</option>
-          ))}
-        </select>
+        ペンの色：<SelectSketchSetting
+          propName="strokeStyle"
+          options={SKETCH_PEN_COLOR_LIST}
+          getSketchCanvasElement={getSketchCanvasElement}
+        />
+        ペンの幅：<SelectSketchSetting
+          propName="lineWidth"
+          options={SKETCH_PEN_WIDTH_LIST}
+          getSketchCanvasElement={getSketchCanvasElement}
+        />
       </span>
       <button
         onClick={() => {
