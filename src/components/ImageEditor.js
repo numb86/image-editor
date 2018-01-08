@@ -10,6 +10,9 @@ import {resizeImage} from '../userSetting/resize';
 import {rotateImage} from '../userSetting/rotate';
 import ImageHistory from '../ImageHistory/ImageHistory';
 
+import synthesizeImages from '../synthesizeImages';
+import {SKETCH_CANVAS_COMPONENT_ID} from './SketchCanvas';
+
 const MIME_PING: 'image/png' = 'image/png';
 const MIME_JPEG: 'image/jpeg' = 'image/jpeg';
 const ALLOW_FILE_TYPES = [MIME_PING, MIME_JPEG];
@@ -22,6 +25,12 @@ function isAllowedFileType(
 ): boolean {
   const result = allowList.filter(allowFile => allowFile === uploadedFileType);
   return result.length > 0;
+}
+
+function getSketchCanvasElement(): HTMLCanvasElement | null {
+  const sketchCanvas = document.querySelector(`#${SKETCH_CANVAS_COMPONENT_ID}`);
+  if (!sketchCanvas) return null;
+  return ((sketchCanvas: any): HTMLCanvasElement);
 }
 
 type Props = void;
@@ -92,6 +101,34 @@ export default class ImageEditor extends React.Component<Props, State> {
     fileReader.readAsDataURL(file);
   }
 
+  getSynthesisImageUrl(): Promise<string | null> {
+    const {previewImageDataUrl} = this.state;
+    const sketchCanvas = getSketchCanvasElement();
+    if (!previewImageDataUrl || !sketchCanvas) return Promise.resolve(null);
+    return synthesizeImages([previewImageDataUrl, sketchCanvas.toDataURL()]);
+  }
+
+  changeUserSettings(key: string, value: number): void {
+    const newUserSettings = Object.assign({}, this.state.userSettings, {
+      [key]: value,
+    });
+    this.setState({userSettings: newUserSettings});
+    if (!this.state.uploadImageDataUrl) return;
+    this.processImage(newUserSettings);
+  }
+
+  showImageFromImageHistory: Function;
+  showImageFromImageHistory() {
+    const {previewImageDataUrl, imageHistory} = this.state;
+    const historyData = imageHistory.get();
+    if (!historyData) return;
+    if (historyData.editedData === previewImageDataUrl) return;
+    this.setState({
+      previewImageDataUrl: historyData.editedData,
+      uploadImageDataUrl: historyData.originalData,
+    });
+  }
+
   processImage(userSettings: $PropertyType<State, 'userSettings'>): void {
     this.setState({
       isProcessing: true,
@@ -142,27 +179,6 @@ export default class ImageEditor extends React.Component<Props, State> {
     });
   }
 
-  changeUserSettings(key: string, value: number): void {
-    const newUserSettings = Object.assign({}, this.state.userSettings, {
-      [key]: value,
-    });
-    this.setState({userSettings: newUserSettings});
-    if (!this.state.uploadImageDataUrl) return;
-    this.processImage(newUserSettings);
-  }
-
-  showImageFromImageHistory: Function;
-  showImageFromImageHistory() {
-    const {previewImageDataUrl, imageHistory} = this.state;
-    const historyData = imageHistory.get();
-    if (!historyData) return;
-    if (historyData.editedData === previewImageDataUrl) return;
-    this.setState({
-      previewImageDataUrl: historyData.editedData,
-      uploadImageDataUrl: historyData.originalData,
-    });
-  }
-
   render() {
     const {
       previewImageDataUrl,
@@ -174,9 +190,13 @@ export default class ImageEditor extends React.Component<Props, State> {
     const {resizeRatio, rotateAngle, colorToneId} = this.state.userSettings;
     return (
       <div>
-        <div className="main-area">
-          <div>画像にドロップすることでも、新しい画像をアップロードできます。</div>
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+        <div>
+          <div className="upload-guidance">
+            画像にドロップすることでも、新しい画像をアップロードできます。
+            {errorMessage && (
+              <span className="error-message">{errorMessage}</span>
+            )}
+          </div>
           {!previewImageDataUrl &&
           !isProcessing && <FileDropArea onDrop={this.onImageSelected} />}
           {isProcessing && <div>画像生成中……</div>}
@@ -189,8 +209,6 @@ export default class ImageEditor extends React.Component<Props, State> {
         </div>
         <Header
           onImageSelected={this.onImageSelected}
-          previewImageDataUrl={previewImageDataUrl}
-          downloadImageFileName={downloadImageFileName}
           resizeRatio={resizeRatio}
           rotateAngle={rotateAngle}
           colorToneId={colorToneId}
@@ -208,6 +226,19 @@ export default class ImageEditor extends React.Component<Props, State> {
             imageHistory.forward();
             this.showImageFromImageHistory();
           }}
+          download={() => {
+            this.getSynthesisImageUrl().then(res => {
+              if (!res) return;
+              if (!downloadImageFileName) {
+                throw new Error('downloadImageFileName is null.');
+              }
+              const elem = document.createElement('a');
+              elem.download = downloadImageFileName;
+              elem.href = res;
+              elem.click();
+            });
+          }}
+          getSketchCanvasElement={getSketchCanvasElement}
         />
       </div>
     );

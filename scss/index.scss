@@ -3,6 +3,8 @@ $button-font-color: #fff;
 $error-message-font-color: #f36;
 $header-menu-height: 44px;
 $header-sub-menu-height: 28px;
+$upload-guidance-height: 24px;
+$upload-image-top: 100px;
 
 body {
   margin: 0;
@@ -62,17 +64,28 @@ body {
   height: $header-sub-menu-height;
 }
 
-.main-area {
+.upload-guidance {
   position: relative;
   top: $header-menu-height + $header-sub-menu-height + 10px;
   left: 10px;
+  height: $upload-guidance-height;
 }
 
 .file-drop-area {
-  width: 600px;
-  height: 400px;
-  box-sizing: border-box;
-  border: 2px solid #ddd;
+  position: relative;
+  top: $upload-image-top;
+  left: 10px;
+  background-color: #ddd;
+}
+
+.upload-image {
+  position: absolute;
+  user-select: none;
+}
+
+#sketch-canvas {
+  position: absolute;
+  cursor: crosshair;
 }
 
 .file-drag-over-area {

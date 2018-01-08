@@ -1,48 +1,44 @@
 // @flow
 import React from 'react';
-import ClassNames from 'classnames';
+
+import SketchCanvas from './SketchCanvas';
+import FileDropArea from './FileDropArea';
 
 type Props = {
-  src: string | null,
+  src: string,
   onDrop: (files: FileList) => void,
 };
 
 type State = {
-  isDragOver: boolean,
+  imageSize: {width: number, height: number},
 };
 
-export default class FileDropArea extends React.Component<Props, State> {
+export default class PreviewImage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {isDragOver: false};
+    this.state = {imageSize: {width: 0, height: 0}};
+  }
+  componentDidMount() {
+    this.getUpdatedImageSize().then(res => {
+      this.setState({imageSize: res});
+    });
+  }
+  getUpdatedImageSize(): Promise<{width: number, height: number}> {
+    return new Promise(resolve => {
+      const image = new Image();
+      image.onload = () => {
+        const {width, height} = image;
+        resolve({width, height});
+      };
+      image.src = this.props.src;
+    });
   }
   render() {
-    const classNames = ClassNames({
-      'file-drag-over-area': this.state.isDragOver,
-    });
     return (
-      <img
-        src={this.props.src}
-        alt="プレビュー画像"
-        className={classNames}
-        onDrop={e => {
-          e.preventDefault();
-          this.setState({isDragOver: false});
-          this.props.onDrop(e.dataTransfer.files);
-        }}
-        onDragOver={e => {
-          e.preventDefault();
-          e.dataTransfer.dropEffect = 'copy';
-        }}
-        onDragEnter={e => {
-          e.preventDefault();
-          this.setState({isDragOver: true});
-        }}
-        onDragLeave={e => {
-          e.preventDefault();
-          this.setState({isDragOver: false});
-        }}
-      />
+      <FileDropArea onDrop={this.props.onDrop} size={this.state.imageSize}>
+        <img src={this.props.src} alt="プレビュー画像" className="upload-image" />
+        <SketchCanvas size={this.state.imageSize} />
+      </FileDropArea>
     );
   }
 }
