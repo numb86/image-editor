@@ -104,3 +104,8 @@ body {
 .error-message {
   color: $error-message-font-color;
 }
+
+.display {
+  overflow: hidden;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAP0lEQVQ4T2OcOXPmfwYiwL1794hQxcDAOGogznAaDUOcQTMEkk15eTlROUVJSYm4nDJqIM5wGg1D3Dll0CcbAMflUeHimVpmAAAAAElFTkSuQmCC');
+}
