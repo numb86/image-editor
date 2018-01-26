@@ -10,12 +10,17 @@ describe('Display', () => {
   const IMG_ALT = 'foo';
   const WIDTH = 400;
   const HEIGHT = 200;
+  const MAGNIFICATION_PERCENT = 120;
   const spanWrapper = shallow(<span>{`${SPAN_STRING}`}</span>);
   const imageWrapper = shallow(<img src={IMG_SRC} alt={IMG_ALT} />);
   let wrapper;
   beforeEach(() => {
     wrapper = shallow(
-      <Display width={WIDTH} height={HEIGHT}>
+      <Display
+        width={WIDTH}
+        height={HEIGHT}
+        magnificationPercent={MAGNIFICATION_PERCENT}
+      >
         {spanWrapper}
         {imageWrapper}
       </Display>
@@ -31,5 +36,11 @@ describe('Display', () => {
     const {width, height} = wrapper.prop('style');
     assert(width === `${WIDTH}px`);
     assert(height === `${HEIGHT}px`);
+  });
+  it('表示倍率が調整される', () => {
+    assert(
+      wrapper.prop('style').transform ===
+        `scale(${MAGNIFICATION_PERCENT / 100})`
+    );
   });
 });
