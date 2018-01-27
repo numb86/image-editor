@@ -123,5 +123,14 @@ body {
 
 .file-drag-over-area {
   background-color: #eee;
-  opacity: 0.3;
+  opacity: 0.8;
+}
+
+.guide-file-drop {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 80%;
+  text-align: center;
+  font-size: 22px;
 }

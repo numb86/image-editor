@@ -15,9 +15,10 @@ export default class App extends React.Component<Props, State> {
     this.state = {isDragOver: false};
   }
   render() {
+    const {isDragOver} = this.state;
     const classNames = ClassNames({
       app: true,
-      'file-drag-over-area': this.state.isDragOver,
+      'file-drag-over-area': isDragOver,
     });
     return (
       <div
@@ -43,6 +44,9 @@ export default class App extends React.Component<Props, State> {
         <Display width={500} height={500} magnificationPercent={100}>
           children-element
         </Display>
+        {isDragOver && (
+          <div className="guide-file-drop">画像をドロップすると新しくレイヤーが作られます</div>
+        )}
       </div>
     );
   }
