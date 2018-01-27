@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 
 export default function Display({
@@ -5,6 +6,11 @@ export default function Display({
   height,
   magnificationPercent,
   children,
+}: {
+  width: number,
+  height: number,
+  magnificationPercent: number,
+  children: string,
 }) {
   return (
     <div
