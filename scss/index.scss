@@ -6,8 +6,13 @@ $header-sub-menu-height: 28px;
 $upload-guidance-height: 24px;
 $upload-image-top: 100px;
 
+html {
+  height: 100%;
+}
+
 body {
   margin: 0;
+  height: 100%;
 }
 
 .header {
@@ -88,11 +93,6 @@ body {
   cursor: crosshair;
 }
 
-.file-drag-over-area {
-  background-color: #09f;
-  opacity: 0.3;
-}
-
 .file-transfer-button {
   width: 160px;
   height: 30px;
@@ -103,4 +103,34 @@ body {
 
 .error-message {
   color: $error-message-font-color;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+.app {
+  width: 100%;
+  height: 100%;
+}
+
+.display {
+  overflow: hidden;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAP0lEQVQ4T2OcOXPmfwYiwL1794hQxcDAOGogznAaDUOcQTMEkk15eTlROUVJSYm4nDJqIM5wGg1D3Dll0CcbAMflUeHimVpmAAAAAElFTkSuQmCC');
+  transform-origin: left top;
+}
+
+.file-drag-over-area {
+  background-color: #eee;
+  opacity: 0.8;
+}
+
+.guide-file-drop {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 80%;
+  text-align: center;
+  font-size: 22px;
 }
