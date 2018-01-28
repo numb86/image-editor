@@ -3,6 +3,7 @@ import React from 'react';
 import ClassNames from 'classnames';
 
 import Display from './Display';
+import Layer from './Layer';
 
 const onDrop = files => console.log(files);
 
@@ -42,7 +43,7 @@ export default class App extends React.Component<Props, State> {
         }}
       >
         <Display width={500} height={500} magnificationPercent={100}>
-          children-element
+          <Layer width={200} height={200} isShow />
         </Display>
         {isDragOver && (
           <div className="guide-file-drop">画像をドロップすると新しくレイヤーが作られます</div>
