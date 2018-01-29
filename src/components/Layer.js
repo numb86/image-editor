@@ -7,20 +7,25 @@ export default class Layer extends React.Component {
     this.ctx = null;
   }
   componentDidMount() {
+    const {width, height, imageData} = this.props;
     this.ctx = this.canvas.getContext('2d');
+    if (!imageData) {
+      this.canvas.width = width;
+      this.canvas.height = height;
+      return;
+    }
+    this.canvas.width = imageData.width;
+    this.canvas.height = imageData.height;
+    this.ctx.putImageData(imageData, 0, 0);
   }
   render() {
-    const {width, height, isShow} = this.props;
+    const {isShow} = this.props;
     return (
       <canvas
         ref={ref => {
           this.canvas = ref;
         }}
-        style={{
-          width: `${width}px`,
-          height: `${height}px`,
-          display: `${isShow ? 'block' : 'none'}`,
-        }}
+        style={{display: `${isShow ? 'block' : 'none'}`}}
       />
     );
   }
