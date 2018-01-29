@@ -27,8 +27,8 @@ export default class App extends React.Component<Props, State> {
       'file-drag-over-area': isDragOver,
     });
     const viewLayerDataList = [
-      {width: 200, height: 200, isShow: true, imageData},
-      {width: 200, height: 200, isShow: true},
+      {id: 1, width: 200, height: 200, isShow: true, imageData},
+      {id: 2, width: 200, height: 200, isShow: true},
     ];
     return (
       <div
