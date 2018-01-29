@@ -10,6 +10,7 @@ export default class Layer extends React.Component {
     const {width, height, imageData} = this.props;
     this.ctx = this.canvas.getContext('2d');
     if (!imageData) {
+      if (!width || !height) throw new Error('width or height, is not found.');
       this.canvas.width = width;
       this.canvas.height = height;
       return;
