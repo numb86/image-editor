@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class Layer extends React.Component {
+export default class ViewLayer extends React.Component {
   constructor(props) {
     super(props);
     this.canvas = null;
