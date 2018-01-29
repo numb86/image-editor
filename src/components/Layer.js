@@ -26,6 +26,7 @@ export default class Layer extends React.Component {
         ref={ref => {
           this.canvas = ref;
         }}
+        className="layer"
         style={{display: `${isShow ? 'block' : 'none'}`}}
       />
     );
