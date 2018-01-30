@@ -18,18 +18,20 @@ type State = {isDragOver: boolean};
 export default class App extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {isDragOver: false};
+    this.state = {
+      isDragOver: false,
+      imageDataList: [
+        {id: 1, width: 200, height: 200, isShow: true, imageData},
+        {id: 2, width: 200, height: 200, isShow: true},
+      ],
+    };
   }
   render() {
-    const {isDragOver} = this.state;
+    const {isDragOver, imageDataList} = this.state;
     const classNames = ClassNames({
       app: true,
       'file-drag-over-area': isDragOver,
     });
-    const viewLayerDataList = [
-      {id: 1, width: 200, height: 200, isShow: true, imageData},
-      {id: 2, width: 200, height: 200, isShow: true},
-    ];
     return (
       <div
         className={classNames}
@@ -52,7 +54,7 @@ export default class App extends React.Component<Props, State> {
         }}
       >
         <Display width={500} height={500} magnificationPercent={100}>
-          <LayerList viewLayerDataList={viewLayerDataList} />
+          <LayerList viewLayerDataList={imageDataList} />
         </Display>
         {isDragOver && (
           <div className="guide-file-drop">画像をドロップすると新しくレイヤーが作られます</div>
