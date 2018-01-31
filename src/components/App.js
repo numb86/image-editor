@@ -5,6 +5,8 @@ import ClassNames from 'classnames';
 import Display from './Display';
 import LayerList from './LayerList';
 
+import generateImageList from '../generateImageList';
+
 // TODO 動作確認のための暫定的なコード
 const onDrop = files => console.log(files);
 const canvas = document.createElement('canvas');
@@ -20,14 +22,14 @@ export default class App extends React.Component<Props, State> {
     super(props);
     this.state = {
       isDragOver: false,
-      imageDataList: [
-        {id: 1, width: 200, height: 200, isShow: true, imageData},
-        {id: 2, width: 200, height: 200, isShow: true},
+      imageList: [
+        {id: 0, width: 200, height: 200, isShow: true, imageData},
+        {id: 1, width: 200, height: 200, isShow: true},
       ],
     };
   }
   render() {
-    const {isDragOver, imageDataList} = this.state;
+    const {isDragOver, imageList} = this.state;
     const classNames = ClassNames({
       app: true,
       'file-drag-over-area': isDragOver,
@@ -53,8 +55,20 @@ export default class App extends React.Component<Props, State> {
           if (e.clientX === 0) this.setState({isDragOver: false});
         }}
       >
+        <button
+          onClick={() => {
+            const updatedState = generateImageList(
+              'specifyShowState',
+              {target: 0, isShow: false},
+              imageList
+            );
+            this.setState({imageList: updatedState});
+          }}
+        >
+          動作確認用のボタン
+        </button>
         <Display width={500} height={500} magnificationPercent={100}>
-          <LayerList viewLayerDataList={imageDataList} />
+          <LayerList viewLayerDataList={imageList} />
         </Display>
         {isDragOver && (
           <div className="guide-file-drop">画像をドロップすると新しくレイヤーが作られます</div>

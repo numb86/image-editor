@@ -1,5 +1,6 @@
 import React from 'react';
 
+// TODO: 必ずimageDataを渡すようにして、width,heigthは削除
 export default class ViewLayer extends React.Component {
   constructor(props) {
     super(props);
