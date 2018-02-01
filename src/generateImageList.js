@@ -11,7 +11,7 @@ function specifyProperty(data, currentState, target) {
     }
   });
   const updatedData = Object.assign({}, targetData, data);
-  const updatedState = Object.assign([], currentState);
+  const updatedState = currentState.concat();
   updatedState.splice(targetIndex, 1, updatedData);
   return updatedState;
 }
