@@ -5,7 +5,7 @@ import ClassNames from 'classnames';
 import Display from './Display';
 import LayerList from './LayerList';
 
-import generateImageList from '../generateImageList';
+import {generateImageList, SPECIFY_SHOW_STATE} from '../generateImageList';
 
 // TODO 動作確認のための暫定的なコード
 const onDrop = files => console.log(files);
@@ -58,7 +58,7 @@ export default class App extends React.Component<Props, State> {
         <button
           onClick={() => {
             const updatedState = generateImageList(
-              'specifyShowState',
+              SPECIFY_SHOW_STATE,
               {target: 0, isShow: false},
               imageList
             );
