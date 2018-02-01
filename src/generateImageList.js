@@ -1,7 +1,6 @@
-export const SPECIFY_SHOW_STATE = 'specifyShowState';
+export const SPECIFY_PROPERTY = 'specifyProperty';
 
-function specifyShowState(data, currentState) {
-  const {target, isShow} = data;
+function specifyProperty(data, currentState, target) {
   let targetData;
   let targetIndex;
   currentState.forEach((elem, index) => {
@@ -10,16 +9,16 @@ function specifyShowState(data, currentState) {
       targetIndex = index;
     }
   });
-  const updatedData = Object.assign({}, targetData, {isShow});
+  const updatedData = Object.assign({}, targetData, data);
   const updatedState = Object.assign([], currentState);
   updatedState.splice(targetIndex, 1, updatedData);
   return updatedState;
 }
 
-export function generateImageList(type, data, currentState) {
+export function generateImageList(type, data, currentState, target) {
   switch (type) {
-    case SPECIFY_SHOW_STATE:
-      return specifyShowState(data, currentState);
+    case SPECIFY_PROPERTY:
+      return specifyProperty(data, currentState, target);
     default:
       throw new Error('This type is not found.');
   }
