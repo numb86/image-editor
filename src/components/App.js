@@ -23,8 +23,8 @@ export default class App extends React.Component<Props, State> {
     this.state = {
       isDragOver: false,
       imageList: [
-        {id: 0, width: 200, height: 200, isShow: true, imageData},
-        {id: 1, width: 200, height: 200, isShow: true},
+        {id: 0, isShow: true, imageData},
+        {id: 1, isShow: true, imageData},
       ],
     };
   }
