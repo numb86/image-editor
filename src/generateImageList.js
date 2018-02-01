@@ -1,5 +1,6 @@
 export const SPECIFY_PROPERTY = 'specifyProperty';
 
+// TODO: dataの中にオブジェクトがあった場合の対応
 function specifyProperty(data, currentState, target) {
   let targetData;
   let targetIndex;
