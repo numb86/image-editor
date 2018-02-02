@@ -51,4 +51,20 @@ describe('generateImageList', () => {
     // 変更する要素以外は参照渡しになるので注意
     assert(originalImageList[0].obj === newList[0].obj);
   });
+  it('複数の要素を副作用なく変更できる', () => {
+    const newList = generateImageList(
+      SPECIFY_PROPERTY,
+      {isShow: false, imageData: [7, 8, 9]},
+      originalImageList,
+      0
+    );
+
+    assert(newList[0].imageData[2] === 9);
+    assert(newList[1].imageData[2] === 3);
+    assert(originalImageList[0].imageData[2] === 3);
+
+    assert(newList[0].isShow === false);
+    assert(newList[1].isShow === true);
+    assert(originalImageList[0].isShow === true);
+  });
 });
