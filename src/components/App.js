@@ -26,10 +26,15 @@ export default class App extends React.Component<Props, State> {
         {id: 0, isShow: true, imageData},
         {id: 1, isShow: true, imageData},
       ],
+      display: {
+        width: 500,
+        height: 500,
+        magnificationPercent: 100,
+      },
     };
   }
   render() {
-    const {isDragOver, imageList} = this.state;
+    const {isDragOver, imageList, display} = this.state;
     const classNames = ClassNames({
       app: true,
       'file-drag-over-area': isDragOver,
@@ -68,7 +73,7 @@ export default class App extends React.Component<Props, State> {
         >
           動作確認用のボタン
         </button>
-        <Display width={500} height={500} magnificationPercent={100}>
+        <Display {...display}>
           <LayerList viewLayerDataList={imageList} />
         </Display>
         {isDragOver && (
