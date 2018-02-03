@@ -8,7 +8,6 @@ import LayerList from './LayerList';
 import {generateImageList, SPECIFY_PROPERTY} from '../generateImageList';
 
 // TODO 動作確認のための暫定的なコード
-const onDrop = files => console.log(files);
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
 ctx.fillRect(10, 10, 120, 60);
@@ -45,7 +44,6 @@ export default class App extends React.Component<Props, State> {
         onDrop={e => {
           e.preventDefault();
           this.setState({isDragOver: false});
-          onDrop(e.dataTransfer.files);
         }}
         onDragOver={e => {
           e.preventDefault();
