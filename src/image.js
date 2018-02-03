@@ -1,5 +1,5 @@
 // @flow
-type Image = {
+export type Image = {
   id: number,
   isShow: boolean,
   imageData: ImageData,
