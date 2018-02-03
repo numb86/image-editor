@@ -1,20 +1,18 @@
-import {generateImageList, CREATE_IMAGE} from './generateImageList';
+import {generateImageList, ADD_NEW_IMAGE} from './generateImageList';
 
-const canvas = document.createElement('canvas');
-const ctx = canvas.getContext('2d');
-ctx.fillRect(10, 10, 120, 60);
-const imageData = ctx.getImageData(0, 0, 180, 180);
+const INITIAL_DISPALY_WIDTH = 500;
+const INITIAL_DISPALY_HEIGHT = 500;
 
 const initialState = {
   isDragOver: false,
   imageList: generateImageList(
-    CREATE_IMAGE,
-    {id: 0, isShow: true, imageData},
+    ADD_NEW_IMAGE,
+    {width: INITIAL_DISPALY_WIDTH, height: INITIAL_DISPALY_HEIGHT},
     []
   ),
   display: {
-    width: 500,
-    height: 500,
+    width: INITIAL_DISPALY_WIDTH,
+    height: INITIAL_DISPALY_HEIGHT,
     magnificationPercent: 100,
   },
 };
