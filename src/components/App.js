@@ -8,8 +8,18 @@ import LayerList from './LayerList';
 import {generateImageList, SPECIFY_PROPERTY} from '../generateImageList';
 import initialState from '../state';
 
+import type {Image} from '../image';
+
 type Props = {||};
-type State = {isDragOver: boolean};
+type State = {
+  isDragOver: boolean,
+  imageList: Image[],
+  display: {
+    width: number,
+    height: number,
+    magnificationPercent: number,
+  },
+};
 
 export default class App extends React.Component<Props, State> {
   constructor(props: Props) {

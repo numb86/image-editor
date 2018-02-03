@@ -1,5 +1,6 @@
 // @flow
-import React from 'react';
+//  React.Node という型を指定するためにはこのようにReactをimportする必要がある
+import * as React from 'react';
 
 export default function Display({
   width,
@@ -10,7 +11,7 @@ export default function Display({
   width: number,
   height: number,
   magnificationPercent: number,
-  children: string,
+  children: React.Node,
 }) {
   return (
     <div
