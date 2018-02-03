@@ -1,4 +1,4 @@
-import createEmptyImage from './image';
+import createNewImage from './image';
 
 export const SPECIFY_PROPERTY = 'specifyProperty';
 export const ADD_IMAGE = 'addImage';
@@ -32,7 +32,7 @@ export function generateImageList(type, data, currentState, target) {
     case ADD_IMAGE:
       return addImage(data, currentState);
     case ADD_NEW_IMAGE: {
-      const newImage = createEmptyImage(data, currentState);
+      const newImage = createNewImage(data, currentState);
       return generateImageList(ADD_IMAGE, newImage, currentState);
     }
     default:

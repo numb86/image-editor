@@ -5,17 +5,16 @@ function getMinUniqueId(currentState) {
   return result || iDs.length;
 }
 
-function createTemplateImage(currentState) {
+function createEmptyImageData({width, height}) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  return ctx.getImageData(0, 0, width, height);
+}
+
+export default function createNewImage(data, currentState) {
   return {
     id: getMinUniqueId(currentState),
     isShow: true,
-    imageData: new Uint8ClampedArray(0),
+    imageData: createEmptyImageData(data),
   };
-}
-
-export default function createEmptyImage({width, height}, currentState) {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  const imageData = ctx.getImageData(0, 0, width, height);
-  return Object.assign({}, createTemplateImage(currentState), {imageData});
 }
