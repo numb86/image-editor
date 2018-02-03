@@ -6,13 +6,7 @@ import Display from './Display';
 import LayerList from './LayerList';
 
 import {generateImageList, SPECIFY_PROPERTY} from '../generateImageList';
-
-// TODO 動作確認のための暫定的なコード
-const onDrop = files => console.log(files);
-const canvas = document.createElement('canvas');
-const ctx = canvas.getContext('2d');
-ctx.fillRect(10, 10, 120, 60);
-const imageData = ctx.getImageData(0, 0, 180, 180);
+import initialState from '../state';
 
 type Props = {||};
 type State = {isDragOver: boolean};
@@ -20,16 +14,10 @@ type State = {isDragOver: boolean};
 export default class App extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {
-      isDragOver: false,
-      imageList: [
-        {id: 0, isShow: true, imageData},
-        {id: 1, isShow: true, imageData},
-      ],
-    };
+    this.state = initialState;
   }
   render() {
-    const {isDragOver, imageList} = this.state;
+    const {isDragOver, imageList, display} = this.state;
     const classNames = ClassNames({
       app: true,
       'file-drag-over-area': isDragOver,
@@ -40,7 +28,6 @@ export default class App extends React.Component<Props, State> {
         onDrop={e => {
           e.preventDefault();
           this.setState({isDragOver: false});
-          onDrop(e.dataTransfer.files);
         }}
         onDragOver={e => {
           e.preventDefault();
@@ -68,7 +55,7 @@ export default class App extends React.Component<Props, State> {
         >
           動作確認用のボタン
         </button>
-        <Display width={500} height={500} magnificationPercent={100}>
+        <Display {...display}>
           <LayerList viewLayerDataList={imageList} />
         </Display>
         {isDragOver && (
