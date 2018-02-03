@@ -1,3 +1,4 @@
+// @flow
 import {generateImageList, ADD_NEW_IMAGE} from './generateImageList';
 
 const INITIAL_DISPALY_WIDTH = 500;
