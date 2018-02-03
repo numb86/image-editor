@@ -1,4 +1,4 @@
-function getMixUniqueId(currentState) {
+function getMinUniqueId(currentState) {
   const iDs = currentState.map(i => i.id);
   if (iDs.length === 0) return 0;
   const result = iDs.filter((id, index) => id !== index)[0];
@@ -7,7 +7,7 @@ function getMixUniqueId(currentState) {
 
 function createTemplateImage(currentState) {
   return {
-    id: getMixUniqueId(currentState),
+    id: getMinUniqueId(currentState),
     isShow: true,
     imageData: new Uint8ClampedArray(0),
   };
