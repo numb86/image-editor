@@ -2,6 +2,7 @@ import {generateImageList, ADD_NEW_IMAGE} from './generateImageList';
 
 const INITIAL_DISPALY_WIDTH = 500;
 const INITIAL_DISPALY_HEIGHT = 500;
+const INITIAL_DISPALY_MAGNIFICATION_PERCENT = 100;
 
 const initialState = {
   isDragOver: false,
@@ -13,7 +14,7 @@ const initialState = {
   display: {
     width: INITIAL_DISPALY_WIDTH,
     height: INITIAL_DISPALY_HEIGHT,
-    magnificationPercent: 100,
+    magnificationPercent: INITIAL_DISPALY_MAGNIFICATION_PERCENT,
   },
 };
 
