@@ -12,12 +12,15 @@ export default function LayerList({
 }: {
   viewLayerDataList: Image[],
 }) {
-  return viewLayerDataList.map(data => {
-    const {id} = data;
-    const props = COMPONENT_USE_PROPS.reduce((acc, prop) => {
-      acc[prop] = data[prop];
-      return acc;
-    }, {});
-    return <ViewLayer key={id} {...(props: any)} />;
+  return viewLayerDataList.map(image => {
+    const {id} = image;
+    const props = Object.assign({}, image);
+    const unusedKey = Object.keys(props).filter(key =>
+      COMPONENT_USE_PROPS.every(useProps => key !== useProps)
+    );
+    unusedKey.forEach(key => {
+      delete props[key];
+    });
+    return <ViewLayer key={id} {...props} />;
   });
 }
