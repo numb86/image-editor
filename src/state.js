@@ -7,11 +7,11 @@ const INITIAL_DISPALY_MAGNIFICATION_PERCENT = 100;
 
 const initialState = {
   isDragOver: false,
-  imageList: generateImageList(
-    ADD_NEW_IMAGE,
-    {width: INITIAL_DISPALY_WIDTH, height: INITIAL_DISPALY_HEIGHT},
-    []
-  ),
+  imageList: generateImageList({
+    type: ADD_NEW_IMAGE,
+    data: {width: INITIAL_DISPALY_WIDTH, height: INITIAL_DISPALY_HEIGHT},
+    currentState: [],
+  }),
   display: {
     width: INITIAL_DISPALY_WIDTH,
     height: INITIAL_DISPALY_HEIGHT,

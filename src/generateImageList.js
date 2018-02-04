@@ -12,8 +12,15 @@ type GenerateImageListTypeName =
   | typeof ADD_IMAGE
   | typeof ADD_NEW_IMAGE;
 
+type GenerateImageListData = {
+  isShow?: boolean,
+  imageData?: ImageData,
+  width?: number,
+  height?: number,
+};
+
 function specifyProperty(
-  data: {isShow: boolean, imageData: ImageData},
+  data: {isShow?: boolean, imageData?: ImageData},
   currentState: Image[],
   target: number
 ): Image[] {
@@ -40,22 +47,37 @@ function addImage(data: Image, currentState: Image[]): Image[] {
   return updatedState;
 }
 
-export function generateImageList(
+export function generateImageList({
+  type,
+  currentState,
+  data,
+  image,
+  target,
+}: {
   type: GenerateImageListTypeName,
-  data: any, // TODO: fix Flow
   currentState: Image[],
-  target?: number
-): Image[] {
+  data?: GenerateImageListData,
+  image?: Image,
+  target?: number,
+}): Image[] {
   switch (type) {
     case SPECIFY_PROPERTY:
       if (!target && target !== 0) throw new Error('Need target id number.');
+      if (!data) throw new Error('Data is necessary.');
       if (data.id) throw new Error('Id can not be overwritten.');
       return specifyProperty(data, currentState, target);
     case ADD_IMAGE:
-      return addImage(data, currentState);
+      if (!image) throw new Error('Image is necessary.');
+      return addImage(image, currentState);
     case ADD_NEW_IMAGE: {
-      const newImage = createNewImage(data, currentState);
-      return generateImageList(ADD_IMAGE, newImage, currentState);
+      if (!data) throw new Error('Data is necessary.');
+      const {width, height} = data;
+      if (!width || !height) throw new Error('Data is not enough.');
+      return generateImageList({
+        type: ADD_IMAGE,
+        image: createNewImage({width, height}, currentState),
+        currentState,
+      });
     }
     default:
       throw new Error('This type is not found.');
