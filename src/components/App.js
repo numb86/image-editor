@@ -54,12 +54,12 @@ export default class App extends React.Component<Props, State> {
       >
         <button
           onClick={() => {
-            const updatedState = generateImageList(
-              SPECIFY_PROPERTY,
-              {isShow: false},
-              imageList,
-              0
-            );
+            const updatedState = generateImageList({
+              type: SPECIFY_PROPERTY,
+              data: {isShow: false},
+              currentState: imageList,
+              target: 0,
+            });
             this.setState({imageList: updatedState});
           }}
         >

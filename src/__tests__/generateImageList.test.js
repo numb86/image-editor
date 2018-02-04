@@ -12,39 +12,39 @@ describe('generateImageList', () => {
   });
   it('指定したIDで変更対象のオブジェクトを指定できる', () => {
     const imageData = 'newValue';
-    let newList = generateImageList(
-      SPECIFY_PROPERTY,
-      {imageData},
-      originalImageList,
-      0
-    );
+    let newList = generateImageList({
+      type: SPECIFY_PROPERTY,
+      data: {imageData},
+      currentState: originalImageList,
+      target: 0,
+    });
     assert(newList[0].imageData === imageData);
     assert(newList[1].imageData !== imageData);
-    newList = generateImageList(
-      SPECIFY_PROPERTY,
-      {imageData},
-      originalImageList,
-      1
-    );
+    newList = generateImageList({
+      type: SPECIFY_PROPERTY,
+      data: {imageData},
+      currentState: originalImageList,
+      target: 1,
+    });
     assert(newList[1].imageData === imageData);
   });
   it('リテラルである要素を副作用なく変更できる', () => {
-    const newList = generateImageList(
-      SPECIFY_PROPERTY,
-      {isShow: false},
-      originalImageList,
-      0
-    );
+    const newList = generateImageList({
+      type: SPECIFY_PROPERTY,
+      data: {isShow: false},
+      currentState: originalImageList,
+      target: 0,
+    });
     assert(newList[0].isShow === false);
     assert(originalImageList[0].isShow === true);
   });
   it('オブジェクトである要素を副作用なく変更できる', () => {
-    const newList = generateImageList(
-      SPECIFY_PROPERTY,
-      {imageData: [7, 8, 9]},
-      originalImageList,
-      0
-    );
+    const newList = generateImageList({
+      type: SPECIFY_PROPERTY,
+      data: {imageData: [7, 8, 9]},
+      currentState: originalImageList,
+      target: 0,
+    });
     assert(newList[0].imageData[0] === 7);
     assert(originalImageList[0].imageData[0] === 1);
     assert(originalImageList[0].imageData !== newList[0].imageData);
@@ -52,12 +52,12 @@ describe('generateImageList', () => {
     assert(originalImageList[0].obj === newList[0].obj);
   });
   it('複数の要素を副作用なく変更できる', () => {
-    const newList = generateImageList(
-      SPECIFY_PROPERTY,
-      {isShow: false, imageData: [7, 8, 9]},
-      originalImageList,
-      0
-    );
+    const newList = generateImageList({
+      type: SPECIFY_PROPERTY,
+      data: {isShow: false, imageData: [7, 8, 9]},
+      currentState: originalImageList,
+      target: 0,
+    });
 
     assert(newList[0].imageData[2] === 9);
     assert(newList[1].imageData[2] === 3);
