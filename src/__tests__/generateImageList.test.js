@@ -7,6 +7,8 @@ import {
   ADD_NEW_IMAGE,
 } from '../generateImageList';
 
+// TODO: テストが長くなってきたので、定数を使うなどして保守性を高めておく
+// TODO: imageDataのデータ構造が間違っているので、直す
 describe('generateImageList', () => {
   let originalImageList;
   beforeEach(() => {
