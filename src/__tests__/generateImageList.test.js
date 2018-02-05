@@ -93,7 +93,17 @@ describe('generateImageList', () => {
   });
 
   describe('ADD_NEW_IMAGE', () => {
-    it('指定したサイズのimageが先頭に追加される', () => {});
-    it('副作用がなくcurrentStateに影響を与えない', () => {});
+    it('指定したサイズのimageが先頭に追加され、副作用がなくcurrentStateに影響を与えない', () => {
+      const WIDTH = 185;
+      const HEIGHT = 97;
+      const newList = generateImageList({
+        type: ADD_NEW_IMAGE,
+        data: {width: WIDTH, height: HEIGHT},
+        currentState: originalImageList,
+      });
+      assert(newList[0].imageData.width === WIDTH);
+      assert(newList[0].imageData.height === HEIGHT);
+      assert(originalImageList.length === 2);
+    });
   });
 });
