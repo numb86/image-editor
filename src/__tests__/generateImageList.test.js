@@ -77,8 +77,19 @@ describe('generateImageList', () => {
   });
 
   describe('ADD_IMAGE', () => {
-    it('指定したimageが先頭に追加される', () => {});
-    it('副作用がなくcurrentStateに影響を与えない', () => {});
+    it('指定したimageが先頭に追加され、副作用がなくcurrentStateに影響を与えない', () => {
+      const ID = 9;
+      const image = {id: ID};
+      const newList = generateImageList({
+        type: ADD_IMAGE,
+        image,
+        currentState: originalImageList,
+      });
+      assert(newList.length === 3);
+      assert(newList[0].id === ID);
+      assert(originalImageList.length === 2);
+      assert(originalImageList[0].id === 0);
+    });
   });
 
   describe('ADD_NEW_IMAGE', () => {
