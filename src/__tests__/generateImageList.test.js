@@ -8,13 +8,29 @@ import {
 } from '../generateImageList';
 
 // TODO: テストが長くなってきたので、定数を使うなどして保守性を高めておく
-// TODO: imageDataのデータ構造が間違っているので、直す
 describe('generateImageList', () => {
+  function createImageData(width, height, data) {
+    return {
+      width,
+      height,
+      data: Uint8ClampedArray.from(data),
+    };
+  }
   let originalImageList;
   beforeEach(() => {
     originalImageList = [
-      {id: 0, isShow: true, imageData: [1, 2, 3], obj: {a: 5}},
-      {id: 1, isShow: true, imageData: [1, 2, 3], obj: {a: 5}},
+      {
+        id: 0,
+        isShow: true,
+        imageData: createImageData(100, 100, [1, 2, 3]),
+        obj: {a: 5},
+      },
+      {
+        id: 1,
+        isShow: true,
+        imageData: createImageData(100, 100, [1, 2, 3]),
+        obj: {a: 5},
+      },
     ];
   });
 
@@ -50,12 +66,12 @@ describe('generateImageList', () => {
     it('オブジェクトである要素を副作用なく変更できる', () => {
       const newList = generateImageList({
         type: SPECIFY_PROPERTY,
-        data: {imageData: [7, 8, 9]},
+        data: {imageData: createImageData(40, 40, [7, 8, 9])},
         currentState: originalImageList,
         target: 0,
       });
-      assert(newList[0].imageData[0] === 7);
-      assert(originalImageList[0].imageData[0] === 1);
+      assert(newList[0].imageData.data[0] === 7);
+      assert(originalImageList[0].imageData.data[0] === 1);
       assert(originalImageList[0].imageData !== newList[0].imageData);
       // 変更する要素以外は参照渡しになるので注意
       assert(originalImageList[0].obj === newList[0].obj);
@@ -63,14 +79,14 @@ describe('generateImageList', () => {
     it('複数の要素を副作用なく変更できる', () => {
       const newList = generateImageList({
         type: SPECIFY_PROPERTY,
-        data: {isShow: false, imageData: [7, 8, 9]},
+        data: {isShow: false, imageData: createImageData(40, 40, [7, 8, 9])},
         currentState: originalImageList,
         target: 0,
       });
 
-      assert(newList[0].imageData[2] === 9);
-      assert(newList[1].imageData[2] === 3);
-      assert(originalImageList[0].imageData[2] === 3);
+      assert(newList[0].imageData.data[2] === 9);
+      assert(newList[1].imageData.data[2] === 3);
+      assert(originalImageList[0].imageData.data[2] === 3);
 
       assert(newList[0].isShow === false);
       assert(newList[1].isShow === true);
