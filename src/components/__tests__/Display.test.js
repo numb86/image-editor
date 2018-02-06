@@ -11,8 +11,8 @@ describe('Display', () => {
   const WIDTH = 400;
   const HEIGHT = 200;
   const MAGNIFICATION_PERCENT = 120;
-  const spanWrapper = shallow(<span>{`${SPAN_STRING}`}</span>);
-  const imageWrapper = shallow(<img src={IMG_SRC} alt={IMG_ALT} />);
+  const spanWrapper = shallow(<span key={0}>{`${SPAN_STRING}`}</span>);
+  const imageWrapper = shallow(<img key={1} src={IMG_SRC} alt={IMG_ALT} />);
   let wrapper;
   beforeEach(() => {
     wrapper = shallow(
