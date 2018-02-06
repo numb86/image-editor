@@ -7,7 +7,6 @@ import {
   ADD_NEW_IMAGE,
 } from '../generateImageList';
 
-// TODO: テストが長くなってきたので、定数を使うなどして保守性を高めておく
 describe('generateImageList', () => {
   function createImageData(width, height, data) {
     return {
@@ -64,27 +63,29 @@ describe('generateImageList', () => {
       assert(originalImageList[0].isShow === true);
     });
     it('オブジェクトである要素を副作用なく変更できる', () => {
+      const DATA = [7, 8, 9];
       const newList = generateImageList({
         type: SPECIFY_PROPERTY,
-        data: {imageData: createImageData(40, 40, [7, 8, 9])},
+        data: {imageData: createImageData(40, 40, DATA)},
         currentState: originalImageList,
         target: 0,
       });
-      assert(newList[0].imageData.data[0] === 7);
+      assert(newList[0].imageData.data[0] === DATA[0]);
       assert(originalImageList[0].imageData.data[0] === 1);
       assert(originalImageList[0].imageData !== newList[0].imageData);
       // 変更する要素以外は参照渡しになるので注意
       assert(originalImageList[0].obj === newList[0].obj);
     });
     it('複数の要素を副作用なく変更できる', () => {
+      const DATA = [7, 8, 9];
       const newList = generateImageList({
         type: SPECIFY_PROPERTY,
-        data: {isShow: false, imageData: createImageData(40, 40, [7, 8, 9])},
+        data: {isShow: false, imageData: createImageData(40, 40, DATA)},
         currentState: originalImageList,
         target: 0,
       });
 
-      assert(newList[0].imageData.data[2] === 9);
+      assert(newList[0].imageData.data[2] === DATA[2]);
       assert(newList[1].imageData.data[2] === 3);
       assert(originalImageList[0].imageData.data[2] === 3);
 
