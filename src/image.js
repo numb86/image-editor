@@ -9,7 +9,8 @@ function getMinUniqueId(currentState: Image[]): number {
   const iDs = currentState.map(i => i.id);
   if (iDs.length === 0) return 0;
   const result = iDs.filter((id, index) => id !== index)[0];
-  return result || iDs.length;
+  if (result === undefined) return iDs.length;
+  return result - 1;
 }
 
 function createEmptyImageData({
