@@ -17,12 +17,17 @@ class Ctx {
       data: new Uint8ClampedArray(width * height * 4),
     };
   }
+  putImageData(imageData) {
+    this.canvas.imageData = imageData;
+  }
 }
 /* eslint-enable class-methods-use-this */
 
 class Canvas {
   constructor() {
     this.imageData = null;
+    this.width = null;
+    this.height = null;
   }
   getContext(context) {
     if (context !== '2d') throw new Error(`${context} is not support.`);
