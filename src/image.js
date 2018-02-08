@@ -9,7 +9,8 @@ function getMinUniqueId(currentState: Image[]): number {
   const iDs = currentState.map(i => i.id);
   if (iDs.length === 0) return 0;
   const result = iDs.filter((id, index) => id !== index)[0];
-  return result || iDs.length;
+  if (result === undefined) return iDs.length;
+  return result - 1;
 }
 
 function createEmptyImageData({
@@ -21,7 +22,7 @@ function createEmptyImageData({
 }): ImageData {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
-  return ctx.getImageData(0, 0, width, height);
+  return ctx.createImageData(width, height);
 }
 
 export default function createNewImage(
