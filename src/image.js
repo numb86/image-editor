@@ -22,7 +22,7 @@ function createEmptyImageData({
 }): ImageData {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
-  return ctx.getImageData(0, 0, width, height);
+  return ctx.createImageData(width, height);
 }
 
 export default function createNewImage(
