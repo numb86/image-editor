@@ -10,7 +10,7 @@ class Ctx {
   constructor(canvas) {
     this.canvas = canvas;
   }
-  getImageData(x, y, width, height) {
+  createImageData(width, height) {
     return {
       width,
       height,
