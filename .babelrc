@@ -1,4 +1,13 @@
 {
-  "presets": ["es2015", "flow", "react", "power-assert"],
+  "presets": [
+    ["env", {
+      "targets": {
+        "browsers": ["last 2 Chrome versions", "last 2 Firefox versions"]
+      }
+    }],
+    "flow",
+    "react",
+    "power-assert"
+  ],
   "plugins": ["transform-class-properties"]
 }

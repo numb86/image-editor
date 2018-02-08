@@ -19,7 +19,7 @@ const config = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ['es2015', 'flow', 'react'],
+              presets: ['env', 'flow', 'react'],
               plugins: ['transform-class-properties'],
             },
           },
