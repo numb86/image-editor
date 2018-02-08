@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --inline",
-    "build": "yarn licenses generate-disclaimer > use-library.txt && webpack -p",
+    "build": "yarn licenses generate-disclaimer > use-library.txt && NODE_ENV=production webpack -p",
     "sass": "sass scss:build/public/css  --style expanded --watch --sourcemap=none",
     "test": "mocha --compilers js:babel-register --require setup_test.js 'src/**/__tests__/*.test.js'",
     "mocha": "mocha --compilers js:babel-register --require setup_test.js",
@@ -24,6 +24,7 @@
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.0.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-react-constant-elements": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-power-assert": "^1.0.0",
