@@ -7,7 +7,13 @@
     }],
     "flow",
     "react",
-    "power-assert"
   ],
-  "plugins": ["transform-class-properties"]
+  "plugins": ["transform-class-properties"],
+  "env": {
+    "development": {
+      "presets": [
+        "power-assert"
+      ]
+    }
+  }
 }
