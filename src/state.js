@@ -17,6 +17,7 @@ const initialState = {
     height: INITIAL_DISPALY_HEIGHT,
     magnificationPercent: INITIAL_DISPALY_MAGNIFICATION_PERCENT,
   },
+  activeImageId: 0,
 };
 
 export default initialState;
