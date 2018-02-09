@@ -22,6 +22,10 @@ type State = {
   activeImageId: number,
 };
 
+function getActiveImage(id: number, imageList: Image[]): Image {
+  return imageList.filter(image => image.id === id)[0];
+}
+
 export default class App extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
