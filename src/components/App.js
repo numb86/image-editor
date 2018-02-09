@@ -19,6 +19,7 @@ type State = {
     height: number,
     magnificationPercent: number,
   },
+  activeImageId: number,
 };
 
 export default class App extends React.Component<Props, State> {
