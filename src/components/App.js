@@ -3,7 +3,7 @@ import React from 'react';
 import ClassNames from 'classnames';
 
 import Display from './Display';
-import LayerList from './LayerList';
+import ViewLayerList from './ViewLayerList';
 
 import {generateImageList, SPECIFY_PROPERTY} from '../generateImageList';
 import initialState from '../state';
@@ -20,16 +20,17 @@ type State = {
     magnificationPercent: number,
   },
   activeImageId: number,
+  activeActionLayer: 'drawLine' | 'eraser',
 };
-
-function getActiveImage(id: number, imageList: Image[]): Image {
-  return imageList.filter(image => image.id === id)[0];
-}
 
 export default class App extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = initialState;
+  }
+  getActiveImage(): Image {
+    const {imageList, activeImageId} = this.state;
+    return imageList.filter(image => image.id === activeImageId)[0];
   }
   render() {
     const {isDragOver, imageList, display} = this.state;
@@ -71,7 +72,7 @@ export default class App extends React.Component<Props, State> {
           動作確認用のボタン
         </button>
         <Display {...display}>
-          <LayerList viewLayerDataList={imageList} />
+          <ViewLayerList viewLayerDataList={imageList} />
         </Display>
         {isDragOver && (
           <div className="guide-file-drop">画像をドロップすると新しくレイヤーが作られます</div>

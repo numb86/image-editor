@@ -7,7 +7,7 @@ import type {Image} from '../image';
 
 const COMPONENT_USE_PROPS = ['isShow', 'imageData'];
 
-export default function LayerList({
+export default function ViewLayerList({
   viewLayerDataList,
 }: {
   viewLayerDataList: Image[],
