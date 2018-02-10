@@ -4,6 +4,7 @@ import ClassNames from 'classnames';
 
 import Display from './Display';
 import ViewLayerList from './ViewLayerList';
+import ActionLayer from './actionLayer/ActionLayer';
 
 import {generateImageList, SPECIFY_PROPERTY} from '../generateImageList';
 import initialState from '../state';
@@ -33,7 +34,13 @@ export default class App extends React.Component<Props, State> {
     return imageList.filter(image => image.id === activeImageId)[0];
   }
   render() {
-    const {isDragOver, imageList, display} = this.state;
+    const {
+      isDragOver,
+      imageList,
+      display,
+      activeImageId,
+      activeActionLayer,
+    } = this.state;
     const classNames = ClassNames({
       app: true,
       'file-drag-over-area': isDragOver,
@@ -73,6 +80,19 @@ export default class App extends React.Component<Props, State> {
         </button>
         <Display {...display}>
           <ViewLayerList viewLayerDataList={imageList} />
+          <ActionLayer
+            activeActionLayer={activeActionLayer}
+            imageData={this.getActiveImage().imageData}
+            changeImageData={imageData => {
+              const updatedState = generateImageList({
+                type: SPECIFY_PROPERTY,
+                data: {imageData},
+                currentState: imageList,
+                target: activeImageId,
+              });
+              this.setState({imageList: updatedState});
+            }}
+          />
         </Display>
         {isDragOver && (
           <div className="guide-file-drop">画像をドロップすると新しくレイヤーが作られます</div>
