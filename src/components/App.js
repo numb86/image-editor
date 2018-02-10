@@ -20,6 +20,7 @@ type State = {
     magnificationPercent: number,
   },
   activeImageId: number,
+  activeActionLayer: 'drawLine' | 'eraser',
 };
 
 export default class App extends React.Component<Props, State> {
