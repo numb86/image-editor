@@ -1,6 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import assert from 'assert';
+import sinon from 'sinon';
 
 import ViewLayer from '../ViewLayer';
 
@@ -47,5 +48,14 @@ describe('ViewLayer', () => {
     display = hiddenWrapper.prop('style').display;
     assert(display === 'none');
   });
-  // TODO: componentDidUpdate のテストを書く
+  it('componentDidUpdate の際に putImageData が呼び出される', () => {
+    const inst = wrapper.instance();
+    inst.canvas = document.createElement('canvas');
+    inst.componentDidMount();
+    const spy = sinon.spy(inst.ctx, 'putImageData');
+    assert(spy.callCount === 0);
+    inst.componentDidUpdate();
+    assert(spy.callCount === 1);
+    spy.restore();
+  });
 });
