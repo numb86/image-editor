@@ -10,6 +10,7 @@ import {generateImageList, SPECIFY_PROPERTY} from '../generateImageList';
 import initialState from '../state';
 
 import type {Image} from '../image';
+import type {ActiveActionLayer} from './actionLayer/ActionLayer';
 
 type Props = {||};
 type State = {
@@ -21,7 +22,7 @@ type State = {
     magnificationPercent: number,
   },
   activeImageId: number,
-  activeActionLayer: 'drawLine' | 'eraser',
+  activeActionLayer: ActiveActionLayer,
 };
 
 export default class App extends React.Component<Props, State> {
