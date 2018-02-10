@@ -21,6 +21,14 @@ export default class ViewLayer extends React.Component<Props> {
     this.canvas.height = imageData.height;
     this.ctx.putImageData(imageData, 0, 0);
   }
+  componentDidUpdate() {
+    const {imageData} = this.props;
+    if (!this.canvas) throw new Error('this.canvas is not found.');
+    this.canvas.width = imageData.width;
+    this.canvas.height = imageData.height;
+    if (!this.ctx) throw new Error('this.ctx is not found.');
+    this.ctx.putImageData(imageData, 0, 0);
+  }
   canvas: HTMLCanvasElement | null;
   ctx: CanvasRenderingContext2D | null;
   render() {

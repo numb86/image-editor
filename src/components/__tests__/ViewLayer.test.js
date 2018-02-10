@@ -43,4 +43,5 @@ describe('ViewLayer', () => {
     display = hiddenWrapper.prop('style').display;
     assert(display === 'none');
   });
+  // TODO: componentDidUpdate のテストを書く
 });
