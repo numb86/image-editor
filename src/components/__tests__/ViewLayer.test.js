@@ -14,9 +14,13 @@ describe('ViewLayer', () => {
       data: Uint8ClampedArray.from(data),
     };
   }
-  const imageData = createImageData(WIDTH, HEIGHT, [0, 1, 2, 3, 4]);
-  const wrapper = shallow(<ViewLayer key="0" imageData={imageData} isShow />, {
-    disableLifecycleMethods: true,
+  let imageData;
+  let wrapper;
+  beforeEach(() => {
+    imageData = createImageData(WIDTH, HEIGHT, [0, 1, 2, 3, 4]);
+    wrapper = shallow(<ViewLayer key="0" imageData={imageData} isShow />, {
+      disableLifecycleMethods: true,
+    });
   });
   it('渡されたimageDataの内容が描画される', () => {
     const inst = wrapper.instance();
