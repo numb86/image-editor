@@ -83,7 +83,7 @@ export default class App extends React.Component<Props, State> {
           <ActionLayer
             activeActionLayer={activeActionLayer}
             imageData={this.getActiveImage().imageData}
-            changeImageData={imageData => {
+            updateImageData={imageData => {
               const updatedState = generateImageList({
                 type: SPECIFY_PROPERTY,
                 data: {imageData},

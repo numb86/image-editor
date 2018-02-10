@@ -13,7 +13,7 @@ export default function DrawLineLayer(props) {
         ctx.moveTo(startPoint.x, startPoint.y);
         ctx.lineTo(currentPoint.x, currentPoint.y);
         ctx.stroke();
-        props.changeImageData(
+        props.updateImageData(
           ctx.getImageData(0, 0, canvas.width, canvas.height)
         );
       }}
