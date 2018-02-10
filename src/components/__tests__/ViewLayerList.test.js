@@ -2,9 +2,9 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import assert from 'assert';
 
-import LayerList from '../LayerList';
+import ViewLayerList from '../ViewLayerList';
 
-describe('LayerList', () => {
+describe('ViewLayerList', () => {
   const COMPONENT_USE_PROPS = ['isShow', 'imageData'];
   function createImageData(width, height, data) {
     return {
@@ -25,7 +25,7 @@ describe('LayerList', () => {
       imageData: createImageData(90, 90, [7, 8, 9]),
     },
   ];
-  const list = shallow(<LayerList viewLayerDataList={imageList} />).first();
+  const list = shallow(<ViewLayerList viewLayerDataList={imageList} />).first();
   it('渡されたリストに基いてViewLayerのリストがレンダリングされる', () => {
     assert(list.length === 2);
     assert(list.at(0).prop('isShow') === true);
