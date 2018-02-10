@@ -65,7 +65,7 @@ export default class MouseMoveActionLayer extends React.Component {
         onMouseMove={e => {
           if (!this.state.isAction) return;
           const currentPoint = this.getCurrentPoint(e.pageX, e.pageY);
-          this.props.edit({
+          this.props.executeAction({
             canvas: this.canvas,
             ctx: this.ctx,
             startPoint: this.state.startPoint,
