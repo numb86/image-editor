@@ -138,3 +138,8 @@ body {
 .layer {
   position: absolute;
 }
+
+.action-layer {
+  @extend .layer;
+  opacity: 0;
+}

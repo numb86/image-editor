@@ -48,11 +48,9 @@ export default class MouseMoveActionLayer extends React.Component {
   }
   render() {
     const {width, height} = this.props.imageData;
-    const {opacity} = this.props;
     return (
       <canvas
-        className="layer"
-        style={{opacity}}
+        className="action-layer"
         width={width}
         height={height}
         ref={ref => {
