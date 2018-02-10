@@ -52,4 +52,5 @@ describe('App', () => {
     assert(wrapper.state('isDragOver') === true);
     assert(wrapper.find('div').find('.guide-file-drop').length);
   });
+  // TODO: getActiveImage のテストを書く
 });
