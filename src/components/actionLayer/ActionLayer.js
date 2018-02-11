@@ -12,11 +12,11 @@ type Props = {
 };
 
 export default function ActionLayer(props: Props) {
-  const useProps = Object.assign({}, props);
-  delete useProps.activeActionLayer;
+  const usedProps = Object.assign({}, props);
+  delete usedProps.activeActionLayer;
   switch (props.activeActionLayer) {
     case 'drawLine':
-      return <DrawLineLayer {...useProps} />;
+      return <DrawLineLayer {...usedProps} />;
     default:
       throw new Error('Could not find ActionLayer.');
   }
