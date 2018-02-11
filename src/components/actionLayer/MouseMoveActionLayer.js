@@ -5,6 +5,7 @@ type Point = {x: number, y: number};
 
 type Props = {
   callbackDidMount: ({ctx: CanvasRenderingContext2D}) => void,
+  callbackDidUpdate: ({ctx: CanvasRenderingContext2D}) => void,
   executeAction: ({
     canvas: HTMLCanvasElement,
     ctx: CanvasRenderingContext2D,
@@ -41,6 +42,12 @@ export default class MouseMoveActionLayer extends React.Component<
     this.canvasStartPosition = {x, y};
     if (!this.ctx) throw new Error('this.ctx is null.');
     this.props.callbackDidMount({
+      ctx: this.ctx,
+    });
+  }
+  componentDidUpdate() {
+    if (!this.ctx) throw new Error('this.ctx is null.');
+    this.props.callbackDidUpdate({
       ctx: this.ctx,
     });
   }

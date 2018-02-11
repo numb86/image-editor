@@ -14,6 +14,9 @@ export default function DrawLineLayer(props: Props) {
       callbackDidMount={({ctx}) => {
         ctx.putImageData(props.imageData, 0, 0);
       }}
+      callbackDidUpdate={({ctx}) => {
+        ctx.putImageData(props.imageData, 0, 0);
+      }}
       executeAction={({canvas, ctx, startPoint, currentPoint}) => {
         ctx.beginPath();
         ctx.moveTo(startPoint.x, startPoint.y);
