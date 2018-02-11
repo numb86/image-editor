@@ -8,9 +8,11 @@ export type ActiveActionLayer = 'drawLine' | 'eraser';
 export default function ActionLayer(props: {
   activeActionLayer: ActiveActionLayer,
 }) {
+  const useProps = Object.assign({}, props);
+  delete useProps.activeActionLayer;
   switch (props.activeActionLayer) {
     case 'drawLine':
-      return <DrawLineLayer {...props} />;
+      return <DrawLineLayer {...useProps} />;
     default:
       throw new Error('Could not find ActionLayer.');
   }
