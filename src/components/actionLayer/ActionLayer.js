@@ -5,9 +5,13 @@ import DrawLineLayer from './DrawLineLayer';
 
 export type ActiveActionLayer = 'drawLine' | 'eraser';
 
-export default function ActionLayer(props: {
+type Props = {
   activeActionLayer: ActiveActionLayer,
-}) {
+  imageData: ImageData,
+  updateImageData: ImageData => void,
+};
+
+export default function ActionLayer(props: Props) {
   const useProps = Object.assign({}, props);
   delete useProps.activeActionLayer;
   switch (props.activeActionLayer) {

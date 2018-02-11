@@ -1,8 +1,14 @@
+// @flow
 import React from 'react';
 
 import MouseMoveActionLayer from './MouseMoveActionLayer';
 
-export default function DrawLineLayer(props) {
+type Props = {
+  imageData: ImageData,
+  updateImageData: ImageData => void,
+};
+
+export default function DrawLineLayer(props: Props) {
   return (
     <MouseMoveActionLayer
       callbackDidMount={({ctx}) => {
