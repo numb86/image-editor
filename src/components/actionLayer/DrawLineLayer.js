@@ -17,8 +17,7 @@ export default function DrawLineLayer(props) {
           ctx.getImageData(0, 0, canvas.width, canvas.height)
         );
       }}
-      // TODO: 必要なプロパティだけを渡すようにする
-      {...props}
+      imageData={props.imageData}
     />
   );
 }
