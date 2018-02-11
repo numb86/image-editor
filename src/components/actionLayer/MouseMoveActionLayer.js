@@ -1,7 +1,29 @@
+// @flow
 import React from 'react';
 
-export default class MouseMoveActionLayer extends React.Component {
-  constructor(props) {
+type Point = {x: number, y: number};
+
+type Props = {
+  callbackDidMount: ({ctx: CanvasRenderingContext2D}) => void,
+  executeAction: ({
+    canvas: HTMLCanvasElement,
+    ctx: CanvasRenderingContext2D,
+    startPoint: Point,
+    currentPoint: Point,
+  }) => void,
+  imageData: ImageData,
+};
+
+type State = {
+  isAction: boolean,
+  startPoint: Point,
+};
+
+export default class MouseMoveActionLayer extends React.Component<
+  Props,
+  State
+> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       isAction: false,
@@ -12,36 +34,47 @@ export default class MouseMoveActionLayer extends React.Component {
     this.canvasStartPosition = null;
   }
   componentDidMount() {
-    this.ctx = this.canvas.getContext('2d');
-    const {x, y} = this.canvas.getBoundingClientRect();
+    const {canvas} = this;
+    if (!canvas) throw new Error('canvas is null.');
+    this.ctx = canvas.getContext('2d');
+    const {x, y} = ((canvas.getBoundingClientRect(): any): DOMRect);
     this.canvasStartPosition = {x, y};
+    if (!this.ctx) throw new Error('this.ctx is null.');
     this.props.callbackDidMount({
-      canvas: this.canvas,
+      canvas,
       ctx: this.ctx,
     });
   }
-  setStartPoint(mouseEventPageX, mouseEventPageY) {
+  setStartPoint(mouseEventPageX: number, mouseEventPageY: number) {
+    const {canvasStartPosition} = this;
+    if (!canvasStartPosition) throw new Error('canvasStartPosition is null.');
     this.setState({
       startPoint: {
-        x: mouseEventPageX - this.canvasStartPosition.x,
-        y: mouseEventPageY - this.canvasStartPosition.y,
+        x: mouseEventPageX - canvasStartPosition.x,
+        y: mouseEventPageY - canvasStartPosition.y,
       },
     });
   }
-  getCurrentPoint(mouseEventPageX, mouseEventPageY) {
+  getCurrentPoint(mouseEventPageX: number, mouseEventPageY: number): Point {
     const {canvasStartPosition} = this;
+    if (!canvasStartPosition) throw new Error('canvasStartPosition is null.');
     return {
       x: mouseEventPageX - canvasStartPosition.x,
       y: mouseEventPageY - canvasStartPosition.y,
     };
   }
+
+  canvas: HTMLCanvasElement | null;
+  ctx: CanvasRenderingContext2D | null;
+  canvasStartPosition: Point | null;
+
   startAction() {
     this.setState({isAction: true});
   }
   stopAction() {
     this.setState({isAction: false});
   }
-  switchCurrentPointToStartPoint(currentPoint) {
+  switchCurrentPointToStartPoint(currentPoint: Point) {
     this.setState({
       startPoint: currentPoint,
     });
@@ -63,6 +96,8 @@ export default class MouseMoveActionLayer extends React.Component {
         onMouseMove={e => {
           if (!this.state.isAction) return;
           const currentPoint = this.getCurrentPoint(e.pageX, e.pageY);
+          if (!this.canvas) throw new Error('this.canvas is null.');
+          if (!this.ctx) throw new Error('this.ctx is null.');
           this.props.executeAction({
             canvas: this.canvas,
             ctx: this.ctx,
