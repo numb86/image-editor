@@ -5,14 +5,14 @@ import assert from 'assert';
 import ActionLayer from '../ActionLayer';
 
 describe('ActionLayer', () => {
-  it.skip('props.activeActionLayer に応じて返すコンポーネントが変わる', () => {
+  it('props.activeActionLayer に応じて返すコンポーネントが変わる', () => {
     const drawLineWrapper = shallow(
       <ActionLayer activeActionLayer="drawLine" />
     );
     assert(drawLineWrapper.find('DrawLineLayer').length === 1);
     const eraserWrapper = shallow(<ActionLayer activeActionLayer="eraser" />);
     assert(eraserWrapper.find('DrawLineLayer').length === 0);
-    assert(eraserWrapper.find('eraserLayer').length === 1);
+    assert(eraserWrapper.find('EraserLayer').length === 1);
   });
   it('対応していない props.activeActionLayer を渡すとエラーを返す', () => {
     let error = false;
