@@ -68,13 +68,12 @@ export default class App extends React.Component<Props, State> {
       >
         <button
           onClick={() => {
-            const updatedState = generateImageList({
-              type: SPECIFY_PROPERTY,
-              data: {isShow: false},
-              currentState: imageList,
-              target: 0,
+            this.setState({
+              activeActionLayer:
+                this.state.activeActionLayer === 'drawLine'
+                  ? 'eraser'
+                  : 'drawLine',
             });
-            this.setState({imageList: updatedState});
           }}
         >
           動作確認用のボタン
