@@ -4,10 +4,10 @@ import React from 'react';
 import DrawLineLayer from './DrawLineLayer';
 import EraserLayer from './EraserLayer';
 
-export type ActiveActionLayer = 'drawLine' | 'eraser';
+export type ActionLayerName = 'drawLine' | 'eraser';
 
 type Props = {
-  activeActionLayer: ActiveActionLayer,
+  activeActionLayer: ActionLayerName,
   imageData: ImageData,
   updateImageData: ImageData => void,
 };
