@@ -7,7 +7,7 @@ import ViewLayerList from './ViewLayerList';
 import ActionLayer from './actionLayer/ActionLayer';
 
 import {generateImageList, SPECIFY_PROPERTY} from '../state/generateImageList';
-import initialState from '../state/state';
+import initialState from '../state/initialState';
 
 import type {Image} from '../image';
 import type {ActionLayerName} from './actionLayer/ActionLayer';
