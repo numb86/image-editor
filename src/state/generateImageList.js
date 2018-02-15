@@ -1,7 +1,7 @@
 // @flow
-import createNewImage from './image';
+import createNewImage from '../image';
 
-import type {Image} from './image';
+import type {Image} from '../image';
 
 export const SPECIFY_PROPERTY: 'specifyProperty' = 'specifyProperty';
 export const ADD_IMAGE: 'addImage' = 'addImage';

@@ -6,8 +6,8 @@ import Display from './Display';
 import ViewLayerList from './ViewLayerList';
 import ActionLayer from './actionLayer/ActionLayer';
 
-import {generateImageList, SPECIFY_PROPERTY} from '../generateImageList';
-import initialState from '../state';
+import {generateImageList, SPECIFY_PROPERTY} from '../state/generateImageList';
+import initialState from '../state/state';
 
 import type {Image} from '../image';
 import type {ActiveActionLayer} from './actionLayer/ActionLayer';
