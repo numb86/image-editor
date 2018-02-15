@@ -11,15 +11,13 @@ type ChangeableProperty = {
   strokeStyle?: string,
 };
 
-type ContextSetting = {
-  lineWidth: number,
-  lineCap: string,
-  lineJoin: string,
-  strokeStyle?: string,
-};
-
 type MouseMoveActionLayerSetting = {
-  ctx: ContextSetting,
+  ctx: {
+    lineWidth: number,
+    lineCap: string,
+    lineJoin: string,
+    strokeStyle?: string,
+  },
 };
 
 export type ActionLayerSettings = {
