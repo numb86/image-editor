@@ -11,6 +11,7 @@ import initialState from '../state/initialState';
 
 import type {Image} from '../image';
 import type {ActionLayerName} from './actionLayer/ActionLayer';
+import type {ActionLayerSettings} from '../state/generateActionLayerSettings';
 
 type Props = {||};
 type State = {
@@ -23,6 +24,7 @@ type State = {
   },
   activeImageId: number,
   activeActionLayer: ActionLayerName,
+  actionLayerSettings: ActionLayerSettings,
 };
 
 export default class App extends React.Component<Props, State> {

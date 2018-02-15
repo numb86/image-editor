@@ -6,18 +6,23 @@ export const SPECIFY_CONTEXT_PROPERTY: 'specifyContextProperty' =
 
 const CTX: 'ctx' = 'ctx';
 
-type ContextSetting = {
+type ChangeableProperty = {
   lineWidth?: number,
   strokeStyle?: string,
+};
+
+type ContextSetting = {
+  lineWidth: number,
   lineCap: string,
-  lienJoin: string,
+  lineJoin: string,
+  strokeStyle?: string,
 };
 
 type MouseMoveActionLayerSetting = {
   ctx: ContextSetting,
 };
 
-type ActionLayerSettings = {
+export type ActionLayerSettings = {
   [ActionLayerName]: MouseMoveActionLayerSetting,
 };
 
@@ -25,7 +30,7 @@ function specifyProperty(
   currentState: ActionLayerSettings,
   target: ActionLayerName,
   key: typeof CTX,
-  data: ContextSetting
+  data: ChangeableProperty
 ): ActionLayerSettings {
   const newKeyValue = Object.assign({}, currentState[target][key], data);
   const newTargetValue = Object.assign({}, currentState[target], {
@@ -42,7 +47,7 @@ export function generateActionLayerSettings({
 }: {
   type: typeof SPECIFY_CONTEXT_PROPERTY,
   currentState: ActionLayerSettings,
-  data: ContextSetting,
+  data: ChangeableProperty,
   target: ActionLayerName,
 }): ActionLayerSettings {
   switch (type) {
