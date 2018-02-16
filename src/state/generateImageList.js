@@ -89,7 +89,7 @@ export function generateImageList({
       return generateImageList({
         type: ADD_IMAGE,
         image: createNewImage({width, height}, currentState),
-        currentState,
+        currentState: allImageNotActive(currentState),
       });
     }
     case SPECIFY_ACTIVE_IMAGE: {
