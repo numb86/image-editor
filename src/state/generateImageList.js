@@ -90,6 +90,7 @@ export function generateImageList({
         throw new Error('Data is not enough.');
       }
       if (!width || !height) {
+        if (!imageData) throw new Error('Data is not enough.');
         width = imageData.width;
         height = imageData.height;
       }
