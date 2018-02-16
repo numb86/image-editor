@@ -97,6 +97,7 @@ describe('generateImageList', () => {
 
   describe('ADD_IMAGE', () => {
     it('指定したimageが先頭に追加され、副作用がなくcurrentStateに影響を与えない', () => {
+      const originalLength = originalImageList.length;
       const ID = 9;
       const image = {id: ID};
       const newList = generateImageList({
@@ -104,15 +105,16 @@ describe('generateImageList', () => {
         image,
         currentState: originalImageList,
       });
-      assert(newList.length === 3);
+      assert(newList.length === originalLength + 1);
       assert(newList[0].id === ID);
-      assert(originalImageList.length === 2);
+      assert(originalImageList.length === originalLength);
       assert(originalImageList[0].id === 0);
     });
   });
 
   describe('ADD_NEW_IMAGE', () => {
     it('指定したサイズのimageが先頭に追加され、副作用がなくcurrentStateに影響を与えない', () => {
+      const originalLength = originalImageList.length;
       const WIDTH = 185;
       const HEIGHT = 97;
       const newList = generateImageList({
@@ -122,7 +124,7 @@ describe('generateImageList', () => {
       });
       assert(newList[0].imageData.width === WIDTH);
       assert(newList[0].imageData.height === HEIGHT);
-      assert(originalImageList.length === 2);
+      assert(originalImageList.length === originalLength);
     });
   });
 });
