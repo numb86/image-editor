@@ -4,18 +4,19 @@ import {
   generateActionLayerSettings,
   SPECIFY_CONTEXT_PROPERTY,
 } from '../generateActionLayerSettings';
+import {DRAW_LINE, ERASER} from '../../components/actionLayer/ActionLayer';
 
 describe('generateActionLayerSettings', () => {
   let originalSettings;
   beforeEach(() => {
     originalSettings = {
-      drawLine: {
+      [DRAW_LINE]: {
         number: 1,
         ctx: {
           lineWidth: 5,
         },
       },
-      eraser: {
+      [ERASER]: {
         number: 2,
         ctx: {
           lineWidth: 10,
@@ -29,7 +30,7 @@ describe('generateActionLayerSettings', () => {
   });
   describe('SPECIFY_CONTEXT_PROPERTY', () => {
     it('type で指定したオブジェクトの内容を変更する', () => {
-      const TARGET = 'drawLine';
+      const TARGET = DRAW_LINE;
       const newSettings = generateActionLayerSettings({
         type: SPECIFY_CONTEXT_PROPERTY,
         data: {key: 'value'},
@@ -40,7 +41,7 @@ describe('generateActionLayerSettings', () => {
       assert(newSettings[TARGET].ctx.key === 'value');
     });
     it('ctx 以外には影響を与えない', () => {
-      const TARGET = 'drawLine';
+      const TARGET = DRAW_LINE;
       const newSettings = generateActionLayerSettings({
         type: SPECIFY_CONTEXT_PROPERTY,
         data: {lineWidth: 7},
@@ -51,7 +52,7 @@ describe('generateActionLayerSettings', () => {
       assert(newSettings[TARGET].number === 1);
     });
     it('type で指定したオブジェクト以外はそのままコピーされる', () => {
-      const TARGET = 'drawLine';
+      const TARGET = DRAW_LINE;
       const newSettings = generateActionLayerSettings({
         type: SPECIFY_CONTEXT_PROPERTY,
         data: {lineWidth: 7},
@@ -59,11 +60,11 @@ describe('generateActionLayerSettings', () => {
         target: TARGET,
       });
       assert(newSettings[TARGET].ctx.lineWidth === 7);
-      assert(newSettings.eraser.ctx.lineWidth === 10);
+      assert(newSettings[ERASER].ctx.lineWidth === 10);
       assert(newSettings.hoge.boo === 'abc');
     });
     it('副作用なく、新しい settings を生み出せる', () => {
-      const TARGET = 'eraser';
+      const TARGET = ERASER;
       const newSettings = generateActionLayerSettings({
         type: SPECIFY_CONTEXT_PROPERTY,
         data: {lineWidth: 9, key: 'value'},

@@ -3,13 +3,13 @@ import createNewImage from '../image';
 
 import type {Image} from '../image';
 
-// TODO: SPECIFY_PROPERTY -> SPECIFY_IMAGE_PROPERTY
-export const SPECIFY_PROPERTY: 'specifyProperty' = 'specifyProperty';
+export const SPECIFY_IMAGE_PROPERTY: 'specifyImageProperty' =
+  'specifyImageProperty';
 export const ADD_IMAGE: 'addImage' = 'addImage';
 export const ADD_NEW_IMAGE: 'addNewImage' = 'addNewImage';
 
 type GenerateImageListTypeName =
-  | typeof SPECIFY_PROPERTY
+  | typeof SPECIFY_IMAGE_PROPERTY
   | typeof ADD_IMAGE
   | typeof ADD_NEW_IMAGE;
 
@@ -62,7 +62,7 @@ export function generateImageList({
   target?: number,
 }): Image[] {
   switch (type) {
-    case SPECIFY_PROPERTY:
+    case SPECIFY_IMAGE_PROPERTY:
       if (!target && target !== 0) throw new Error('Need target id number.');
       if (!data) throw new Error('Data is necessary.');
       if (data.id) throw new Error('Id can not be overwritten.');

@@ -1,6 +1,8 @@
 // @flow
 import {generateImageList, ADD_NEW_IMAGE} from './generateImageList';
 
+import {DRAW_LINE, ERASER} from '../components/actionLayer/ActionLayer';
+
 const INITIAL_DISPALY_WIDTH = 500;
 const INITIAL_DISPALY_HEIGHT = 500;
 const INITIAL_DISPALY_MAGNIFICATION_PERCENT = 100;
@@ -18,9 +20,9 @@ const initialState = {
     magnificationPercent: INITIAL_DISPALY_MAGNIFICATION_PERCENT,
   },
   activeImageId: 0,
-  activeActionLayer: 'drawLine',
+  activeActionLayer: DRAW_LINE,
   actionLayerSettings: {
-    drawLine: {
+    [DRAW_LINE]: {
       ctx: {
         strokeStyle: '#000',
         lineWidth: 1,
@@ -28,7 +30,7 @@ const initialState = {
         lineJoin: 'round',
       },
     },
-    eraser: {
+    [ERASER]: {
       ctx: {
         lineWidth: 5,
         lineCap: 'round',

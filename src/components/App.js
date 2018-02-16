@@ -4,10 +4,16 @@ import ClassNames from 'classnames';
 
 import Display from './Display';
 import ViewLayerList from './ViewLayerList';
-import ActionLayer from './actionLayer/ActionLayer';
+import {ActionLayer, DRAW_LINE, ERASER} from './actionLayer/ActionLayer';
 
-import {generateImageList, SPECIFY_PROPERTY} from '../state/generateImageList';
-import {generateActionLayerSettings, SPECIFY_CONTEXT_PROPERTY} from '../state/generateActionLayerSettings';
+import {
+  generateImageList,
+  SPECIFY_IMAGE_PROPERTY,
+} from '../state/generateImageList';
+import {
+  generateActionLayerSettings,
+  SPECIFY_CONTEXT_PROPERTY,
+} from '../state/generateActionLayerSettings';
 import initialState from '../state/initialState';
 
 import type {Image} from '../image';
@@ -74,9 +80,7 @@ export default class App extends React.Component<Props, State> {
           onClick={() => {
             this.setState({
               activeActionLayer:
-                this.state.activeActionLayer === 'drawLine'
-                  ? 'eraser'
-                  : 'drawLine',
+                this.state.activeActionLayer === DRAW_LINE ? ERASER : DRAW_LINE,
             });
           }}
         >
@@ -85,12 +89,12 @@ export default class App extends React.Component<Props, State> {
         <button
           onClick={() => {
             const newValue =
-              actionLayerSettings.drawLine.ctx.lineWidth === 1 ? 15 : 1;
+              actionLayerSettings[DRAW_LINE].ctx.lineWidth === 1 ? 15 : 1;
             const newSetting = generateActionLayerSettings({
               type: SPECIFY_CONTEXT_PROPERTY,
               currentState: actionLayerSettings,
               data: {lineWidth: newValue},
-              target: 'drawLine',
+              target: DRAW_LINE,
             });
             this.setState({actionLayerSettings: newSetting});
           }}
@@ -105,7 +109,7 @@ export default class App extends React.Component<Props, State> {
             setting={actionLayerSettings[activeActionLayer]}
             updateImageData={imageData => {
               const updatedState = generateImageList({
-                type: SPECIFY_PROPERTY,
+                type: SPECIFY_IMAGE_PROPERTY,
                 data: {imageData},
                 currentState: imageList,
                 target: activeImageId,
