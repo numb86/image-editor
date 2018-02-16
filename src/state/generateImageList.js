@@ -13,7 +13,7 @@ type GenerateImageListTypeName =
   | typeof ADD_IMAGE
   | typeof ADD_NEW_IMAGE;
 
-type GenerateImageListData = {
+type GenerateImageListReceiveData = {
   isShow?: boolean,
   imageData?: ImageData,
   width?: number,
@@ -57,7 +57,7 @@ export function generateImageList({
 }: {
   type: GenerateImageListTypeName,
   currentState: Image[],
-  data?: GenerateImageListData,
+  data?: GenerateImageListReceiveData,
   image?: Image,
   target?: number,
 }): Image[] {
