@@ -6,8 +6,10 @@ import EraserLayer from './EraserLayer';
 
 import type {MouseMoveActionLayerSetting} from '../../state/generateActionLayerSettings';
 
-// TODO: drawLine や eraser は定数にしたほうがいいはず
-export type ActionLayerName = 'drawLine' | 'eraser';
+const DRAW_LINE: 'drawLine' = 'drawLine';
+const ERASER: 'eraser' = 'eraser';
+
+export type ActionLayerName = typeof DRAW_LINE | typeof ERASER;
 
 type Props = {
   activeActionLayer: ActionLayerName,
@@ -20,9 +22,9 @@ export default function ActionLayer(props: Props) {
   const usedProps = Object.assign({}, props);
   delete usedProps.activeActionLayer;
   switch (props.activeActionLayer) {
-    case 'drawLine':
+    case DRAW_LINE:
       return <DrawLineLayer {...usedProps} />;
-    case 'eraser':
+    case ERASER:
       return <EraserLayer {...usedProps} />;
     default:
       throw new Error('Could not find ActionLayer.');
