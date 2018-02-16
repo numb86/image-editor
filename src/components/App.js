@@ -7,6 +7,7 @@ import ViewLayerList from './ViewLayerList';
 import ActionLayer from './actionLayer/ActionLayer';
 
 import {generateImageList, SPECIFY_PROPERTY} from '../state/generateImageList';
+import {generateActionLayerSettings, SPECIFY_CONTEXT_PROPERTY} from '../state/generateActionLayerSettings';
 import initialState from '../state/initialState';
 
 import type {Image} from '../image';
@@ -79,7 +80,22 @@ export default class App extends React.Component<Props, State> {
             });
           }}
         >
-          動作確認用のボタン
+          ペン ⇔ 消しゴム
+        </button>
+        <button
+          onClick={() => {
+            const newValue =
+              actionLayerSettings.drawLine.ctx.lineWidth === 1 ? 15 : 1;
+            const newSetting = generateActionLayerSettings({
+              type: SPECIFY_CONTEXT_PROPERTY,
+              currentState: actionLayerSettings,
+              data: {lineWidth: newValue},
+              target: 'drawLine',
+            });
+            this.setState({actionLayerSettings: newSetting});
+          }}
+        >
+          ペン（太） ⇔　ペン（細）
         </button>
         <Display {...display}>
           <ViewLayerList viewLayerDataList={imageList} />
