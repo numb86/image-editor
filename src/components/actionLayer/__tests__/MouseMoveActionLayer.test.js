@@ -74,10 +74,14 @@ describe('MouseMoveActionLayer', () => {
     assert(inst.ctx.lineWidth === LINE_WIDTH);
     assert(inst.ctx.lineCap === LINE_CAP);
   });
-  it('componentDidUpdate すると props.callbackDidUpdate が実行される', () => {
+  it('componentDidUpdate すると props.callbackDidUpdate と this.loadContextSetting が実行される', () => {
+    const spy = sinon.spy(inst, 'loadContextSetting');
     assert(calledFunc === null);
+    assert(spy.callCount === 0);
     inst.componentDidUpdate();
     assert(calledFunc === 'callbackDidUpdate');
+    assert(spy.callCount === 1);
+    spy.restore();
   });
   it('getCurrentPoint で、押下したポイントを取得できる', () => {
     const result = inst.getCurrentPoint(100, 105);

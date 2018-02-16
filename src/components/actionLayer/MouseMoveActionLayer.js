@@ -49,10 +49,10 @@ export default class MouseMoveActionLayer extends React.Component<
     this.props.callbackDidMount({ctx});
   }
   componentDidUpdate() {
-    if (!this.ctx) throw new Error('this.ctx is null.');
-    this.props.callbackDidUpdate({
-      ctx: this.ctx,
-    });
+    const {ctx} = this;
+    if (!ctx) throw new Error('ctx is null.');
+    this.loadContextSetting(ctx);
+    this.props.callbackDidUpdate({ctx});
   }
   setStartPoint(mouseEventPageX: number, mouseEventPageY: number) {
     const {canvasStartPosition} = this;
