@@ -29,7 +29,6 @@ type State = {
     height: number,
     magnificationPercent: number,
   },
-  activeImageId: number,
   activeActionLayer: ActionLayerName,
   actionLayerSettings: ActionLayerSettings,
 };
@@ -40,15 +39,13 @@ export default class App extends React.Component<Props, State> {
     this.state = initialState;
   }
   getActiveImage(): Image {
-    const {imageList, activeImageId} = this.state;
-    return imageList.filter(image => image.id === activeImageId)[0];
+    return this.state.imageList[0];
   }
   render() {
     const {
       isDragOver,
       imageList,
       display,
-      activeImageId,
       activeActionLayer,
       actionLayerSettings,
     } = this.state;
@@ -112,7 +109,7 @@ export default class App extends React.Component<Props, State> {
                 type: SPECIFY_IMAGE_PROPERTY,
                 data: {imageData},
                 currentState: imageList,
-                target: activeImageId,
+                target: 0,
               });
               this.setState({imageList: updatedState});
             }}
