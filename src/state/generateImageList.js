@@ -5,11 +5,13 @@ import type {Image} from '../image';
 
 export const SPECIFY_IMAGE_PROPERTY: 'specifyImageProperty' =
   'specifyImageProperty';
+export const SPECIFY_ACTIVE_IMAGE: 'specifyActiveImage' = 'specifyActiveImage';
 export const ADD_IMAGE: 'addImage' = 'addImage';
 export const ADD_NEW_IMAGE: 'addNewImage' = 'addNewImage';
 
 type GenerateImageListTypeName =
   | typeof SPECIFY_IMAGE_PROPERTY
+  | typeof SPECIFY_ACTIVE_IMAGE
   | typeof ADD_IMAGE
   | typeof ADD_NEW_IMAGE;
 
