@@ -6,8 +6,14 @@ import Display from './Display';
 import ViewLayerList from './ViewLayerList';
 import ActionLayer from './actionLayer/ActionLayer';
 
-import {generateImageList, SPECIFY_PROPERTY} from '../state/generateImageList';
-import {generateActionLayerSettings, SPECIFY_CONTEXT_PROPERTY} from '../state/generateActionLayerSettings';
+import {
+  generateImageList,
+  SPECIFY_IMAGE_PROPERTY,
+} from '../state/generateImageList';
+import {
+  generateActionLayerSettings,
+  SPECIFY_CONTEXT_PROPERTY,
+} from '../state/generateActionLayerSettings';
 import initialState from '../state/initialState';
 
 import type {Image} from '../image';
@@ -105,7 +111,7 @@ export default class App extends React.Component<Props, State> {
             setting={actionLayerSettings[activeActionLayer]}
             updateImageData={imageData => {
               const updatedState = generateImageList({
-                type: SPECIFY_PROPERTY,
+                type: SPECIFY_IMAGE_PROPERTY,
                 data: {imageData},
                 currentState: imageList,
                 target: activeImageId,

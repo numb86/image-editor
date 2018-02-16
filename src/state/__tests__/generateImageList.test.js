@@ -2,7 +2,7 @@ import assert from 'assert';
 
 import {
   generateImageList,
-  SPECIFY_PROPERTY,
+  SPECIFY_IMAGE_PROPERTY,
   ADD_IMAGE,
   ADD_NEW_IMAGE,
 } from '../generateImageList';
@@ -33,11 +33,11 @@ describe('generateImageList', () => {
     ];
   });
 
-  describe('SPECIFY_PROPERTY', () => {
+  describe('SPECIFY_IMAGE_PROPERTY', () => {
     it('指定したIDで変更対象のオブジェクトを指定できる', () => {
       const imageData = 'newValue';
       let newList = generateImageList({
-        type: SPECIFY_PROPERTY,
+        type: SPECIFY_IMAGE_PROPERTY,
         data: {imageData},
         currentState: originalImageList,
         target: 0,
@@ -45,7 +45,7 @@ describe('generateImageList', () => {
       assert(newList[0].imageData === imageData);
       assert(newList[1].imageData !== imageData);
       newList = generateImageList({
-        type: SPECIFY_PROPERTY,
+        type: SPECIFY_IMAGE_PROPERTY,
         data: {imageData},
         currentState: originalImageList,
         target: 1,
@@ -54,7 +54,7 @@ describe('generateImageList', () => {
     });
     it('リテラルである要素を副作用なく変更できる', () => {
       const newList = generateImageList({
-        type: SPECIFY_PROPERTY,
+        type: SPECIFY_IMAGE_PROPERTY,
         data: {isShow: false},
         currentState: originalImageList,
         target: 0,
@@ -65,7 +65,7 @@ describe('generateImageList', () => {
     it('オブジェクトである要素を副作用なく変更できる', () => {
       const DATA = [7, 8, 9];
       const newList = generateImageList({
-        type: SPECIFY_PROPERTY,
+        type: SPECIFY_IMAGE_PROPERTY,
         data: {imageData: createImageData(40, 40, DATA)},
         currentState: originalImageList,
         target: 0,
@@ -79,7 +79,7 @@ describe('generateImageList', () => {
     it('複数の要素を副作用なく変更できる', () => {
       const DATA = [7, 8, 9];
       const newList = generateImageList({
-        type: SPECIFY_PROPERTY,
+        type: SPECIFY_IMAGE_PROPERTY,
         data: {isShow: false, imageData: createImageData(40, 40, DATA)},
         currentState: originalImageList,
         target: 0,
