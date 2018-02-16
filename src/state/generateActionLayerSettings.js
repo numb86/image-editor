@@ -11,7 +11,7 @@ type ChangeableProperty = {
   strokeStyle?: string,
 };
 
-type MouseMoveActionLayerSetting = {
+export type MouseMoveActionLayerSetting = {
   ctx: {
     lineWidth: number,
     lineCap: string,

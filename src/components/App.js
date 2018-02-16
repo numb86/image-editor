@@ -43,6 +43,7 @@ export default class App extends React.Component<Props, State> {
       display,
       activeImageId,
       activeActionLayer,
+      actionLayerSettings,
     } = this.state;
     const classNames = ClassNames({
       app: true,
@@ -85,6 +86,7 @@ export default class App extends React.Component<Props, State> {
           <ActionLayer
             activeActionLayer={activeActionLayer}
             imageData={this.getActiveImage().imageData}
+            setting={actionLayerSettings[activeActionLayer]}
             updateImageData={imageData => {
               const updatedState = generateImageList({
                 type: SPECIFY_PROPERTY,
