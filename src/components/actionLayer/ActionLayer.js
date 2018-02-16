@@ -6,8 +6,8 @@ import EraserLayer from './EraserLayer';
 
 import type {MouseMoveActionLayerSetting} from '../../state/generateActionLayerSettings';
 
-const DRAW_LINE: 'drawLine' = 'drawLine';
-const ERASER: 'eraser' = 'eraser';
+export const DRAW_LINE: 'drawLine' = 'drawLine';
+export const ERASER: 'eraser' = 'eraser';
 
 export type ActionLayerName = typeof DRAW_LINE | typeof ERASER;
 
@@ -18,7 +18,7 @@ type Props = {
   setting: MouseMoveActionLayerSetting,
 };
 
-export default function ActionLayer(props: Props) {
+export function ActionLayer(props: Props) {
   const usedProps = Object.assign({}, props);
   delete usedProps.activeActionLayer;
   switch (props.activeActionLayer) {

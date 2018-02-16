@@ -4,7 +4,7 @@ import ClassNames from 'classnames';
 
 import Display from './Display';
 import ViewLayerList from './ViewLayerList';
-import ActionLayer from './actionLayer/ActionLayer';
+import {ActionLayer, DRAW_LINE, ERASER} from './actionLayer/ActionLayer';
 
 import {
   generateImageList,
@@ -80,9 +80,7 @@ export default class App extends React.Component<Props, State> {
           onClick={() => {
             this.setState({
               activeActionLayer:
-                this.state.activeActionLayer === 'drawLine'
-                  ? 'eraser'
-                  : 'drawLine',
+                this.state.activeActionLayer === DRAW_LINE ? ERASER : DRAW_LINE,
             });
           }}
         >

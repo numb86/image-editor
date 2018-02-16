@@ -2,7 +2,7 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import assert from 'assert';
 
-import ActionLayer from '../ActionLayer';
+import {ActionLayer} from '../ActionLayer';
 
 describe('ActionLayer', () => {
   it('props.activeActionLayer に応じて返すコンポーネントが変わる', () => {
