@@ -89,12 +89,12 @@ export default class App extends React.Component<Props, State> {
         <button
           onClick={() => {
             const newValue =
-              actionLayerSettings.drawLine.ctx.lineWidth === 1 ? 15 : 1;
+              actionLayerSettings[DRAW_LINE].ctx.lineWidth === 1 ? 15 : 1;
             const newSetting = generateActionLayerSettings({
               type: SPECIFY_CONTEXT_PROPERTY,
               currentState: actionLayerSettings,
               data: {lineWidth: newValue},
-              target: 'drawLine',
+              target: DRAW_LINE,
             });
             this.setState({actionLayerSettings: newSetting});
           }}

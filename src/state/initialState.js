@@ -20,7 +20,7 @@ const initialState = {
     magnificationPercent: INITIAL_DISPALY_MAGNIFICATION_PERCENT,
   },
   activeImageId: 0,
-  activeActionLayer: 'drawLine',
+  activeActionLayer: DRAW_LINE,
   actionLayerSettings: {
     [DRAW_LINE]: {
       ctx: {
