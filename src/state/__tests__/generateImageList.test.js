@@ -3,6 +3,7 @@ import assert from 'assert';
 import {
   generateImageList,
   SPECIFY_IMAGE_PROPERTY,
+  SPECIFY_ACTIVE_IMAGE,
   ADD_IMAGE,
   ADD_NEW_IMAGE,
 } from '../generateImageList';
@@ -22,12 +23,21 @@ describe('generateImageList', () => {
         id: 0,
         isShow: true,
         imageData: createImageData(100, 100, [1, 2, 3]),
+        active: true,
         obj: {a: 5},
       },
       {
         id: 1,
         isShow: true,
         imageData: createImageData(100, 100, [1, 2, 3]),
+        active: false,
+        obj: {a: 5},
+      },
+      {
+        id: 2,
+        isShow: true,
+        imageData: createImageData(100, 100, [11, 22, 33]),
+        active: false,
         obj: {a: 5},
       },
     ];
@@ -97,6 +107,7 @@ describe('generateImageList', () => {
 
   describe('ADD_IMAGE', () => {
     it('指定したimageが先頭に追加され、副作用がなくcurrentStateに影響を与えない', () => {
+      const originalLength = originalImageList.length;
       const ID = 9;
       const image = {id: ID};
       const newList = generateImageList({
@@ -104,15 +115,16 @@ describe('generateImageList', () => {
         image,
         currentState: originalImageList,
       });
-      assert(newList.length === 3);
+      assert(newList.length === originalLength + 1);
       assert(newList[0].id === ID);
-      assert(originalImageList.length === 2);
+      assert(originalImageList.length === originalLength);
       assert(originalImageList[0].id === 0);
     });
   });
 
   describe('ADD_NEW_IMAGE', () => {
     it('指定したサイズのimageが先頭に追加され、副作用がなくcurrentStateに影響を与えない', () => {
+      const originalLength = originalImageList.length;
       const WIDTH = 185;
       const HEIGHT = 97;
       const newList = generateImageList({
@@ -122,7 +134,45 @@ describe('generateImageList', () => {
       });
       assert(newList[0].imageData.width === WIDTH);
       assert(newList[0].imageData.height === HEIGHT);
-      assert(originalImageList.length === 2);
+      assert(originalImageList.length === originalLength);
+    });
+    it('先頭に追加されるimageがアクティブになる', () => {
+      const newList = generateImageList({
+        type: ADD_NEW_IMAGE,
+        data: {width: 200, height: 200},
+        currentState: originalImageList,
+      });
+      assert(newList[0].active === true);
+      assert(newList[1].active === false);
+      assert(newList.filter(i => i.id === 3)[0].active === true);
+    });
+  });
+
+  describe('SPECIFY_ACTIVE_IMAGE', () => {
+    it('指定したidのimageがアクティブになり、副作用がなくcurrentStateに影響を与えない', () => {
+      const newList = generateImageList({
+        type: SPECIFY_ACTIVE_IMAGE,
+        currentState: originalImageList,
+        target: 1,
+      });
+      assert(originalImageList[0].active === true);
+      assert(originalImageList[1].active === false);
+      assert(newList[0].active === false);
+      assert(newList[1].active === true);
+    });
+    it('アクティブなimageは常にひとつだけ', () => {
+      let newList = generateImageList({
+        type: SPECIFY_ACTIVE_IMAGE,
+        currentState: originalImageList,
+        target: 1,
+      });
+      newList = generateImageList({
+        type: SPECIFY_ACTIVE_IMAGE,
+        currentState: originalImageList,
+        target: 2,
+      });
+      assert(newList[2].active === true);
+      assert(newList.filter(image => image.active === true).length === 1);
     });
   });
 });

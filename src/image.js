@@ -3,6 +3,7 @@ export type Image = {
   id: number,
   isShow: boolean,
   imageData: ImageData,
+  active: boolean,
 };
 
 function getMinUniqueId(currentState: Image[]): number {
@@ -33,5 +34,6 @@ export default function createNewImage(
     id: getMinUniqueId(currentState),
     isShow: true,
     imageData: createEmptyImageData(data),
+    active: true,
   };
 }

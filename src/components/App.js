@@ -29,7 +29,6 @@ type State = {
     height: number,
     magnificationPercent: number,
   },
-  activeImageId: number,
   activeActionLayer: ActionLayerName,
   actionLayerSettings: ActionLayerSettings,
 };
@@ -40,18 +39,17 @@ export default class App extends React.Component<Props, State> {
     this.state = initialState;
   }
   getActiveImage(): Image {
-    const {imageList, activeImageId} = this.state;
-    return imageList.filter(image => image.id === activeImageId)[0];
+    return this.state.imageList.filter(image => image.active === true)[0];
   }
   render() {
     const {
       isDragOver,
       imageList,
       display,
-      activeImageId,
       activeActionLayer,
       actionLayerSettings,
     } = this.state;
+    const activeImage = this.getActiveImage();
     const classNames = ClassNames({
       app: true,
       'file-drag-over-area': isDragOver,
@@ -105,14 +103,14 @@ export default class App extends React.Component<Props, State> {
           <ViewLayerList viewLayerDataList={imageList} />
           <ActionLayer
             activeActionLayer={activeActionLayer}
-            imageData={this.getActiveImage().imageData}
+            imageData={activeImage.imageData}
             setting={actionLayerSettings[activeActionLayer]}
             updateImageData={imageData => {
               const updatedState = generateImageList({
                 type: SPECIFY_IMAGE_PROPERTY,
                 data: {imageData},
                 currentState: imageList,
-                target: activeImageId,
+                target: activeImage.id,
               });
               this.setState({imageList: updatedState});
             }}

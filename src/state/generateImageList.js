@@ -5,23 +5,26 @@ import type {Image} from '../image';
 
 export const SPECIFY_IMAGE_PROPERTY: 'specifyImageProperty' =
   'specifyImageProperty';
+export const SPECIFY_ACTIVE_IMAGE: 'specifyActiveImage' = 'specifyActiveImage';
 export const ADD_IMAGE: 'addImage' = 'addImage';
 export const ADD_NEW_IMAGE: 'addNewImage' = 'addNewImage';
 
 type GenerateImageListTypeName =
   | typeof SPECIFY_IMAGE_PROPERTY
+  | typeof SPECIFY_ACTIVE_IMAGE
   | typeof ADD_IMAGE
   | typeof ADD_NEW_IMAGE;
 
-type GenerateImageListData = {
+type GenerateImageListReceiveData = {
   isShow?: boolean,
   imageData?: ImageData,
   width?: number,
   height?: number,
+  active?: boolean,
 };
 
 function specifyProperty(
-  data: {isShow?: boolean, imageData?: ImageData},
+  data: {isShow?: boolean, imageData?: ImageData, active?: boolean},
   currentState: Image[],
   target: number
 ): Image[] {
@@ -48,6 +51,15 @@ function addImage(data: Image, currentState: Image[]): Image[] {
   return updatedState;
 }
 
+function allImageNotActive(currentState: Image[]): Image[] {
+  const updatedState = currentState.concat();
+  return updatedState.map(image => Object.assign({}, image, {active: false}));
+}
+
+function specifyActiveImage(currentState: Image[], target: number): Image[] {
+  return specifyProperty({active: true}, currentState, target);
+}
+
 export function generateImageList({
   type,
   currentState,
@@ -57,7 +69,7 @@ export function generateImageList({
 }: {
   type: GenerateImageListTypeName,
   currentState: Image[],
-  data?: GenerateImageListData,
+  data?: GenerateImageListReceiveData,
   image?: Image,
   target?: number,
 }): Image[] {
@@ -77,8 +89,12 @@ export function generateImageList({
       return generateImageList({
         type: ADD_IMAGE,
         image: createNewImage({width, height}, currentState),
-        currentState,
+        currentState: allImageNotActive(currentState),
       });
+    }
+    case SPECIFY_ACTIVE_IMAGE: {
+      if (!target && target !== 0) throw new Error('Need target id number.');
+      return specifyActiveImage(allImageNotActive(currentState), target);
     }
     default:
       throw new Error('This type is not found.');

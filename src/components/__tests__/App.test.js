@@ -55,6 +55,6 @@ describe('App', () => {
   it('getActiveImage でアクティブな image を取得できる', () => {
     const inst = wrapper.instance();
     const image = inst.getActiveImage();
-    assert(image.id === wrapper.state('activeImageId'));
+    assert(image.active === true);
   });
 });
