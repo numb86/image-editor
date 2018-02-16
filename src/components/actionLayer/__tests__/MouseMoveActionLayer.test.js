@@ -12,6 +12,14 @@ describe('MouseMoveActionLayer', () => {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   const imageData = ctx.createImageData(WIDTH, HEIGHT);
+  const LINE_WIDTH = 6;
+  const LINE_CAP = 'round';
+  const setting = {
+    ctx: {
+      lineWidth: LINE_WIDTH,
+      lineCap: LINE_CAP,
+    },
+  };
   let wrapper;
   let calledFunc;
   let executeActionReceivedArg;
@@ -32,6 +40,7 @@ describe('MouseMoveActionLayer', () => {
           executeActionReceivedArg = receivedArg;
         }}
         imageData={imageData}
+        setting={setting}
       />,
       {disableLifecycleMethods: true}
     );
@@ -57,6 +66,13 @@ describe('MouseMoveActionLayer', () => {
     assert(calledFunc === null);
     inst.componentDidMount();
     assert(calledFunc === 'callbackDidMount');
+  });
+  it('componentDidMount すると ctx に props.setting で渡された内容が反映される', () => {
+    assert(inst.ctx.lineWidth === 1);
+    assert(inst.ctx.lineCap === 'butt');
+    inst.componentDidMount();
+    assert(inst.ctx.lineWidth === LINE_WIDTH);
+    assert(inst.ctx.lineCap === LINE_CAP);
   });
   it('componentDidUpdate すると props.callbackDidUpdate が実行される', () => {
     assert(calledFunc === null);
