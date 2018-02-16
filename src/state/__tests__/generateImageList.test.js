@@ -136,15 +136,15 @@ describe('generateImageList', () => {
       assert(newList[0].imageData.height === HEIGHT);
       assert(originalImageList.length === originalLength);
     });
-    it('追加されるimageがアクティブになる', () => {
-      assert(originalImageList[0].active === true);
+    it('先頭に追加されるimageがアクティブになる', () => {
       const newList = generateImageList({
         type: ADD_NEW_IMAGE,
         data: {width: 200, height: 200},
         currentState: originalImageList,
       });
-      assert(originalImageList[0].active === false);
-      assert(newList[3].active === true);
+      assert(newList[0].active === true);
+      assert(newList[1].active === false);
+      assert(newList.filter(i => i.id === 3)[0].active === true);
     });
   });
 
