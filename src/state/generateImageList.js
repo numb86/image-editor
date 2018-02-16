@@ -20,10 +20,11 @@ type GenerateImageListReceiveData = {
   imageData?: ImageData,
   width?: number,
   height?: number,
+  active?: boolean,
 };
 
 function specifyProperty(
-  data: {isShow?: boolean, imageData?: ImageData},
+  data: {isShow?: boolean, imageData?: ImageData, active?: boolean},
   currentState: Image[],
   target: number
 ): Image[] {
@@ -48,6 +49,15 @@ function addImage(data: Image, currentState: Image[]): Image[] {
   const updatedState = currentState.concat();
   updatedState.unshift(data);
   return updatedState;
+}
+
+function allImageNotActive(currentState: Image[]): Image[] {
+  const updatedState = currentState.concat();
+  return updatedState.map(image => Object.assign({}, image, {active: false}));
+}
+
+function specifyActiveImage(currentState: Image[], target: number): Image[] {
+  return specifyProperty({active: true}, currentState, target);
 }
 
 export function generateImageList({
@@ -81,6 +91,10 @@ export function generateImageList({
         image: createNewImage({width, height}, currentState),
         currentState,
       });
+    }
+    case SPECIFY_ACTIVE_IMAGE: {
+      if (!target && target !== 0) throw new Error('Need target id number.');
+      return specifyActiveImage(allImageNotActive(currentState), target);
     }
     default:
       throw new Error('This type is not found.');
