@@ -6,6 +6,7 @@ import EraserLayer from './EraserLayer';
 
 import type {MouseMoveActionLayerSetting} from '../../state/generateActionLayerSettings';
 
+// TODO: drawLine や eraser は定数にしたほうがいいはず
 export type ActionLayerName = 'drawLine' | 'eraser';
 
 type Props = {
