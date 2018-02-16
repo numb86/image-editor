@@ -19,6 +19,23 @@ const initialState = {
   },
   activeImageId: 0,
   activeActionLayer: 'drawLine',
+  actionLayerSettings: {
+    drawLine: {
+      ctx: {
+        strokeStyle: '#000',
+        lineWidth: 1,
+        lineCap: 'round',
+        lineJoin: 'round',
+      },
+    },
+    eraser: {
+      ctx: {
+        lineWidth: 5,
+        lineCap: 'round',
+        lineJoin: 'round',
+      },
+    },
+  },
 };
 
 export default initialState;

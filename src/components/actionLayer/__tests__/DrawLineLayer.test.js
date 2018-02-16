@@ -18,12 +18,13 @@ describe('DrawLineLayer', () => {
       wrapper.find('MouseMoveActionLayer').prop('imageData') === IMAGE_DATA
     );
   });
-  it('callbackDidMount, callbackDidUpdate, executeAction, imageData を DrawLineLayer に渡す', () => {
+  it('callbackDidMount, callbackDidUpdate, executeAction, imageData, setting を DrawLineLayer に渡す', () => {
     const expectedProps = [
       'callbackDidMount',
       'callbackDidUpdate',
       'executeAction',
       'imageData',
+      'setting',
     ];
     const wrapperProps = Object.keys(
       wrapper.find('MouseMoveActionLayer').props()

@@ -4,12 +4,16 @@ import React from 'react';
 import DrawLineLayer from './DrawLineLayer';
 import EraserLayer from './EraserLayer';
 
-export type ActiveActionLayer = 'drawLine' | 'eraser';
+import type {MouseMoveActionLayerSetting} from '../../state/generateActionLayerSettings';
+
+// TODO: drawLine や eraser は定数にしたほうがいいはず
+export type ActionLayerName = 'drawLine' | 'eraser';
 
 type Props = {
-  activeActionLayer: ActiveActionLayer,
+  activeActionLayer: ActionLayerName,
   imageData: ImageData,
   updateImageData: ImageData => void,
+  setting: MouseMoveActionLayerSetting,
 };
 
 export default function ActionLayer(props: Props) {

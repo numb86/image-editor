@@ -3,9 +3,12 @@ import React from 'react';
 
 import MouseMoveActionLayer from './MouseMoveActionLayer';
 
+import type {MouseMoveActionLayerSetting} from '../../state/generateActionLayerSettings';
+
 type Props = {
   imageData: ImageData,
   updateImageData: ImageData => void,
+  setting: MouseMoveActionLayerSetting,
 };
 
 export default function EraserLayer(props: Props) {
@@ -28,6 +31,7 @@ export default function EraserLayer(props: Props) {
         );
       }}
       imageData={props.imageData}
+      setting={props.setting}
     />
   );
 }

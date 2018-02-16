@@ -12,6 +12,14 @@ describe('MouseMoveActionLayer', () => {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   const imageData = ctx.createImageData(WIDTH, HEIGHT);
+  const LINE_WIDTH = 6;
+  const LINE_CAP = 'round';
+  const setting = {
+    ctx: {
+      lineWidth: LINE_WIDTH,
+      lineCap: LINE_CAP,
+    },
+  };
   let wrapper;
   let calledFunc;
   let executeActionReceivedArg;
@@ -32,6 +40,7 @@ describe('MouseMoveActionLayer', () => {
           executeActionReceivedArg = receivedArg;
         }}
         imageData={imageData}
+        setting={setting}
       />,
       {disableLifecycleMethods: true}
     );
@@ -58,10 +67,21 @@ describe('MouseMoveActionLayer', () => {
     inst.componentDidMount();
     assert(calledFunc === 'callbackDidMount');
   });
-  it('componentDidUpdate すると props.callbackDidUpdate が実行される', () => {
+  it('componentDidMount すると ctx に props.setting で渡された内容が反映される', () => {
+    assert(inst.ctx.lineWidth === 1);
+    assert(inst.ctx.lineCap === 'butt');
+    inst.componentDidMount();
+    assert(inst.ctx.lineWidth === LINE_WIDTH);
+    assert(inst.ctx.lineCap === LINE_CAP);
+  });
+  it('componentDidUpdate すると props.callbackDidUpdate と this.loadContextSetting が実行される', () => {
+    const spy = sinon.spy(inst, 'loadContextSetting');
     assert(calledFunc === null);
+    assert(spy.callCount === 0);
     inst.componentDidUpdate();
     assert(calledFunc === 'callbackDidUpdate');
+    assert(spy.callCount === 1);
+    spy.restore();
   });
   it('getCurrentPoint で、押下したポイントを取得できる', () => {
     const result = inst.getCurrentPoint(100, 105);

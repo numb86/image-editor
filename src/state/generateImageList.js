@@ -3,6 +3,7 @@ import createNewImage from '../image';
 
 import type {Image} from '../image';
 
+// TODO: SPECIFY_PROPERTY -> SPECIFY_IMAGE_PROPERTY
 export const SPECIFY_PROPERTY: 'specifyProperty' = 'specifyProperty';
 export const ADD_IMAGE: 'addImage' = 'addImage';
 export const ADD_NEW_IMAGE: 'addNewImage' = 'addNewImage';

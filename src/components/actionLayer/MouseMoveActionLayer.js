@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
 
+import type {MouseMoveActionLayerSetting} from '../../state/generateActionLayerSettings';
+
 type Point = {x: number, y: number};
 
 type Props = {
@@ -13,6 +15,7 @@ type Props = {
     currentPoint: Point,
   }) => void,
   imageData: ImageData,
+  setting: MouseMoveActionLayerSetting,
 };
 
 type State = {
@@ -40,16 +43,16 @@ export default class MouseMoveActionLayer extends React.Component<
     this.ctx = canvas.getContext('2d');
     const {x, y} = ((canvas.getBoundingClientRect(): any): DOMRect);
     this.canvasStartPosition = {x, y};
-    if (!this.ctx) throw new Error('this.ctx is null.');
-    this.props.callbackDidMount({
-      ctx: this.ctx,
-    });
+    const {ctx} = this;
+    if (!ctx) throw new Error('ctx is null.');
+    this.loadContextSetting(ctx);
+    this.props.callbackDidMount({ctx});
   }
   componentDidUpdate() {
-    if (!this.ctx) throw new Error('this.ctx is null.');
-    this.props.callbackDidUpdate({
-      ctx: this.ctx,
-    });
+    const {ctx} = this;
+    if (!ctx) throw new Error('ctx is null.');
+    this.loadContextSetting(ctx);
+    this.props.callbackDidUpdate({ctx});
   }
   setStartPoint(mouseEventPageX: number, mouseEventPageY: number) {
     const {canvasStartPosition} = this;
@@ -68,6 +71,9 @@ export default class MouseMoveActionLayer extends React.Component<
       x: mouseEventPageX - canvasStartPosition.x,
       y: mouseEventPageY - canvasStartPosition.y,
     };
+  }
+  loadContextSetting(ctx: CanvasRenderingContext2D) {
+    Object.assign(ctx, this.props.setting.ctx);
   }
 
   canvas: HTMLCanvasElement | null;

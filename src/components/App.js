@@ -7,10 +7,12 @@ import ViewLayerList from './ViewLayerList';
 import ActionLayer from './actionLayer/ActionLayer';
 
 import {generateImageList, SPECIFY_PROPERTY} from '../state/generateImageList';
-import initialState from '../state/state';
+import {generateActionLayerSettings, SPECIFY_CONTEXT_PROPERTY} from '../state/generateActionLayerSettings';
+import initialState from '../state/initialState';
 
 import type {Image} from '../image';
-import type {ActiveActionLayer} from './actionLayer/ActionLayer';
+import type {ActionLayerName} from './actionLayer/ActionLayer';
+import type {ActionLayerSettings} from '../state/generateActionLayerSettings';
 
 type Props = {||};
 type State = {
@@ -22,7 +24,8 @@ type State = {
     magnificationPercent: number,
   },
   activeImageId: number,
-  activeActionLayer: ActiveActionLayer,
+  activeActionLayer: ActionLayerName,
+  actionLayerSettings: ActionLayerSettings,
 };
 
 export default class App extends React.Component<Props, State> {
@@ -41,6 +44,7 @@ export default class App extends React.Component<Props, State> {
       display,
       activeImageId,
       activeActionLayer,
+      actionLayerSettings,
     } = this.state;
     const classNames = ClassNames({
       app: true,
@@ -76,13 +80,29 @@ export default class App extends React.Component<Props, State> {
             });
           }}
         >
-          動作確認用のボタン
+          ペン ⇔ 消しゴム
+        </button>
+        <button
+          onClick={() => {
+            const newValue =
+              actionLayerSettings.drawLine.ctx.lineWidth === 1 ? 15 : 1;
+            const newSetting = generateActionLayerSettings({
+              type: SPECIFY_CONTEXT_PROPERTY,
+              currentState: actionLayerSettings,
+              data: {lineWidth: newValue},
+              target: 'drawLine',
+            });
+            this.setState({actionLayerSettings: newSetting});
+          }}
+        >
+          ペン（太） ⇔　ペン（細）
         </button>
         <Display {...display}>
           <ViewLayerList viewLayerDataList={imageList} />
           <ActionLayer
             activeActionLayer={activeActionLayer}
             imageData={this.getActiveImage().imageData}
+            setting={actionLayerSettings[activeActionLayer]}
             updateImageData={imageData => {
               const updatedState = generateImageList({
                 type: SPECIFY_PROPERTY,
