@@ -9,12 +9,14 @@ import {ActionLayer, DRAW_LINE, ERASER} from './actionLayer/ActionLayer';
 import {
   generateImageList,
   SPECIFY_IMAGE_PROPERTY,
+  ADD_NEW_IMAGE,
 } from '../state/generateImageList';
 import {
   generateActionLayerSettings,
   SPECIFY_CONTEXT_PROPERTY,
 } from '../state/generateActionLayerSettings';
 import initialState from '../state/initialState';
+import convertBlobToImageData from '../file/convertBlobToImageData';
 
 import type {Image} from '../image';
 import type {ActionLayerName} from './actionLayer/ActionLayer';
@@ -41,6 +43,17 @@ export default class App extends React.Component<Props, State> {
   getActiveImage(): Image {
     return this.state.imageList.filter(image => image.active === true)[0];
   }
+  uploadImageFile(files: FileList): void {
+    // TODO: バリデーション
+    convertBlobToImageData(files[0]).then(imageData => {
+      const updatedState = generateImageList({
+        type: ADD_NEW_IMAGE,
+        data: {imageData},
+        currentState: this.state.imageList,
+      });
+      this.setState({imageList: updatedState});
+    });
+  }
   render() {
     const {
       isDragOver,
@@ -60,6 +73,7 @@ export default class App extends React.Component<Props, State> {
         onDrop={e => {
           e.preventDefault();
           this.setState({isDragOver: false});
+          this.uploadImageFile(e.dataTransfer.files);
         }}
         onDragOver={e => {
           e.preventDefault();
