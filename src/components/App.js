@@ -75,6 +75,11 @@ export default class App extends React.Component<Props, State> {
     console.log(error);
     // TODO: 受け取った値に応じてエラーメッセージを返すようにする
   }
+  changeDisplaySize(width, height) {
+    this.setState({
+      display: Object.assign({}, this.state.display, {width, height}),
+    });
+  }
   render() {
     const {
       isDragOver,
