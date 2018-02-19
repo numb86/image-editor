@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import {spy} from 'sinon';
+import sinon from 'sinon';
 import assert from 'assert';
 
 import App from '../App';
@@ -10,8 +10,8 @@ describe('App', () => {
   let onDrop;
   let preventDefault;
   beforeEach(() => {
-    onDrop = spy();
-    preventDefault = spy();
+    onDrop = sinon.spy();
+    preventDefault = sinon.spy();
     wrapper = shallow(<App onDrop={onDrop} />);
   });
   describe('DnD', () => {
@@ -61,5 +61,38 @@ describe('App', () => {
       const image = inst.getActiveImage();
       assert(image.active === true);
     });
+  });
+  describe('uploadImageFile', () => {
+    let inst;
+    let file;
+    beforeEach(() => {
+      inst = wrapper.instance();
+      file = new window.File(['<xml>foo</xml>'], 'example.xml', {
+        type: 'text/xml',
+      });
+    });
+    it.skip('複数のファイルがアップロードされた場合は handleError が呼び出される', () => {
+      const spy = sinon.spy(inst, 'handleError');
+      assert(spy.callCount === 0);
+      inst.uploadImageFile([file, file]);
+      assert(spy.callCount === 1);
+      spy.restore();
+    });
+    it.skip('許可していないファイルタイプがアップロードされた場合は handleError が呼び出される', () => {
+      const spy = sinon.spy(inst, 'handleError');
+      assert(spy.callCount === 0);
+      inst.uploadImageFile([file]);
+      assert(file.type === 'text/xml');
+      assert(spy.callCount === 1);
+      spy.restore();
+    });
+    it.skip(
+      'アップロードした画像をImageDataに変換し、 state.imageList に新規imageを追加する',
+      () => {}
+    );
+    it.skip('アップロードした画像がディスプレイより大きい場合は、ディスプレイをその大きさにする', () => {});
+  });
+  describe('handleError', () => {
+    it.skip('渡されたエラーに応じて、適切なメッセージを出す', () => {});
   });
 });
