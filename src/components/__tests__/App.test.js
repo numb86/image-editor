@@ -71,14 +71,14 @@ describe('App', () => {
         type: 'text/xml',
       });
     });
-    it.skip('複数のファイルがアップロードされた場合は handleError が呼び出される', () => {
+    it('複数のファイルがアップロードされた場合は handleError が呼び出される', () => {
       const spy = sinon.spy(inst, 'handleError');
       assert(spy.callCount === 0);
       inst.uploadImageFile([file, file]);
       assert(spy.callCount === 1);
       spy.restore();
     });
-    it.skip('許可していないファイルタイプがアップロードされた場合は handleError が呼び出される', () => {
+    it('許可していないファイルタイプがアップロードされた場合は handleError が呼び出される', () => {
       const spy = sinon.spy(inst, 'handleError');
       assert(spy.callCount === 0);
       inst.uploadImageFile([file]);
