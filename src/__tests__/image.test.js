@@ -18,6 +18,8 @@ describe('generateImageList', () => {
       assert(image.id === 2);
       image = createNewImage({width: 10, height: 10}, [{id: 1}, {id: 2}]);
       assert(image.id === 0);
+      image = createNewImage({width: 10, height: 10}, [{id: 1}, {id: 0}]);
+      assert(image.id === 2);
       image = createNewImage({width: 10, height: 10}, [
         {id: 0},
         {id: 1},
