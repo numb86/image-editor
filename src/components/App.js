@@ -22,6 +22,10 @@ import type {Image} from '../image';
 import type {ActionLayerName} from './actionLayer/ActionLayer';
 import type {ActionLayerSettings} from '../state/generateActionLayerSettings';
 
+const MIME_PING = 'image/png';
+const MIME_JPEG = 'image/jpeg';
+const ALLOW_FILE_TYPES = [MIME_PING, MIME_JPEG];
+
 type Props = {||};
 type State = {
   isDragOver: boolean,
@@ -35,6 +39,10 @@ type State = {
   actionLayerSettings: ActionLayerSettings,
 };
 
+function isAllowedFileType(uploadedFileType: string): boolean {
+  return ALLOW_FILE_TYPES.some(allowFile => allowFile === uploadedFileType);
+}
+
 export default class App extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -44,8 +52,17 @@ export default class App extends React.Component<Props, State> {
     return this.state.imageList.filter(image => image.active === true)[0];
   }
   uploadImageFile(files: FileList): void {
-    // TODO: バリデーション
-    convertBlobToImageData(files[0]).then(imageData => {
+    if (files.length > 1) {
+      this.handleError('複数のファイルは選べません');
+      return;
+    }
+    const file = files[0];
+    if (!file) return; // ファイルアップロードのダイアログでキャンセルした場合の対応
+    if (!isAllowedFileType(file.type)) {
+      this.handleError('対応しているファイルはjpegとpngのみです');
+      return;
+    }
+    convertBlobToImageData(file).then(imageData => {
       const updatedState = generateImageList({
         type: ADD_NEW_IMAGE,
         data: {imageData},
@@ -53,6 +70,10 @@ export default class App extends React.Component<Props, State> {
       });
       this.setState({imageList: updatedState});
     });
+  }
+  handleError(error) {
+    console.log(error);
+    // TODO: 受け取った値に応じてエラーメッセージを返すようにする
   }
   render() {
     const {
