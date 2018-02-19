@@ -7,7 +7,7 @@ export type Image = {
 };
 
 function getMinUniqueId(currentState: Image[]): number {
-  const iDs = currentState.map(i => i.id);
+  const iDs = currentState.map(i => i.id).sort((a, b) => a - b);
   if (iDs.length === 0) return 0;
   const result = iDs.filter((id, index) => id !== index)[0];
   if (result === undefined) return iDs.length;
