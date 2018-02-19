@@ -86,11 +86,6 @@ describe('App', () => {
       assert(spy.callCount === 1);
       spy.restore();
     });
-    it.skip(
-      'アップロードした画像をImageDataに変換し、 state.imageList に新規imageを追加する',
-      () => {}
-    );
-    it.skip('アップロードした画像がディスプレイより大きい場合は、ディスプレイをその大きさにする', () => {});
   });
   describe('handleError', () => {
     it.skip('渡されたエラーに応じて、適切なメッセージを出す', () => {});
