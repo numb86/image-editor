@@ -71,11 +71,11 @@ export default class App extends React.Component<Props, State> {
       this.setState({imageList: updatedState});
     });
   }
-  handleError(error) {
+  handleError(error: string): void {
     console.log(error);
     // TODO: 受け取った値に応じてエラーメッセージを返すようにする
   }
-  changeDisplaySize(width, height) {
+  changeDisplaySize(width: number, height: number): void {
     this.setState({
       display: Object.assign({}, this.state.display, {width, height}),
     });
