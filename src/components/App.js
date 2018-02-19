@@ -68,6 +68,13 @@ export default class App extends React.Component<Props, State> {
         data: {imageData},
         currentState: this.state.imageList,
       });
+      const {width, height} = this.state.display;
+      const changeWidth = imageData.width > width ? imageData.width : width;
+      const changeHeight =
+        imageData.height > height ? imageData.height : height;
+      if (changeWidth !== width || changeHeight !== height) {
+        this.changeDisplaySize(changeWidth, changeHeight);
+      }
       this.setState({imageList: updatedState});
     });
   }
