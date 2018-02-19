@@ -6,6 +6,7 @@ import Display from './Display';
 import ViewLayerList from './ViewLayerList';
 import {ActionLayer, DRAW_LINE, ERASER} from './actionLayer/ActionLayer';
 
+import synthesizeImageData from '../synthesizeImageData';
 import {
   generateImageList,
   SPECIFY_IMAGE_PROPERTY,
@@ -79,6 +80,17 @@ export default class App extends React.Component<Props, State> {
       }
       this.setState({imageList: updatedState});
     });
+  }
+  generateDisplayImageData(): Promise<ImageData> {
+    const targetImageDatas = this.state.imageList
+      .concat()
+      .filter(i => i.isShow)
+      .map(i => i.imageData)
+      .reverse();
+    const {width, height} = this.state.display;
+    return synthesizeImageData(targetImageDatas, width, height).then(
+      result => result
+    );
   }
   handleError(error: string): void {
     console.log(error);
