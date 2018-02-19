@@ -62,6 +62,17 @@ describe('App', () => {
       assert(image.active === true);
     });
   });
+  describe('changeDisplaySize', () => {
+    it('渡された値に、 state.display のサイズを変える', () => {
+      const inst = wrapper.instance();
+      inst.changeDisplaySize(50, 90);
+      assert(wrapper.state('display').width === 50);
+      assert(wrapper.state('display').height === 90);
+      inst.changeDisplaySize(100, 80);
+      assert(wrapper.state('display').width === 100);
+      assert(wrapper.state('display').height === 80);
+    });
+  });
   describe('uploadImageFile', () => {
     let inst;
     let file;
