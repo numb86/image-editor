@@ -6,7 +6,7 @@ import Display from './Display';
 import ViewLayerList from './ViewLayerList';
 import {ActionLayer, DRAW_LINE, ERASER} from './actionLayer/ActionLayer';
 
-import synthesizeImageData from '../imageData';
+import {synthesizeImageData, convertBlobToImageData} from '../imageData';
 import {
   generateImageList,
   SPECIFY_IMAGE_PROPERTY,
@@ -17,7 +17,6 @@ import {
   SPECIFY_CONTEXT_PROPERTY,
 } from '../state/generateActionLayerSettings';
 import initialState from '../state/initialState';
-import convertBlobToImageData from '../file/convertBlobToImageData';
 
 import type {Image} from '../image';
 import type {ActionLayerName} from './actionLayer/ActionLayer';
