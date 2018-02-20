@@ -91,7 +91,7 @@ export default class App extends React.Component<Props, State> {
         const url = URL.createObjectURL(blob);
         const elem = document.createElement('a');
         elem.href = url;
-        elem.download = '新しい画像';
+        elem.download = `${new Date().toISOString()}.png`;
         elem.click();
         URL.revokeObjectURL(url);
       });
