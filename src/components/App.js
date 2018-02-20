@@ -40,7 +40,9 @@ type State = {
 };
 
 function isAllowedFileType(uploadedFileType: string): boolean {
-  return ALLOW_FILE_TYPES.some(allowFile => allowFile === uploadedFileType);
+  return ALLOW_FILE_TYPES.some(
+    allowFileType => allowFileType === uploadedFileType
+  );
 }
 
 export default class App extends React.Component<Props, State> {
