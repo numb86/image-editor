@@ -84,13 +84,30 @@ export function generateImageList({
       return addImage(image, currentState);
     case ADD_NEW_IMAGE: {
       if (!data) throw new Error('Data is necessary.');
-      const {width, height} = data;
-      if (!width || !height) throw new Error('Data is not enough.');
-      return generateImageList({
+      const {imageData} = data;
+      let {width, height} = data;
+      if (!imageData && (!width || !height)) {
+        throw new Error('Data is not enough.');
+      }
+      if (!width || !height) {
+        if (!imageData) throw new Error('Data is not enough.');
+        width = imageData.width;
+        height = imageData.height;
+      }
+      const blankImage = createNewImage({width, height}, currentState);
+      const updatedState = generateImageList({
         type: ADD_IMAGE,
-        image: createNewImage({width, height}, currentState),
+        image: blankImage,
         currentState: allImageNotActive(currentState),
       });
+      return imageData
+        ? generateImageList({
+            type: SPECIFY_IMAGE_PROPERTY,
+            currentState: updatedState,
+            data: {imageData},
+            target: blankImage.id,
+          })
+        : updatedState;
     }
     case SPECIFY_ACTIVE_IMAGE: {
       if (!target && target !== 0) throw new Error('Need target id number.');

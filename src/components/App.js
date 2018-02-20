@@ -9,16 +9,22 @@ import {ActionLayer, DRAW_LINE, ERASER} from './actionLayer/ActionLayer';
 import {
   generateImageList,
   SPECIFY_IMAGE_PROPERTY,
+  ADD_NEW_IMAGE,
 } from '../state/generateImageList';
 import {
   generateActionLayerSettings,
   SPECIFY_CONTEXT_PROPERTY,
 } from '../state/generateActionLayerSettings';
 import initialState from '../state/initialState';
+import convertBlobToImageData from '../file/convertBlobToImageData';
 
 import type {Image} from '../image';
 import type {ActionLayerName} from './actionLayer/ActionLayer';
 import type {ActionLayerSettings} from '../state/generateActionLayerSettings';
+
+const MIME_PING = 'image/png';
+const MIME_JPEG = 'image/jpeg';
+const ALLOW_FILE_TYPES = [MIME_PING, MIME_JPEG];
 
 type Props = {||};
 type State = {
@@ -33,6 +39,12 @@ type State = {
   actionLayerSettings: ActionLayerSettings,
 };
 
+function isAllowedFileType(uploadedFileType: string): boolean {
+  return ALLOW_FILE_TYPES.some(
+    allowFileType => allowFileType === uploadedFileType
+  );
+}
+
 export default class App extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -40,6 +52,42 @@ export default class App extends React.Component<Props, State> {
   }
   getActiveImage(): Image {
     return this.state.imageList.filter(image => image.active === true)[0];
+  }
+  uploadImageFile(files: FileList): void {
+    if (files.length > 1) {
+      this.handleError('複数のファイルは選べません');
+      return;
+    }
+    const file = files[0];
+    if (!file) return; // ファイルアップロードのダイアログでキャンセルした場合の対応
+    if (!isAllowedFileType(file.type)) {
+      this.handleError('対応しているファイルはjpegとpngのみです');
+      return;
+    }
+    convertBlobToImageData(file).then(imageData => {
+      const updatedState = generateImageList({
+        type: ADD_NEW_IMAGE,
+        data: {imageData},
+        currentState: this.state.imageList,
+      });
+      const {width, height} = this.state.display;
+      const changeWidth = imageData.width > width ? imageData.width : width;
+      const changeHeight =
+        imageData.height > height ? imageData.height : height;
+      if (changeWidth !== width || changeHeight !== height) {
+        this.changeDisplaySize(changeWidth, changeHeight);
+      }
+      this.setState({imageList: updatedState});
+    });
+  }
+  handleError(error: string): void {
+    console.log(error);
+    // TODO: 受け取った値に応じてエラーメッセージを返すようにする
+  }
+  changeDisplaySize(width: number, height: number): void {
+    this.setState({
+      display: Object.assign({}, this.state.display, {width, height}),
+    });
   }
   render() {
     const {
@@ -60,6 +108,7 @@ export default class App extends React.Component<Props, State> {
         onDrop={e => {
           e.preventDefault();
           this.setState({isDragOver: false});
+          this.uploadImageFile(e.dataTransfer.files);
         }}
         onDragOver={e => {
           e.preventDefault();

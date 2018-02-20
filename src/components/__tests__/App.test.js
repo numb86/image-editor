@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import {spy} from 'sinon';
+import sinon from 'sinon';
 import assert from 'assert';
 
 import App from '../App';
@@ -10,51 +10,95 @@ describe('App', () => {
   let onDrop;
   let preventDefault;
   beforeEach(() => {
-    onDrop = spy();
-    preventDefault = spy();
+    onDrop = sinon.spy();
+    preventDefault = sinon.spy();
     wrapper = shallow(<App onDrop={onDrop} />);
   });
-  it('DnDのイベントが発生した際にEvent.preventDefaultが呼び出される', () => {
-    assert(preventDefault.callCount === 0);
-    wrapper
-      .find('div')
-      .simulate('dragOver', {preventDefault, dataTransfer: {dropEffect: null}});
-    assert(preventDefault.callCount === 1);
-    wrapper.find('div').simulate('dragLeave', {preventDefault});
-    assert(preventDefault.callCount === 2);
+  describe('DnD', () => {
+    it('DnDのイベントが発生した際にEvent.preventDefaultが呼び出される', () => {
+      assert(preventDefault.callCount === 0);
+      wrapper.find('div').simulate('dragOver', {
+        preventDefault,
+        dataTransfer: {dropEffect: null},
+      });
+      assert(preventDefault.callCount === 1);
+      wrapper.find('div').simulate('dragLeave', {preventDefault});
+      assert(preventDefault.callCount === 2);
+    });
+    it('DnDイベントによってstate.isDragOverが適切に切り替わる', () => {
+      assert(wrapper.state('isDragOver') === false);
+      wrapper
+        .find('div')
+        .first()
+        .simulate('dragEnter', {preventDefault});
+      assert(wrapper.state('isDragOver') === true);
+      wrapper
+        .find('div')
+        .first()
+        .simulate('dragLeave', {preventDefault});
+      assert(wrapper.state('isDragOver') === true);
+      // カーソルがブラウザの外に出た時のみ、false になる
+      wrapper
+        .find('div')
+        .first()
+        .simulate('dragLeave', {preventDefault, clientX: 0});
+      assert(wrapper.state('isDragOver') === false);
+    });
+    it('state.isDragOverがtrueのときのみ、ファイルドロップの案内文が表示される', () => {
+      assert(wrapper.state('isDragOver') === false);
+      assert(!wrapper.find('div').find('.guide-file-drop').length);
+      wrapper
+        .find('div')
+        .first()
+        .simulate('dragEnter', {preventDefault});
+      assert(wrapper.state('isDragOver') === true);
+      assert(wrapper.find('div').find('.guide-file-drop').length);
+    });
   });
-  it('DnDイベントによってstate.isDragOverが適切に切り替わる', () => {
-    assert(wrapper.state('isDragOver') === false);
-    wrapper
-      .find('div')
-      .first()
-      .simulate('dragEnter', {preventDefault});
-    assert(wrapper.state('isDragOver') === true);
-    wrapper
-      .find('div')
-      .first()
-      .simulate('dragLeave', {preventDefault});
-    assert(wrapper.state('isDragOver') === true);
-    // カーソルがブラウザの外に出た時のみ、false になる
-    wrapper
-      .find('div')
-      .first()
-      .simulate('dragLeave', {preventDefault, clientX: 0});
-    assert(wrapper.state('isDragOver') === false);
+  describe('getActiveImage', () => {
+    it('getActiveImage でアクティブな image を取得できる', () => {
+      const inst = wrapper.instance();
+      const image = inst.getActiveImage();
+      assert(image.active === true);
+    });
   });
-  it('state.isDragOverがtrueのときのみ、ファイルドロップの案内文が表示される', () => {
-    assert(wrapper.state('isDragOver') === false);
-    assert(!wrapper.find('div').find('.guide-file-drop').length);
-    wrapper
-      .find('div')
-      .first()
-      .simulate('dragEnter', {preventDefault});
-    assert(wrapper.state('isDragOver') === true);
-    assert(wrapper.find('div').find('.guide-file-drop').length);
+  describe('changeDisplaySize', () => {
+    it('渡された値に、 state.display のサイズを変える', () => {
+      const inst = wrapper.instance();
+      inst.changeDisplaySize(50, 90);
+      assert(wrapper.state('display').width === 50);
+      assert(wrapper.state('display').height === 90);
+      inst.changeDisplaySize(100, 80);
+      assert(wrapper.state('display').width === 100);
+      assert(wrapper.state('display').height === 80);
+    });
   });
-  it('getActiveImage でアクティブな image を取得できる', () => {
-    const inst = wrapper.instance();
-    const image = inst.getActiveImage();
-    assert(image.active === true);
+  describe('uploadImageFile', () => {
+    let inst;
+    let file;
+    beforeEach(() => {
+      inst = wrapper.instance();
+      file = new window.File(['<xml>foo</xml>'], 'example.xml', {
+        type: 'text/xml',
+      });
+    });
+    it('複数のファイルがアップロードされた場合は handleError が呼び出される', () => {
+      const spy = sinon.spy(inst, 'handleError');
+      assert(spy.callCount === 0);
+      inst.uploadImageFile([file, file]);
+      assert(spy.callCount === 1);
+      spy.restore();
+    });
+    it('許可していないファイルタイプがアップロードされた場合は handleError が呼び出される', () => {
+      const spy = sinon.spy(inst, 'handleError');
+      assert(spy.callCount === 0);
+      inst.uploadImageFile([file]);
+      assert(file.type === 'text/xml');
+      assert(spy.callCount === 1);
+      spy.restore();
+    });
+  });
+  describe('handleError', () => {
+    it.skip('渡されたエラーに応じて、適切なメッセージを出す', () => {});
   });
 });

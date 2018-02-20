@@ -123,7 +123,7 @@ describe('generateImageList', () => {
   });
 
   describe('ADD_NEW_IMAGE', () => {
-    it('指定したサイズのimageが先頭に追加され、副作用がなくcurrentStateに影響を与えない', () => {
+    it('widthとheightを渡した場合、指定したサイズのimageが先頭に追加され、副作用がなくcurrentStateに影響を与えない', () => {
       const originalLength = originalImageList.length;
       const WIDTH = 185;
       const HEIGHT = 97;
@@ -135,6 +135,22 @@ describe('generateImageList', () => {
       assert(newList[0].imageData.width === WIDTH);
       assert(newList[0].imageData.height === HEIGHT);
       assert(originalImageList.length === originalLength);
+    });
+    it('渡されたimageDataが利用され、それがない場合は、0 で埋められる', () => {
+      const DATA = [7, 8, 9, 10];
+      const drawnImage = generateImageList({
+        type: ADD_NEW_IMAGE,
+        data: {imageData: {width: 1, height: 1, data: DATA}},
+        currentState: originalImageList,
+      })[0];
+      assert(drawnImage.imageData.data.every(i => i !== 0));
+      assert(drawnImage.imageData.data[0] === DATA[0]);
+      const blankImage = generateImageList({
+        type: ADD_NEW_IMAGE,
+        data: {width: 10, height: 10},
+        currentState: originalImageList,
+      })[0];
+      assert(blankImage.imageData.data.every(i => i === 0));
     });
     it('先頭に追加されるimageがアクティブになる', () => {
       const newList = generateImageList({

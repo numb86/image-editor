@@ -6,7 +6,9 @@ import {JSDOM} from 'jsdom';
 
 Enzyme.configure({adapter: new Adapter()});
 
-const jsdom = new JSDOM('<!doctype html><html><body></body></html>');
+const jsdom = new JSDOM('<!doctype html><html><body></body></html>', {
+  resources: 'usable',
+});
 
 global.window = jsdom.window;
 global.document = window.document;

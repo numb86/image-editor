@@ -26,14 +26,14 @@ describe('ViewLayerList', () => {
     },
   ];
   const list = shallow(<ViewLayerList viewLayerDataList={imageList} />).first();
-  it('渡されたリストに基いてViewLayerのリストがレンダリングされる', () => {
+  it('渡されたリストの逆順にViewLayerのリストがレンダリングされる', () => {
     assert(list.length === 2);
-    assert(list.at(0).prop('isShow') === true);
-    assert(list.at(1).prop('imageData').data[0] === 7);
+    assert(list.at(0).prop('isShow') === false);
+    assert(list.at(1).prop('imageData').data[0] === 1);
   });
   it('ViewLayerのkeyには渡されたIDが使われる', () => {
-    assert(list.at(0).key() === '0');
-    assert(list.at(1).key() === '1');
+    assert(list.at(1).key() === '0');
+    assert(list.at(0).key() === '1');
   });
   it('指定したプロパティ以外はViewLayerには渡されない', () => {
     const propsList = Object.keys(list.at(0).props());
