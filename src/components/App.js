@@ -7,6 +7,11 @@ import ViewLayerList from './ViewLayerList';
 import {ActionLayer, DRAW_LINE, ERASER} from './actionLayer/ActionLayer';
 
 import {
+  synthesizeImageData,
+  convertBlobToImageData,
+  convertImageDataToBlob,
+} from '../imageData';
+import {
   generateImageList,
   SPECIFY_IMAGE_PROPERTY,
   ADD_NEW_IMAGE,
@@ -16,7 +21,6 @@ import {
   SPECIFY_CONTEXT_PROPERTY,
 } from '../state/generateActionLayerSettings';
 import initialState from '../state/initialState';
-import convertBlobToImageData from '../file/convertBlobToImageData';
 
 import type {Image} from '../image';
 import type {ActionLayerName} from './actionLayer/ActionLayer';
@@ -80,10 +84,35 @@ export default class App extends React.Component<Props, State> {
       this.setState({imageList: updatedState});
     });
   }
+  downloadImageFile(): void {
+    this.generateDisplayImageData()
+      .then(imageData => convertImageDataToBlob(imageData).then(blob => blob))
+      .then(blob => {
+        const url = URL.createObjectURL(blob);
+        const elem = document.createElement('a');
+        elem.href = url;
+        elem.download = `${new Date().toISOString()}.png`;
+        elem.click();
+        URL.revokeObjectURL(url);
+      });
+  }
+  generateDisplayImageData(): Promise<ImageData> {
+    const targetImageDatas = this.state.imageList
+      .concat()
+      .filter(i => i.isShow)
+      .map(i => i.imageData)
+      .reverse();
+    const {width, height} = this.state.display;
+    return synthesizeImageData(targetImageDatas, width, height).then(
+      result => result
+    );
+  }
+  /* eslint-disable */
   handleError(error: string): void {
     console.log(error);
     // TODO: 受け取った値に応じてエラーメッセージを返すようにする
   }
+  /* eslint-enable */
   changeDisplaySize(width: number, height: number): void {
     this.setState({
       display: Object.assign({}, this.state.display, {width, height}),
@@ -148,6 +177,7 @@ export default class App extends React.Component<Props, State> {
         >
           ペン（太） ⇔　ペン（細）
         </button>
+        <button onClick={() => this.downloadImageFile()}>ダウンロード</button>
         <Display {...display}>
           <ViewLayerList viewLayerDataList={imageList} />
           <ActionLayer

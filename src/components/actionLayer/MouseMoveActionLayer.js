@@ -51,7 +51,6 @@ export default class MouseMoveActionLayer extends React.Component<
     this.loadContextSetting(ctx);
     this.props.callbackDidMount({ctx});
   }
-  // TODO: サイズの変更に対応する
   componentDidUpdate() {
     const {canvas, ctx} = this;
     const {imageData} = this.props;
