@@ -92,10 +92,12 @@ export default class App extends React.Component<Props, State> {
       result => result
     );
   }
+  /* eslint-disable */
   handleError(error: string): void {
     console.log(error);
     // TODO: 受け取った値に応じてエラーメッセージを返すようにする
   }
+  /* eslint-enable */
   changeDisplaySize(width: number, height: number): void {
     this.setState({
       display: Object.assign({}, this.state.display, {width, height}),
