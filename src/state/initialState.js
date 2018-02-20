@@ -34,6 +34,7 @@ const initialState = {
         lineWidth: 5,
         lineCap: 'round',
         lineJoin: 'round',
+        globalCompositeOperation: 'destination-out',
       },
     },
   },

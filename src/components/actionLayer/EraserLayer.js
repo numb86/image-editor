@@ -15,7 +15,6 @@ export default function EraserLayer(props: Props) {
   return (
     <MouseMoveActionLayer
       callbackDidMount={({ctx}) => {
-        ctx.globalCompositeOperation = 'destination-out';
         ctx.putImageData(props.imageData, 0, 0);
       }}
       callbackDidUpdate={({ctx}) => {
