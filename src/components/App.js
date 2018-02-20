@@ -6,7 +6,7 @@ import Display from './Display';
 import ViewLayerList from './ViewLayerList';
 import {ActionLayer, DRAW_LINE, ERASER} from './actionLayer/ActionLayer';
 
-import synthesizeImageData from '../synthesizeImageData';
+import synthesizeImageData from '../imageData';
 import {
   generateImageList,
   SPECIFY_IMAGE_PROPERTY,
