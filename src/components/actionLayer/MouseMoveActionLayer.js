@@ -39,7 +39,10 @@ export default class MouseMoveActionLayer extends React.Component<
   }
   componentDidMount() {
     const {canvas} = this;
+    const {imageData} = this.props;
     if (!canvas) throw new Error('canvas is null.');
+    canvas.width = imageData.width;
+    canvas.height = imageData.height;
     this.ctx = canvas.getContext('2d');
     const {x, y} = ((canvas.getBoundingClientRect(): any): DOMRect);
     this.canvasStartPosition = {x, y};
@@ -50,7 +53,11 @@ export default class MouseMoveActionLayer extends React.Component<
   }
   // TODO: サイズの変更に対応する
   componentDidUpdate() {
-    const {ctx} = this;
+    const {canvas, ctx} = this;
+    const {imageData} = this.props;
+    if (!canvas) throw new Error('canvas is null.');
+    canvas.width = imageData.width;
+    canvas.height = imageData.height;
     if (!ctx) throw new Error('ctx is null.');
     this.loadContextSetting(ctx);
     this.props.callbackDidUpdate({ctx});
@@ -93,12 +100,9 @@ export default class MouseMoveActionLayer extends React.Component<
     });
   }
   render() {
-    const {width, height} = this.props.imageData;
     return (
       <canvas
         className="action-layer"
-        width={width}
-        height={height}
         ref={ref => {
           this.canvas = ref;
         }}
