@@ -1,7 +1,7 @@
 // @flow
 import loadImageElement from './loadImageElement';
 
-function convertImageDataToBlob(imageData: ImageData): Promise<Blob> {
+export function convertImageDataToBlob(imageData: ImageData): Promise<Blob> {
   return new Promise(resolve => {
     const canvas = document.createElement('canvas');
     canvas.width = imageData.width;

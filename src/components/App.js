@@ -6,7 +6,11 @@ import Display from './Display';
 import ViewLayerList from './ViewLayerList';
 import {ActionLayer, DRAW_LINE, ERASER} from './actionLayer/ActionLayer';
 
-import {synthesizeImageData, convertBlobToImageData} from '../imageData';
+import {
+  synthesizeImageData,
+  convertBlobToImageData,
+  convertImageDataToBlob,
+} from '../imageData';
 import {
   generateImageList,
   SPECIFY_IMAGE_PROPERTY,
@@ -79,6 +83,17 @@ export default class App extends React.Component<Props, State> {
       }
       this.setState({imageList: updatedState});
     });
+  }
+  downloadImageFile(): void {
+    this.generateDisplayImageData()
+      .then(imageData => convertImageDataToBlob(imageData).then(blob => blob))
+      .then(blob => {
+        const url = URL.createObjectURL(blob);
+        const elem = document.createElement('a');
+        elem.href = url;
+        elem.download = '新しい画像';
+        elem.click();
+      });
   }
   generateDisplayImageData(): Promise<ImageData> {
     const targetImageDatas = this.state.imageList
@@ -161,6 +176,7 @@ export default class App extends React.Component<Props, State> {
         >
           ペン（太） ⇔　ペン（細）
         </button>
+        <button onClick={() => this.downloadImageFile()}>ダウンロード</button>
         <Display {...display}>
           <ViewLayerList viewLayerDataList={imageList} />
           <ActionLayer
