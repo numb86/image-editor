@@ -17,6 +17,7 @@ export type MouseMoveActionLayerSetting = {
     lineCap: string,
     lineJoin: string,
     strokeStyle?: string,
+    globalCompositeOperation?: string,
   },
 };
 
