@@ -93,6 +93,7 @@ export default class App extends React.Component<Props, State> {
         elem.href = url;
         elem.download = '新しい画像';
         elem.click();
+        URL.revokeObjectURL(url);
       });
   }
   generateDisplayImageData(): Promise<ImageData> {
