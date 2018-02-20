@@ -1,7 +1,7 @@
 // @flow
 import loadImageElement from './loadImageElement';
 
-function imageDataToBlob(imageData: ImageData): Promise<Blob> {
+function convertImageDataToBlob(imageData: ImageData): Promise<Blob> {
   return new Promise(resolve => {
     const canvas = document.createElement('canvas');
     canvas.width = imageData.width;
@@ -12,10 +12,10 @@ function imageDataToBlob(imageData: ImageData): Promise<Blob> {
   });
 }
 
-function imageDataToImageElement(
+function convertImageDataToImageElement(
   imageData: ImageData
 ): Promise<HTMLImageElement> {
-  return imageDataToBlob(imageData).then(blob => {
+  return convertImageDataToBlob(imageData).then(blob => {
     const url = URL.createObjectURL(blob);
     return loadImageElement(url).then(image => {
       URL.revokeObjectURL(url);
@@ -47,7 +47,7 @@ export function synthesizeImageData(
   canvas.height = height;
   const ctx = canvas.getContext('2d');
   return Promise.all(
-    imageDatas.map(i => imageDataToImageElement(i))
+    imageDatas.map(i => convertImageDataToImageElement(i))
   ).then(images => {
     images.forEach(image => {
       ctx.drawImage(image, 0, 0, image.width, image.height);
