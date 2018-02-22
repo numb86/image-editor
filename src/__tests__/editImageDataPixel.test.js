@@ -1,8 +1,8 @@
 import assert from 'assert';
 
-import invertNegaPosi from '../changeImageDataPixel';
+import invertNegaPosi from '../editImageDataPixel';
 
-describe('changeImageDataPixel', () => {
+describe('editImageDataPixel', () => {
   describe('invertNegaPosi', () => {
     let canvas;
     let ctx;

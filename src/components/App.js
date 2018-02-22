@@ -11,7 +11,7 @@ import {
   convertBlobToImageData,
   convertImageDataToBlob,
 } from '../imageData';
-import invertNegaPosi from '../changeImageDataPixel';
+import invertNegaPosi from '../editImageDataPixel';
 import {
   generateImageList,
   SPECIFY_IMAGE_PROPERTY,
