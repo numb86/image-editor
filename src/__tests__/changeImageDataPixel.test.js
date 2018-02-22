@@ -5,7 +5,7 @@ import invertNegaPosi from '../changeImageDataPixel';
 describe('changeImageDataPixel', () => {
   describe('invertNegaPosi', () => {
     it('rgbを反転させる。aは反転させず元の値のまま', () => {
-      const src = Uint8ClampedArray.from([
+      const src = [
         255, // r
         0, // g
         10, // b
@@ -18,8 +18,16 @@ describe('changeImageDataPixel', () => {
         0, // g
         0, // b
         1, // a
-      ]);
-      const dest = invertNegaPosi(src);
+      ];
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 3;
+      canvas.height = 1;
+      const srcImageData = ctx.createImageData(3, 1);
+      srcImageData.data.forEach((pixel, index) => {
+        srcImageData.data[index] = src[index];
+      });
+      const dest = invertNegaPosi(srcImageData).data;
       assert(dest[0] === 0);
       assert(dest[3] === 1);
       assert(dest[4] === 55);
