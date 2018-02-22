@@ -4,6 +4,16 @@ import invertNegaPosi from '../changeImageDataPixel';
 
 describe('changeImageDataPixel', () => {
   describe('invertNegaPosi', () => {
+    let canvas;
+    let ctx;
+    let srcImageData;
+    beforeEach(() => {
+      canvas = document.createElement('canvas');
+      ctx = canvas.getContext('2d');
+      canvas.width = 3;
+      canvas.height = 1;
+      srcImageData = ctx.createImageData(3, 1);
+    });
     it('rgbを反転させる。aは反転させず元の値のまま', () => {
       const src = [
         255, // r
@@ -19,11 +29,6 @@ describe('changeImageDataPixel', () => {
         0, // b
         1, // a
       ];
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.width = 3;
-      canvas.height = 1;
-      const srcImageData = ctx.createImageData(3, 1);
       srcImageData.data.forEach((pixel, index) => {
         srcImageData.data[index] = src[index];
       });
@@ -38,6 +43,15 @@ describe('changeImageDataPixel', () => {
       assert(dest[9] === 255);
       assert(dest[10] === 255);
       assert(dest[11] === 1);
+    });
+    it('副作用がなく、元の ImageData には影響を与えない', () => {
+      srcImageData.data[0] = 100;
+      srcImageData.data[1] = 110;
+      const dest = invertNegaPosi(srcImageData).data;
+      assert(dest[0] === 155);
+      assert(dest[1] === 145);
+      assert(srcImageData.data[0] === 100);
+      assert(srcImageData.data[1] === 110);
     });
   });
 });
