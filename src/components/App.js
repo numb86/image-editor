@@ -10,6 +10,7 @@ import {
   synthesizeImageData,
   convertBlobToImageData,
   convertImageDataToBlob,
+  resizeImageData,
 } from '../imageData';
 import {invertNegaPosi} from '../editImageDataPixel';
 import {
@@ -192,6 +193,20 @@ export default class App extends React.Component<Props, State> {
           }}
         >
           ネガポジ
+        </button>
+        <button
+          onClick={() => {
+            const imageData = resizeImageData(activeImage.imageData, 50);
+            const updatedState = generateImageList({
+              type: SPECIFY_IMAGE_PROPERTY,
+              data: {imageData},
+              currentState: imageList,
+              target: activeImage.id,
+            });
+            this.setState({imageList: updatedState});
+          }}
+        >
+          50%縮小
         </button>
         <Display {...display}>
           <ViewLayerList viewLayerDataList={imageList} />
