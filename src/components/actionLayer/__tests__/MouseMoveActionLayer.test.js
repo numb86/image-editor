@@ -71,6 +71,20 @@ describe('MouseMoveActionLayer', () => {
     wrapper.find('canvas').simulate('mouseUp');
     assert(wrapper.state('isAction') === false);
   });
+  it('ディスプレイの範囲外を押下しても、state.isAction は切り替わらない', () => {
+    const {x, y} = CANVAS_START_POSITION;
+    assert(wrapper.state('isAction') === false);
+    wrapper.find('canvas').simulate('mouseDown', {
+      pageX: x + DISPLAY_WIDTH + 1,
+      pageY: y + DISPLAY_HEIGHT,
+    });
+    assert(wrapper.state('isAction') === false);
+    wrapper.find('canvas').simulate('mouseDown', {
+      pageX: x + DISPLAY_WIDTH,
+      pageY: y + DISPLAY_HEIGHT,
+    });
+    assert(wrapper.state('isAction') === true);
+  });
   it('componentDidMount すると props.callbackDidMount が実行される', () => {
     assert(calledFunc === null);
     inst.componentDidMount();
