@@ -4,6 +4,7 @@ import React from 'react';
 import DrawLineLayer from './DrawLineLayer';
 import EraserLayer from './EraserLayer';
 
+import type {DisplayType} from '../Display';
 import type {MouseMoveActionLayerSetting} from '../../state/generateActionLayerSettings';
 
 export const DRAW_LINE: 'drawLine' = 'drawLine';
@@ -16,6 +17,7 @@ type Props = {
   imageData: ImageData,
   updateImageData: ImageData => void,
   setting: MouseMoveActionLayerSetting,
+  display: DisplayType,
 };
 
 export function ActionLayer(props: Props) {

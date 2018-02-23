@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 
+import type {DisplayType} from '../Display';
 import type {MouseMoveActionLayerSetting} from '../../state/generateActionLayerSettings';
 
 type Point = {x: number, y: number};
@@ -16,6 +17,7 @@ type Props = {
   }) => void,
   imageData: ImageData,
   setting: MouseMoveActionLayerSetting,
+  display: DisplayType,
 };
 
 type State = {
