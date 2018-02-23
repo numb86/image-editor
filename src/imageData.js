@@ -55,3 +55,22 @@ export function synthesizeImageData(
     return ctx.getImageData(0, 0, width, height);
   });
 }
+
+export function resizeImageData(
+  src: ImageData,
+  resizeRatioPercent: number
+): ImageData {
+  const srcCanvas = document.createElement('canvas');
+  const srcCtx = srcCanvas.getContext('2d');
+  srcCanvas.width = src.width;
+  srcCanvas.height = src.height;
+  srcCtx.putImageData(src, 0, 0);
+
+  const destCanvas = document.createElement('canvas');
+  const destCtx = srcCanvas.getContext('2d');
+  destCanvas.width = Math.floor(src.width * (resizeRatioPercent / 100));
+  destCanvas.height = Math.floor(src.height * (resizeRatioPercent / 100));
+  const {width, height} = destCanvas;
+  destCtx.drawImage(srcCanvas, 0, 0, width, height);
+  return destCtx.getImageData(0, 0, width, height);
+}
