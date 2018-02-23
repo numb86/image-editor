@@ -6,6 +6,7 @@ type Props = {
   isShow: boolean,
 };
 
+// TODO: Canvasのサイズは state で管理したほうがいいはず
 export default class ViewLayer extends React.Component<Props> {
   constructor(props: Props) {
     super(props);

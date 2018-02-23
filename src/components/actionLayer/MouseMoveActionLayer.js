@@ -25,6 +25,7 @@ type State = {
   startPoint: Point,
 };
 
+// TODO: Canvasのサイズは state で管理したほうがいいはず
 export default class MouseMoveActionLayer extends React.Component<
   Props,
   State
