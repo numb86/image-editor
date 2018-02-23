@@ -10,7 +10,9 @@ import {
   synthesizeImageData,
   convertBlobToImageData,
   convertImageDataToBlob,
+  resizeImageData,
 } from '../imageData';
+import {invertNegaPosi} from '../editImageDataPixel';
 import {
   generateImageList,
   SPECIFY_IMAGE_PROPERTY,
@@ -178,6 +180,34 @@ export default class App extends React.Component<Props, State> {
           ペン（太） ⇔　ペン（細）
         </button>
         <button onClick={() => this.downloadImageFile()}>ダウンロード</button>
+        <button
+          onClick={() => {
+            const imageData = invertNegaPosi(activeImage.imageData);
+            const updatedState = generateImageList({
+              type: SPECIFY_IMAGE_PROPERTY,
+              data: {imageData},
+              currentState: imageList,
+              target: activeImage.id,
+            });
+            this.setState({imageList: updatedState});
+          }}
+        >
+          ネガポジ
+        </button>
+        <button
+          onClick={() => {
+            const imageData = resizeImageData(activeImage.imageData, 50);
+            const updatedState = generateImageList({
+              type: SPECIFY_IMAGE_PROPERTY,
+              data: {imageData},
+              currentState: imageList,
+              target: activeImage.id,
+            });
+            this.setState({imageList: updatedState});
+          }}
+        >
+          50%縮小
+        </button>
         <Display {...display}>
           <ViewLayerList viewLayerDataList={imageList} />
           <ActionLayer
