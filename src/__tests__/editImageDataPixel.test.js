@@ -34,6 +34,8 @@ describe('editImageDataPixel', () => {
       });
       const dest = invertNegaPosi(srcImageData).data;
       assert(dest[0] === 0);
+      assert(dest[1] === 255);
+      assert(dest[2] === 245);
       assert(dest[3] === 1);
       assert(dest[4] === 55);
       assert(dest[5] === 55);
