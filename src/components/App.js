@@ -24,6 +24,7 @@ import {
 } from '../state/generateActionLayerSettings';
 import initialState from '../state/initialState';
 
+import type {DisplayType} from './Display';
 import type {Image} from '../image';
 import type {ActionLayerName} from './actionLayer/ActionLayer';
 import type {ActionLayerSettings} from '../state/generateActionLayerSettings';
@@ -36,11 +37,7 @@ type Props = {||};
 type State = {
   isDragOver: boolean,
   imageList: Image[],
-  display: {
-    width: number,
-    height: number,
-    magnificationPercent: number,
-  },
+  display: DisplayType,
   activeActionLayer: ActionLayerName,
   actionLayerSettings: ActionLayerSettings,
 };
@@ -214,6 +211,7 @@ export default class App extends React.Component<Props, State> {
             activeActionLayer={activeActionLayer}
             imageData={activeImage.imageData}
             setting={actionLayerSettings[activeActionLayer]}
+            display={display}
             updateImageData={imageData => {
               const updatedState = generateImageList({
                 type: SPECIFY_IMAGE_PROPERTY,

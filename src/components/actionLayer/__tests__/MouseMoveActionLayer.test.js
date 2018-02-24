@@ -6,12 +6,12 @@ import assert from 'assert';
 import MouseMoveActionLayer from '../MouseMoveActionLayer';
 
 describe('MouseMoveActionLayer', () => {
-  const WIDTH = 40;
-  const HEIGHT = 30;
+  const CANVAS_WIDTH = 40;
+  const CANVAS_HEIGHT = 30;
   const CANVAS_START_POSITION = {x: 200, y: 200};
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
-  const imageData = ctx.createImageData(WIDTH, HEIGHT);
+  const imageData = ctx.createImageData(CANVAS_WIDTH, CANVAS_HEIGHT);
   const LINE_WIDTH = 6;
   const LINE_CAP = 'round';
   const setting = {
@@ -19,6 +19,14 @@ describe('MouseMoveActionLayer', () => {
       lineWidth: LINE_WIDTH,
       lineCap: LINE_CAP,
     },
+  };
+  const DISPLAY_WIDTH = 40;
+  const DISPLAY_HEIGHT = 30;
+  const DISPLAY_MAGNIFICATION_PERCENT = 100;
+  const display = {
+    width: DISPLAY_WIDTH,
+    height: DISPLAY_HEIGHT,
+    magnificationPercent: DISPLAY_MAGNIFICATION_PERCENT,
   };
   let wrapper;
   let calledFunc;
@@ -41,6 +49,7 @@ describe('MouseMoveActionLayer', () => {
         }}
         imageData={imageData}
         setting={setting}
+        display={display}
       />,
       {disableLifecycleMethods: true}
     );
@@ -52,8 +61,8 @@ describe('MouseMoveActionLayer', () => {
   it('imageDataで渡されたサイズのCanvasが描画される', () => {
     inst.canvas = document.createElement('canvas');
     inst.componentDidMount();
-    assert(inst.canvas.width === WIDTH);
-    assert(inst.canvas.height === HEIGHT);
+    assert(inst.canvas.width === CANVAS_WIDTH);
+    assert(inst.canvas.height === CANVAS_HEIGHT);
   });
   it('マウスイベントによって state.isAction が適切に切り替わる', () => {
     assert(wrapper.state('isAction') === false);
@@ -61,6 +70,20 @@ describe('MouseMoveActionLayer', () => {
     assert(wrapper.state('isAction') === true);
     wrapper.find('canvas').simulate('mouseUp');
     assert(wrapper.state('isAction') === false);
+  });
+  it('ディスプレイの範囲外を押下しても、state.isAction は切り替わらない', () => {
+    const {x, y} = CANVAS_START_POSITION;
+    assert(wrapper.state('isAction') === false);
+    wrapper.find('canvas').simulate('mouseDown', {
+      pageX: x + DISPLAY_WIDTH + 1,
+      pageY: y + DISPLAY_HEIGHT,
+    });
+    assert(wrapper.state('isAction') === false);
+    wrapper.find('canvas').simulate('mouseDown', {
+      pageX: x + DISPLAY_WIDTH,
+      pageY: y + DISPLAY_HEIGHT,
+    });
+    assert(wrapper.state('isAction') === true);
   });
   it('componentDidMount すると props.callbackDidMount が実行される', () => {
     assert(calledFunc === null);

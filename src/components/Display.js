@@ -2,17 +2,18 @@
 //  React.Node という型を指定するためにはこのようにReactをimportする必要がある
 import * as React from 'react';
 
+export type DisplayType = {
+  width: number,
+  height: number,
+  magnificationPercent: number,
+};
+
 export default function Display({
   width,
   height,
   magnificationPercent,
   children,
-}: {
-  width: number,
-  height: number,
-  magnificationPercent: number,
-  children: React.Node,
-}) {
+}: $All<DisplayType, {children: React.Node}>) {
   return (
     <div
       className="display"

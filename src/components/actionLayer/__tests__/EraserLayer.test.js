@@ -18,13 +18,14 @@ describe('EraserLayer', () => {
       wrapper.find('MouseMoveActionLayer').prop('imageData') === IMAGE_DATA
     );
   });
-  it('callbackDidMount, callbackDidUpdate, executeAction, imageData, setting を EraserLayer に渡す', () => {
+  it('callbackDidMount, callbackDidUpdate, executeAction, imageData, setting, display を MouseMoveActionLayer に渡す', () => {
     const expectedProps = [
       'callbackDidMount',
       'callbackDidUpdate',
       'executeAction',
       'imageData',
       'setting',
+      'display',
     ];
     const wrapperProps = Object.keys(
       wrapper.find('MouseMoveActionLayer').props()

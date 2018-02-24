@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 
+import type {DisplayType} from '../Display';
 import type {MouseMoveActionLayerSetting} from '../../state/generateActionLayerSettings';
 
 type Point = {x: number, y: number};
@@ -16,6 +17,7 @@ type Props = {
   }) => void,
   imageData: ImageData,
   setting: MouseMoveActionLayerSetting,
+  display: DisplayType,
 };
 
 type State = {
@@ -23,6 +25,7 @@ type State = {
   startPoint: Point,
 };
 
+// TODO: Canvasのサイズは state で管理したほうがいいはず
 export default class MouseMoveActionLayer extends React.Component<
   Props,
   State
@@ -82,6 +85,14 @@ export default class MouseMoveActionLayer extends React.Component<
   loadContextSetting(ctx: CanvasRenderingContext2D) {
     Object.assign(ctx, this.props.setting.ctx);
   }
+  isOutsideDisplay(mouseEventPageX: number, mouseEventPageY: number): boolean {
+    const {canvasStartPosition} = this;
+    if (!canvasStartPosition) throw new Error('canvasStartPosition is null.');
+    const x = mouseEventPageX - canvasStartPosition.x;
+    const y = mouseEventPageY - canvasStartPosition.y;
+    const {width, height} = this.props.display;
+    return x > width || y > height;
+  }
 
   canvas: HTMLCanvasElement | null;
   ctx: CanvasRenderingContext2D | null;
@@ -106,6 +117,7 @@ export default class MouseMoveActionLayer extends React.Component<
           this.canvas = ref;
         }}
         onMouseDown={e => {
+          if (this.isOutsideDisplay(e.pageX, e.pageY)) return;
           this.startAction();
           this.setStartPoint(e.pageX, e.pageY);
         }}

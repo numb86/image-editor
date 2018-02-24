@@ -3,12 +3,14 @@ import React from 'react';
 
 import MouseMoveActionLayer from './MouseMoveActionLayer';
 
+import type {DisplayType} from '../Display';
 import type {MouseMoveActionLayerSetting} from '../../state/generateActionLayerSettings';
 
 type Props = {
   imageData: ImageData,
   updateImageData: ImageData => void,
   setting: MouseMoveActionLayerSetting,
+  display: DisplayType,
 };
 
 export default function DrawLineLayer(props: Props) {
@@ -31,6 +33,7 @@ export default function DrawLineLayer(props: Props) {
       }}
       imageData={props.imageData}
       setting={props.setting}
+      display={props.display}
     />
   );
 }
