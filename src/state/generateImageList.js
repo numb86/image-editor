@@ -157,12 +157,17 @@ export function generateImageList({
       if (currentState.length === 1) {
         throw new Error('You can not delete all image.');
       }
-      const setNewActiveImageList = generateImageList({
-        type: SPECIFY_ACTIVE_IMAGE,
-        currentState,
-        target: searchNextActiveImageId(currentState, target),
-      });
-      return deleteImage(target, setNewActiveImageList);
+      const currentActiveId = currentState.filter(i => i.active === true)[0].id;
+      return deleteImage(
+        target,
+        target === currentActiveId
+          ? generateImageList({
+              type: SPECIFY_ACTIVE_IMAGE,
+              currentState,
+              target: searchNextActiveImageId(currentState, target),
+            })
+          : currentState
+      );
     }
 
     default:
