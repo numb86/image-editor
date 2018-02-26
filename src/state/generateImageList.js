@@ -46,9 +46,9 @@ function getTargetIndexAndData(
 }
 
 function specifyProperty(
-  data: {isShow?: boolean, imageData?: ImageData, active?: boolean},
   currentState: Image[],
-  target: number
+  target: number,
+  data: {isShow?: boolean, imageData?: ImageData, active?: boolean}
 ): Image[] {
   const {targetIndex, targetData} = getTargetIndexAndData(currentState, target);
   const updatedData = (Object.assign({}, targetData, data): Image);
@@ -57,13 +57,13 @@ function specifyProperty(
   return updatedState;
 }
 
-function addImage(data: Image, currentState: Image[]): Image[] {
+function addImage(currentState: Image[], image: Image): Image[] {
   const updatedState = currentState.concat();
-  updatedState.unshift(data);
+  updatedState.unshift(image);
   return updatedState;
 }
 
-function deleteImage(target: number, currentState: Image[]): Image[] {
+function deleteImage(currentState: Image[], target: number): Image[] {
   const {targetIndex} = getTargetIndexAndData(currentState, target);
   const updatedState = currentState.concat();
   updatedState.splice(targetIndex, 1);
@@ -76,7 +76,7 @@ function allImageNotActive(currentState: Image[]): Image[] {
 }
 
 function specifyActiveImage(currentState: Image[], target: number): Image[] {
-  return specifyProperty({active: true}, currentState, target);
+  return specifyProperty(currentState, target, {active: true});
 }
 
 function moveUpImageOrder(currentState: Image[], target: number): Image[] {
@@ -116,11 +116,11 @@ export function generateImageList({
       if (!target && target !== 0) throw new Error('Need target id number.');
       if (!data) throw new Error('Data is necessary.');
       if (data.id) throw new Error('Id can not be overwritten.');
-      return specifyProperty(data, currentState, target);
+      return specifyProperty(currentState, target, data);
 
     case ADD_IMAGE:
       if (!image) throw new Error('Image is necessary.');
-      return addImage(image, currentState);
+      return addImage(currentState, image);
 
     case ADD_NEW_IMAGE: {
       if (!data) throw new Error('Data is necessary.');
@@ -162,14 +162,14 @@ export function generateImageList({
       }
       const currentActiveId = currentState.filter(i => i.active === true)[0].id;
       return deleteImage(
-        target,
         target === currentActiveId
           ? generateImageList({
               type: SPECIFY_ACTIVE_IMAGE,
               currentState,
               target: searchNextActiveImageId(currentState, target),
             })
-          : currentState
+          : currentState,
+        target
       );
     }
 
