@@ -7,6 +7,7 @@ import {
   ADD_IMAGE,
   ADD_NEW_IMAGE,
   DELETE_IMAGE,
+  MOVE_UP_IMAGE_ORDER,
 } from '../generateImageList';
 
 describe('generateImageList', () => {
@@ -254,6 +255,34 @@ describe('generateImageList', () => {
           type: DELETE_IMAGE,
           currentState: newList,
           target: 2,
+        });
+      } catch (e) {
+        error = true;
+      }
+      assert(error === true);
+    });
+  });
+
+  describe('MOVE_UP_IMAGE_ORDER', () => {
+    it('指定したidのimageの順番が一つ繰り上がる。副作用がなくcurrentStateに影響を与えない。', () => {
+      const newList = generateImageList({
+        type: MOVE_UP_IMAGE_ORDER,
+        currentState: originalImageList,
+        target: 1,
+      });
+      assert(newList[0].id === 1);
+      assert(newList[1].id === 0);
+      assert(originalImageList[0].id === 0);
+      assert(originalImageList[1].id === 1);
+    });
+    it('指定したidのimageが一番上にある場合、例外を投げる。', () => {
+      assert(originalImageList[0].id === 0);
+      let error = false;
+      try {
+        generateImageList({
+          type: MOVE_UP_IMAGE_ORDER,
+          currentState: originalImageList,
+          target: 0,
         });
       } catch (e) {
         error = true;
