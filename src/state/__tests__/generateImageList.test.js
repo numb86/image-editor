@@ -6,6 +6,7 @@ import {
   SPECIFY_ACTIVE_IMAGE,
   ADD_IMAGE,
   ADD_NEW_IMAGE,
+  DELETE_IMAGE,
 } from '../generateImageList';
 
 describe('generateImageList', () => {
@@ -189,6 +190,75 @@ describe('generateImageList', () => {
       });
       assert(newList[2].active === true);
       assert(newList.filter(image => image.active === true).length === 1);
+    });
+  });
+
+  describe('DELETE_IMAGE', () => {
+    it('指定したidのimageが削除される。副作用がなくcurrentStateに影響を与えない', () => {
+      const originalLength = originalImageList.length;
+      const newList = generateImageList({
+        type: DELETE_IMAGE,
+        currentState: originalImageList,
+        target: 1,
+      });
+      assert(originalImageList.length === originalLength);
+      assert(newList.length === originalLength - 1);
+      assert(newList.filter(image => image.id === 1).length === 0);
+      assert(originalImageList.filter(image => image.id === 1).length === 1);
+    });
+    it('削除するimageがアクティブな場合、後ろのimageにアクティブが移る。後ろがない場合のみ、前のimageに移る。', () => {
+      const activeIsOne = generateImageList({
+        type: SPECIFY_ACTIVE_IMAGE,
+        currentState: originalImageList,
+        target: 1,
+      });
+      assert(activeIsOne.filter(image => image.active === true)[0].id === 1);
+      const deleteOne = generateImageList({
+        type: DELETE_IMAGE,
+        currentState: activeIsOne,
+        target: 1,
+      });
+      assert(deleteOne.filter(image => image.active === true)[0].id === 2);
+      const deleteTwo = generateImageList({
+        type: DELETE_IMAGE,
+        currentState: deleteOne,
+        target: 2,
+      });
+      assert(deleteTwo.filter(image => image.active === true)[0].id === 0);
+    });
+    it('削除するimageがアクティブでない場合、アクティブに変化はない', () => {
+      assert(
+        originalImageList.filter(image => image.active === true)[0].id === 0
+      );
+      const newList = generateImageList({
+        type: DELETE_IMAGE,
+        currentState: originalImageList,
+        target: 1,
+      });
+      assert(newList.filter(image => image.active === true)[0].id === 0);
+    });
+    it('imageが一つしか無い場合は、削除できない。例外を投げる。', () => {
+      const newList = generateImageList({
+        type: DELETE_IMAGE,
+        currentState: generateImageList({
+          type: DELETE_IMAGE,
+          currentState: originalImageList,
+          target: 0,
+        }),
+        target: 1,
+      });
+      assert(newList.length === 1);
+      let error = false;
+      try {
+        generateImageList({
+          type: DELETE_IMAGE,
+          currentState: newList,
+          target: 2,
+        });
+      } catch (e) {
+        error = true;
+      }
+      assert(error === true);
     });
   });
 });

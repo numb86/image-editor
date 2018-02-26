@@ -8,12 +8,14 @@ export const SPECIFY_IMAGE_PROPERTY: 'specifyImageProperty' =
 export const SPECIFY_ACTIVE_IMAGE: 'specifyActiveImage' = 'specifyActiveImage';
 export const ADD_IMAGE: 'addImage' = 'addImage';
 export const ADD_NEW_IMAGE: 'addNewImage' = 'addNewImage';
+export const DELETE_IMAGE: 'deleteImage' = 'deleteImage';
 
 type GenerateImageListTypeName =
   | typeof SPECIFY_IMAGE_PROPERTY
   | typeof SPECIFY_ACTIVE_IMAGE
   | typeof ADD_IMAGE
-  | typeof ADD_NEW_IMAGE;
+  | typeof ADD_NEW_IMAGE
+  | typeof DELETE_IMAGE;
 
 type GenerateImageListReceiveData = {
   isShow?: boolean,
@@ -51,6 +53,21 @@ function addImage(data: Image, currentState: Image[]): Image[] {
   return updatedState;
 }
 
+function deleteImage(target: number, currentState: Image[]): Image[] {
+  let targetIndex;
+  currentState.forEach((elem, index) => {
+    if (elem.id === target) {
+      targetIndex = index;
+    }
+  });
+  if (!targetIndex && targetIndex !== 0) {
+    throw new Error('Not found target data.');
+  }
+  const updatedState = currentState.concat();
+  updatedState.splice(targetIndex, 1);
+  return updatedState;
+}
+
 function allImageNotActive(currentState: Image[]): Image[] {
   const updatedState = currentState.concat();
   return updatedState.map(image => Object.assign({}, image, {active: false}));
@@ -58,6 +75,24 @@ function allImageNotActive(currentState: Image[]): Image[] {
 
 function specifyActiveImage(currentState: Image[], target: number): Image[] {
   return specifyProperty({active: true}, currentState, target);
+}
+
+function searchNextActiveImageId(
+  currentState: Image[],
+  target: number
+): number {
+  let targetIndex;
+  currentState.forEach((elem, index) => {
+    if (elem.id === target) {
+      targetIndex = index;
+    }
+  });
+  if (!targetIndex && targetIndex !== 0) {
+    throw new Error('Not found target data.');
+  }
+  const nextIndex =
+    targetIndex === currentState.length - 1 ? targetIndex - 1 : targetIndex + 1;
+  return currentState[nextIndex].id;
 }
 
 export function generateImageList({
@@ -79,9 +114,11 @@ export function generateImageList({
       if (!data) throw new Error('Data is necessary.');
       if (data.id) throw new Error('Id can not be overwritten.');
       return specifyProperty(data, currentState, target);
+
     case ADD_IMAGE:
       if (!image) throw new Error('Image is necessary.');
       return addImage(image, currentState);
+
     case ADD_NEW_IMAGE: {
       if (!data) throw new Error('Data is necessary.');
       const {imageData} = data;
@@ -109,10 +146,30 @@ export function generateImageList({
           })
         : updatedState;
     }
+
     case SPECIFY_ACTIVE_IMAGE: {
       if (!target && target !== 0) throw new Error('Need target id number.');
       return specifyActiveImage(allImageNotActive(currentState), target);
     }
+
+    case DELETE_IMAGE: {
+      if (!target && target !== 0) throw new Error('Need target id number.');
+      if (currentState.length === 1) {
+        throw new Error('You can not delete all image.');
+      }
+      const currentActiveId = currentState.filter(i => i.active === true)[0].id;
+      return deleteImage(
+        target,
+        target === currentActiveId
+          ? generateImageList({
+              type: SPECIFY_ACTIVE_IMAGE,
+              currentState,
+              target: searchNextActiveImageId(currentState, target),
+            })
+          : currentState
+      );
+    }
+
     default:
       throw new Error('This type is not found.');
   }
