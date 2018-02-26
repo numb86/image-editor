@@ -27,11 +27,10 @@ type GenerateImageListReceiveData = {
   active?: boolean,
 };
 
-function specifyProperty(
-  data: {isShow?: boolean, imageData?: ImageData, active?: boolean},
+function getTargetIndexAndData(
   currentState: Image[],
   target: number
-): Image[] {
+): {targetIndex: number, targetData: Image} {
   let targetData;
   let targetIndex;
   currentState.forEach((elem, index) => {
@@ -43,6 +42,15 @@ function specifyProperty(
   if (!targetData || (!targetIndex && targetIndex !== 0)) {
     throw new Error('Not found target data.');
   }
+  return {targetIndex, targetData};
+}
+
+function specifyProperty(
+  data: {isShow?: boolean, imageData?: ImageData, active?: boolean},
+  currentState: Image[],
+  target: number
+): Image[] {
+  const {targetIndex, targetData} = getTargetIndexAndData(currentState, target);
   const updatedData = (Object.assign({}, targetData, data): Image);
   const updatedState = currentState.concat();
   updatedState.splice(targetIndex, 1, updatedData);
@@ -56,15 +64,7 @@ function addImage(data: Image, currentState: Image[]): Image[] {
 }
 
 function deleteImage(target: number, currentState: Image[]): Image[] {
-  let targetIndex;
-  currentState.forEach((elem, index) => {
-    if (elem.id === target) {
-      targetIndex = index;
-    }
-  });
-  if (!targetIndex && targetIndex !== 0) {
-    throw new Error('Not found target data.');
-  }
+  const {targetIndex} = getTargetIndexAndData(currentState, target);
   const updatedState = currentState.concat();
   updatedState.splice(targetIndex, 1);
   return updatedState;
@@ -80,17 +80,7 @@ function specifyActiveImage(currentState: Image[], target: number): Image[] {
 }
 
 function moveUpImageOrder(currentState: Image[], target: number): Image[] {
-  let targetData;
-  let targetIndex;
-  currentState.forEach((elem, index) => {
-    if (elem.id === target) {
-      targetData = elem;
-      targetIndex = index;
-    }
-  });
-  if (!targetData || (!targetIndex && targetIndex !== 0)) {
-    throw new Error('Not found target data.');
-  }
+  const {targetIndex, targetData} = getTargetIndexAndData(currentState, target);
   if (targetIndex === 0) throw new Error('This image is top.');
   const updatedState = currentState.concat();
   updatedState.splice(targetIndex, 1);
@@ -102,15 +92,7 @@ function searchNextActiveImageId(
   currentState: Image[],
   target: number
 ): number {
-  let targetIndex;
-  currentState.forEach((elem, index) => {
-    if (elem.id === target) {
-      targetIndex = index;
-    }
-  });
-  if (!targetIndex && targetIndex !== 0) {
-    throw new Error('Not found target data.');
-  }
+  const {targetIndex} = getTargetIndexAndData(currentState, target);
   const nextIndex =
     targetIndex === currentState.length - 1 ? targetIndex - 1 : targetIndex + 1;
   return currentState[nextIndex].id;
