@@ -9,13 +9,15 @@ export const SPECIFY_ACTIVE_IMAGE: 'specifyActiveImage' = 'specifyActiveImage';
 export const ADD_IMAGE: 'addImage' = 'addImage';
 export const ADD_NEW_IMAGE: 'addNewImage' = 'addNewImage';
 export const DELETE_IMAGE: 'deleteImage' = 'deleteImage';
+export const MOVE_UP_IMAGE_ORDER: 'moveUpImageOrder' = 'moveUpImageOrder';
 
 type GenerateImageListTypeName =
   | typeof SPECIFY_IMAGE_PROPERTY
   | typeof SPECIFY_ACTIVE_IMAGE
   | typeof ADD_IMAGE
   | typeof ADD_NEW_IMAGE
-  | typeof DELETE_IMAGE;
+  | typeof DELETE_IMAGE
+  | typeof MOVE_UP_IMAGE_ORDER;
 
 type GenerateImageListReceiveData = {
   isShow?: boolean,
@@ -25,11 +27,10 @@ type GenerateImageListReceiveData = {
   active?: boolean,
 };
 
-function specifyProperty(
-  data: {isShow?: boolean, imageData?: ImageData, active?: boolean},
+function getTargetIndexAndData(
   currentState: Image[],
   target: number
-): Image[] {
+): {targetIndex: number, targetData: Image} {
   let targetData;
   let targetIndex;
   currentState.forEach((elem, index) => {
@@ -41,6 +42,15 @@ function specifyProperty(
   if (!targetData || (!targetIndex && targetIndex !== 0)) {
     throw new Error('Not found target data.');
   }
+  return {targetIndex, targetData};
+}
+
+function specifyProperty(
+  data: {isShow?: boolean, imageData?: ImageData, active?: boolean},
+  currentState: Image[],
+  target: number
+): Image[] {
+  const {targetIndex, targetData} = getTargetIndexAndData(currentState, target);
   const updatedData = (Object.assign({}, targetData, data): Image);
   const updatedState = currentState.concat();
   updatedState.splice(targetIndex, 1, updatedData);
@@ -54,15 +64,7 @@ function addImage(data: Image, currentState: Image[]): Image[] {
 }
 
 function deleteImage(target: number, currentState: Image[]): Image[] {
-  let targetIndex;
-  currentState.forEach((elem, index) => {
-    if (elem.id === target) {
-      targetIndex = index;
-    }
-  });
-  if (!targetIndex && targetIndex !== 0) {
-    throw new Error('Not found target data.');
-  }
+  const {targetIndex} = getTargetIndexAndData(currentState, target);
   const updatedState = currentState.concat();
   updatedState.splice(targetIndex, 1);
   return updatedState;
@@ -77,19 +79,20 @@ function specifyActiveImage(currentState: Image[], target: number): Image[] {
   return specifyProperty({active: true}, currentState, target);
 }
 
+function moveUpImageOrder(currentState: Image[], target: number): Image[] {
+  const {targetIndex, targetData} = getTargetIndexAndData(currentState, target);
+  if (targetIndex === 0) throw new Error('This image is top.');
+  const updatedState = currentState.concat();
+  updatedState.splice(targetIndex, 1);
+  updatedState.splice(targetIndex - 1, 0, targetData);
+  return updatedState;
+}
+
 function searchNextActiveImageId(
   currentState: Image[],
   target: number
 ): number {
-  let targetIndex;
-  currentState.forEach((elem, index) => {
-    if (elem.id === target) {
-      targetIndex = index;
-    }
-  });
-  if (!targetIndex && targetIndex !== 0) {
-    throw new Error('Not found target data.');
-  }
+  const {targetIndex} = getTargetIndexAndData(currentState, target);
   const nextIndex =
     targetIndex === currentState.length - 1 ? targetIndex - 1 : targetIndex + 1;
   return currentState[nextIndex].id;
@@ -168,6 +171,11 @@ export function generateImageList({
             })
           : currentState
       );
+    }
+
+    case MOVE_UP_IMAGE_ORDER: {
+      if (!target && target !== 0) throw new Error('Need target id number.');
+      return moveUpImageOrder(currentState, target);
     }
 
     default:
