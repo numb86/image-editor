@@ -9,13 +9,15 @@ export const SPECIFY_ACTIVE_IMAGE: 'specifyActiveImage' = 'specifyActiveImage';
 export const ADD_IMAGE: 'addImage' = 'addImage';
 export const ADD_NEW_IMAGE: 'addNewImage' = 'addNewImage';
 export const DELETE_IMAGE: 'deleteImage' = 'deleteImage';
+export const MOVE_UP_IMAGE_ORDER: 'moveUpImageOrder' = 'moveUpImageOrder';
 
 type GenerateImageListTypeName =
   | typeof SPECIFY_IMAGE_PROPERTY
   | typeof SPECIFY_ACTIVE_IMAGE
   | typeof ADD_IMAGE
   | typeof ADD_NEW_IMAGE
-  | typeof DELETE_IMAGE;
+  | typeof DELETE_IMAGE
+  | typeof MOVE_UP_IMAGE_ORDER;
 
 type GenerateImageListReceiveData = {
   isShow?: boolean,
@@ -75,6 +77,25 @@ function allImageNotActive(currentState: Image[]): Image[] {
 
 function specifyActiveImage(currentState: Image[], target: number): Image[] {
   return specifyProperty({active: true}, currentState, target);
+}
+
+function moveUpImageOrder(currentState: Image[], target: number): Image[] {
+  let targetData;
+  let targetIndex;
+  currentState.forEach((elem, index) => {
+    if (elem.id === target) {
+      targetData = elem;
+      targetIndex = index;
+    }
+  });
+  if (!targetData || (!targetIndex && targetIndex !== 0)) {
+    throw new Error('Not found target data.');
+  }
+  if (targetIndex === 0) throw new Error('This image is top.');
+  const updatedState = currentState.concat();
+  updatedState.splice(targetIndex, 1);
+  updatedState.splice(targetIndex - 1, 0, targetData);
+  return updatedState;
 }
 
 function searchNextActiveImageId(
@@ -168,6 +189,11 @@ export function generateImageList({
             })
           : currentState
       );
+    }
+
+    case MOVE_UP_IMAGE_ORDER: {
+      if (!target && target !== 0) throw new Error('Need target id number.');
+      return moveUpImageOrder(currentState, target);
     }
 
     default:
