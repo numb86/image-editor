@@ -79,9 +79,11 @@ export function generateImageList({
       if (!data) throw new Error('Data is necessary.');
       if (data.id) throw new Error('Id can not be overwritten.');
       return specifyProperty(data, currentState, target);
+
     case ADD_IMAGE:
       if (!image) throw new Error('Image is necessary.');
       return addImage(image, currentState);
+
     case ADD_NEW_IMAGE: {
       if (!data) throw new Error('Data is necessary.');
       const {imageData} = data;
@@ -109,10 +111,12 @@ export function generateImageList({
           })
         : updatedState;
     }
+
     case SPECIFY_ACTIVE_IMAGE: {
       if (!target && target !== 0) throw new Error('Need target id number.');
       return specifyActiveImage(allImageNotActive(currentState), target);
     }
+
     default:
       throw new Error('This type is not found.');
   }
