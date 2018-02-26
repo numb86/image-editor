@@ -226,6 +226,17 @@ describe('generateImageList', () => {
       });
       assert(deleteTwo.filter(image => image.active === true)[0].id === 0);
     });
+    it('削除するimageがアクティブでない場合、アクティブに変化はない', () => {
+      assert(
+        originalImageList.filter(image => image.active === true)[0].id === 0
+      );
+      const newList = generateImageList({
+        type: DELETE_IMAGE,
+        currentState: originalImageList,
+        target: 1,
+      });
+      assert(newList.filter(image => image.active === true)[0].id === 0);
+    });
     it('imageが一つしか無い場合は、削除できない。例外を投げる。', () => {
       const newList = generateImageList({
         type: DELETE_IMAGE,
