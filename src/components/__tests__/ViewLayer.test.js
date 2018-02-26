@@ -26,11 +26,8 @@ describe('ViewLayer', () => {
     assert(drawnData.every((data, index) => data === imageData.data[index]));
   });
   it('imageDataで渡されたサイズのCanvasが描画される', () => {
-    const inst = wrapper.instance();
-    inst.canvas = document.createElement('canvas');
-    inst.componentDidMount();
-    assert(inst.canvas.width === WIDTH);
-    assert(inst.canvas.height === HEIGHT);
+    assert(wrapper.find('canvas').prop('width') === WIDTH);
+    assert(wrapper.find('canvas').prop('height') === HEIGHT);
   });
   it('props.isShowに応じて、表示非表示が切り替わる', () => {
     let {display} = wrapper.prop('style');

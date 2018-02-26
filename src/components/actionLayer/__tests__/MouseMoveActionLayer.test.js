@@ -59,10 +59,8 @@ describe('MouseMoveActionLayer', () => {
     inst.canvasStartPosition = CANVAS_START_POSITION;
   });
   it('imageDataで渡されたサイズのCanvasが描画される', () => {
-    inst.canvas = document.createElement('canvas');
-    inst.componentDidMount();
-    assert(inst.canvas.width === CANVAS_WIDTH);
-    assert(inst.canvas.height === CANVAS_HEIGHT);
+    assert(wrapper.find('canvas').prop('width') === CANVAS_WIDTH);
+    assert(wrapper.find('canvas').prop('height') === CANVAS_HEIGHT);
   });
   it('マウスイベントによって state.isAction が適切に切り替わる', () => {
     assert(wrapper.state('isAction') === false);
