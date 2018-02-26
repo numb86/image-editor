@@ -51,8 +51,7 @@ export default class MouseMoveActionLayer extends React.Component<
     this.props.callbackDidMount({ctx});
   }
   componentDidUpdate() {
-    const {canvas, ctx} = this;
-    if (!canvas) throw new Error('canvas is null.');
+    const {ctx} = this;
     if (!ctx) throw new Error('ctx is null.');
     this.loadContextSetting(ctx);
     this.props.callbackDidUpdate({ctx});

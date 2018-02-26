@@ -16,12 +16,10 @@ export default class ViewLayer extends React.Component<Props> {
     const {imageData} = this.props;
     if (!this.canvas) throw new Error('this.canvas is not found.');
     this.ctx = this.canvas.getContext('2d');
-    if (!this.canvas) throw new Error('this.canvas is not found.');
     this.ctx.putImageData(imageData, 0, 0);
   }
   componentDidUpdate() {
     const {imageData} = this.props;
-    if (!this.canvas) throw new Error('this.canvas is not found.');
     if (!this.ctx) throw new Error('this.ctx is not found.');
     this.ctx.putImageData(imageData, 0, 0);
   }
