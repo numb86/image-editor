@@ -24,6 +24,7 @@ import {
 } from '../state/generateActionLayerSettings';
 import {
   generateImageListHistory,
+  BACK,
   UPDATE,
 } from '../state/generateImageListHistory';
 import initialState from '../state/initialState';
@@ -233,6 +234,18 @@ export default class App extends React.Component<Props, State> {
         >
           50%縮小
         </button>
+        <button
+          onClick={() => {
+            this.setState({
+              imageListHistory: generateImageListHistory({
+                type: BACK,
+                currentState: imageListHistory,
+              }),
+            });
+          }}
+        >
+          undo
+        </button>
         <Display {...display}>
           <ViewLayerList viewLayerDataList={imageList} />
           <ActionLayer
@@ -247,6 +260,7 @@ export default class App extends React.Component<Props, State> {
                 currentState: imageList,
                 target: activeImage.id,
               });
+              // TODO: history に追加するタイミングを調整する必要がある
               this.setState({
                 imageListHistory: generateImageListHistory({
                   type: UPDATE,
