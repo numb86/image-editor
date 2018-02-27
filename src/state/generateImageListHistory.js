@@ -11,7 +11,7 @@ type GenerateImageListHistoryTypeName =
   | typeof FORWARD
   | typeof UPDATE;
 
-type ImageListHistory = {
+export type ImageListHistory = {
   history: Image[][],
   position: number,
 };

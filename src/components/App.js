@@ -22,12 +22,17 @@ import {
   generateActionLayerSettings,
   SPECIFY_CONTEXT_PROPERTY,
 } from '../state/generateActionLayerSettings';
+import {
+  generateImageListHistory,
+  UPDATE,
+} from '../state/generateImageListHistory';
 import initialState from '../state/initialState';
 
 import type {DisplayType} from './Display';
 import type {Image} from '../image';
 import type {ActionLayerName} from './actionLayer/ActionLayer';
 import type {ActionLayerSettings} from '../state/generateActionLayerSettings';
+import type {ImageListHistory} from '../state/generateImageListHistory';
 
 const MIME_PING = 'image/png';
 const MIME_JPEG = 'image/jpeg';
@@ -36,7 +41,7 @@ const ALLOW_FILE_TYPES = [MIME_PING, MIME_JPEG];
 type Props = {||};
 type State = {
   isDragOver: boolean,
-  imageList: Image[],
+  imageListHistory: ImageListHistory,
   display: DisplayType,
   activeActionLayer: ActionLayerName,
   actionLayerSettings: ActionLayerSettings,
@@ -54,7 +59,8 @@ export default class App extends React.Component<Props, State> {
     this.state = initialState;
   }
   getActiveImage(): Image {
-    return this.state.imageList.filter(image => image.active === true)[0];
+    const {history, position} = this.state.imageListHistory;
+    return history[position].filter(image => image.active === true)[0];
   }
   uploadImageFile(files: FileList): void {
     if (files.length > 1) {
@@ -68,10 +74,11 @@ export default class App extends React.Component<Props, State> {
       return;
     }
     convertBlobToImageData(file).then(imageData => {
+      const {history, position} = this.state.imageListHistory;
       const updatedState = generateImageList({
         type: ADD_NEW_IMAGE,
         data: {imageData},
-        currentState: this.state.imageList,
+        currentState: history[position],
       });
       const {width, height} = this.state.display;
       const changeWidth = imageData.width > width ? imageData.width : width;
@@ -80,7 +87,13 @@ export default class App extends React.Component<Props, State> {
       if (changeWidth !== width || changeHeight !== height) {
         this.changeDisplaySize(changeWidth, changeHeight);
       }
-      this.setState({imageList: updatedState});
+      this.setState({
+        imageListHistory: generateImageListHistory({
+          type: UPDATE,
+          currentState: this.state.imageListHistory,
+          imageList: updatedState,
+        }),
+      });
     });
   }
   downloadImageFile(): void {
@@ -96,7 +109,8 @@ export default class App extends React.Component<Props, State> {
       });
   }
   generateDisplayImageData(): Promise<ImageData> {
-    const targetImageDatas = this.state.imageList
+    const {history, position} = this.state.imageListHistory;
+    const targetImageDatas = history[position]
       .concat()
       .filter(i => i.isShow)
       .map(i => i.imageData)
@@ -120,11 +134,13 @@ export default class App extends React.Component<Props, State> {
   render() {
     const {
       isDragOver,
-      imageList,
+      imageListHistory,
       display,
       activeActionLayer,
       actionLayerSettings,
     } = this.state;
+    const {history, position} = imageListHistory;
+    const imageList = history[position];
     const activeImage = this.getActiveImage();
     const classNames = ClassNames({
       app: true,
@@ -186,7 +202,13 @@ export default class App extends React.Component<Props, State> {
               currentState: imageList,
               target: activeImage.id,
             });
-            this.setState({imageList: updatedState});
+            this.setState({
+              imageListHistory: generateImageListHistory({
+                type: UPDATE,
+                currentState: imageListHistory,
+                imageList: updatedState,
+              }),
+            });
           }}
         >
           ネガポジ
@@ -200,7 +222,13 @@ export default class App extends React.Component<Props, State> {
               currentState: imageList,
               target: activeImage.id,
             });
-            this.setState({imageList: updatedState});
+            this.setState({
+              imageListHistory: generateImageListHistory({
+                type: UPDATE,
+                currentState: imageListHistory,
+                imageList: updatedState,
+              }),
+            });
           }}
         >
           50%縮小
@@ -219,7 +247,13 @@ export default class App extends React.Component<Props, State> {
                 currentState: imageList,
                 target: activeImage.id,
               });
-              this.setState({imageList: updatedState});
+              this.setState({
+                imageListHistory: generateImageListHistory({
+                  type: UPDATE,
+                  currentState: imageListHistory,
+                  imageList: updatedState,
+                }),
+              });
             }}
           />
         </Display>
