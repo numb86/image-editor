@@ -7,12 +7,14 @@ export const FORWARD: 'forward' = 'forward';
 export const UPDATE: 'update' = 'update';
 export const SET_OMIT_BASE_POSITION: 'setOmitBasePosition' =
   'setOmitBasePosition';
+export const OMIT: 'omit' = 'omit';
 
 type GenerateImageListHistoryTypeName =
   | typeof BACK
   | typeof FORWARD
   | typeof UPDATE
-  | typeof SET_OMIT_BASE_POSITION;
+  | typeof SET_OMIT_BASE_POSITION
+  | typeof OMIT;
 
 export type ImageListHistory = {
   history: Image[][],
@@ -71,6 +73,27 @@ export function generateImageListHistory({
       }
       updatedState.omitBasePosition = target;
       return updatedState;
+
+    case OMIT: {
+      const {omitBasePosition} = currentState;
+      if (!target && target !== 0) throw new Error('Need target id number.');
+      if (omitBasePosition === null) {
+        throw new Error('Omit base position is not specified.');
+      }
+      if (target >= omitBasePosition) {
+        throw new Error('Target is greater than omit base position.');
+      }
+      const excludePositions = [];
+      for (let i = 0; i < currentState.history.length; i += 1) {
+        const notExclude = i <= target || i >= omitBasePosition;
+        if (!notExclude) excludePositions.push(i);
+      }
+      updatedState.history = updatedState.history.filter((e, index) =>
+        excludePositions.every(i => i !== index)
+      );
+      updatedState.omitBasePosition = null;
+      return updatedState;
+    }
 
     default:
       throw new Error('This type is not found.');
