@@ -5,11 +5,14 @@ import type {Image} from '../image';
 export const BACK: 'back' = 'back';
 export const FORWARD: 'forward' = 'forward';
 export const UPDATE: 'update' = 'update';
+export const SET_OMIT_BASE_POSITION: 'setOmitBasePosition' =
+  'setOmitBasePosition';
 
 type GenerateImageListHistoryTypeName =
   | typeof BACK
   | typeof FORWARD
-  | typeof UPDATE;
+  | typeof UPDATE
+  | typeof SET_OMIT_BASE_POSITION;
 
 export type ImageListHistory = {
   history: Image[][],
@@ -20,10 +23,12 @@ export function generateImageListHistory({
   type,
   currentState,
   imageList,
+  target,
 }: {
   type: GenerateImageListHistoryTypeName,
   currentState: ImageListHistory,
   imageList?: Image[],
+  target?: number,
 }): ImageListHistory {
   const updatedHistory = currentState.history.concat();
   const updatedState = {
@@ -52,6 +57,19 @@ export function generateImageListHistory({
         updatedState.position = 0;
       }
       updatedState.history.unshift(imageList);
+      return updatedState;
+
+    case SET_OMIT_BASE_POSITION:
+      if (!target && target !== 0) throw new Error('Need target id number.');
+      if (currentState.omitBasePosition !== null) {
+        throw new Error(
+          'It is not possible to specify omit base positions double.'
+        );
+      }
+      if (target >= currentState.history.length) {
+        throw new Error('Invalid position.');
+      }
+      updatedState.omitBasePosition = target;
       return updatedState;
 
     default:
