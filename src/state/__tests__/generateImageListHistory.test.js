@@ -178,7 +178,7 @@ describe('generateImageListHistory', () => {
       const {history} = newHistory;
       assert(history.length === 2);
       assert(history[0][0] === 'a');
-      assert(history[0][1] === 'c');
+      assert(history[1][0] === 'c');
     });
     it('omitBasePosition が null になる', () => {
       originalHistory.omitBasePosition = 2;
