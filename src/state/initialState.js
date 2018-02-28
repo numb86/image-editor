@@ -7,13 +7,18 @@ const INITIAL_DISPALY_WIDTH = 500;
 const INITIAL_DISPALY_HEIGHT = 500;
 const INITIAL_DISPALY_MAGNIFICATION_PERCENT = 100;
 
+const initialImageList = generateImageList({
+  type: ADD_NEW_IMAGE,
+  data: {width: INITIAL_DISPALY_WIDTH, height: INITIAL_DISPALY_HEIGHT},
+  currentState: [],
+});
+
 const initialState = {
   isDragOver: false,
-  imageList: generateImageList({
-    type: ADD_NEW_IMAGE,
-    data: {width: INITIAL_DISPALY_WIDTH, height: INITIAL_DISPALY_HEIGHT},
-    currentState: [],
-  }),
+  imageListHistory: {
+    history: [initialImageList],
+    position: 0,
+  },
   display: {
     width: INITIAL_DISPALY_WIDTH,
     height: INITIAL_DISPALY_HEIGHT,
