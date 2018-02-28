@@ -5,12 +5,18 @@ import {
   BACK,
   FORWARD,
   UPDATE,
+  SET_OMIT_BASE_POSITION,
+  OMIT,
 } from '../generateImageListHistory';
 
 describe('generateImageListHistory', () => {
   let originalHistory;
   beforeEach(() => {
-    originalHistory = {history: [['a'], ['b'], ['c']], position: 0};
+    originalHistory = {
+      history: [['a'], ['b'], ['c']],
+      position: 0,
+      omitBasePosition: null,
+    };
   });
 
   describe('back', () => {
@@ -109,6 +115,128 @@ describe('generateImageListHistory', () => {
       });
       assert(newHistory !== originalHistory);
       assert(newHistory.history !== originalHistory.history);
+    });
+  });
+
+  describe('setOmitBasePosition', () => {
+    it('指定した数値が omitBasePosition に設定される', () => {
+      const newHistory = generateImageListHistory({
+        type: SET_OMIT_BASE_POSITION,
+        currentState: originalHistory,
+        target: 0,
+      });
+      assert(originalHistory.omitBasePosition === null);
+      assert(newHistory.omitBasePosition === 0);
+    });
+    it('omitBasePosition が null でないときに呼び出されると例外を投げる', () => {
+      originalHistory.omitBasePosition = 1;
+      let error = false;
+      try {
+        generateImageListHistory({
+          type: SET_OMIT_BASE_POSITION,
+          currentState: originalHistory,
+          target: 0,
+        });
+      } catch (e) {
+        error = true;
+      }
+      assert(error === true);
+    });
+    it('history.length 以上の値を指定された場合は例外を投げる', () => {
+      let error = false;
+      try {
+        generateImageListHistory({
+          type: SET_OMIT_BASE_POSITION,
+          currentState: originalHistory,
+          target: originalHistory.length,
+        });
+      } catch (e) {
+        error = true;
+      }
+      assert(error === true);
+    });
+    it('新しいhistoryを返すため、副作用がない', () => {
+      const newHistory = generateImageListHistory({
+        type: SET_OMIT_BASE_POSITION,
+        currentState: originalHistory,
+        target: 1,
+      });
+      assert(originalHistory.omitBasePosition === null);
+      assert(newHistory.omitBasePosition === 1);
+      assert(originalHistory.history !== newHistory.history);
+    });
+  });
+  describe('omit', () => {
+    it('指定した値と omitBasePosition の間にある history が削除される', () => {
+      originalHistory.omitBasePosition = 2;
+      const newHistory = generateImageListHistory({
+        type: OMIT,
+        currentState: originalHistory,
+        target: 0,
+      });
+      const {history} = newHistory;
+      assert(history.length === 2);
+      assert(history[0][0] === 'a');
+      assert(history[0][1] === 'c');
+    });
+    it('omitBasePosition が null になる', () => {
+      originalHistory.omitBasePosition = 2;
+      const newHistory = generateImageListHistory({
+        type: OMIT,
+        currentState: originalHistory,
+        target: 0,
+      });
+      assert(newHistory.omitBasePosition === null);
+    });
+    it('omitBasePosition が null のときに呼び出されると、例外を投げる', () => {
+      assert(originalHistory.omitBasePosition === null);
+      let error = false;
+      try {
+        generateImageListHistory({
+          type: OMIT,
+          currentState: originalHistory,
+          target: 0,
+        });
+      } catch (e) {
+        error = true;
+      }
+      assert(error === true);
+    });
+    it('omitBasePosition 以上の値を指定された場合は例外を投げる', () => {
+      originalHistory.omitBasePosition = 1;
+      let error = false;
+      try {
+        generateImageListHistory({
+          type: OMIT,
+          currentState: originalHistory,
+          target: 1,
+        });
+      } catch (e) {
+        error = true;
+      }
+      assert(error === true);
+      error = false;
+      try {
+        generateImageListHistory({
+          type: OMIT,
+          currentState: originalHistory,
+          target: 2,
+        });
+      } catch (e) {
+        error = true;
+      }
+      assert(error === true);
+    });
+    it('新しいhistoryを返すため、副作用がない', () => {
+      originalHistory.omitBasePosition = 2;
+      const newHistory = generateImageListHistory({
+        type: OMIT,
+        currentState: originalHistory,
+        target: 1,
+      });
+      const {history} = newHistory;
+      assert(history.length === 3);
+      assert(originalHistory.history !== newHistory.history);
     });
   });
 });
