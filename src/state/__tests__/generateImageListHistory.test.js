@@ -166,6 +166,7 @@ describe('generateImageListHistory', () => {
       assert(originalHistory.history !== newHistory.history);
     });
   });
+
   describe('omit', () => {
     it('指定した値と omitBasePosition の間にある history が削除される', () => {
       originalHistory.omitBasePosition = 2;
