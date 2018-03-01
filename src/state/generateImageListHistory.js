@@ -19,6 +19,7 @@ type GenerateImageListHistoryTypeName =
 export type ImageListHistory = {
   history: Image[][],
   position: number,
+  omitBasePosition: number | null,
 };
 
 export function generateImageListHistory({
@@ -36,6 +37,7 @@ export function generateImageListHistory({
   const updatedState = {
     history: updatedHistory,
     position: currentState.position,
+    omitBasePosition: currentState.omitBasePosition,
   };
   switch (type) {
     case BACK:
