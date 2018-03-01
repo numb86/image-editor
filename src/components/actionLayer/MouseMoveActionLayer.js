@@ -18,6 +18,8 @@ type Props = {
   imageData: ImageData,
   setting: MouseMoveActionLayerSetting,
   display: DisplayType,
+  startOmitLengthCount: () => void,
+  omitImageListHistory: () => void,
 };
 
 type State = {
@@ -91,10 +93,12 @@ export default class MouseMoveActionLayer extends React.Component<
   canvasStartPosition: Point | null;
 
   startAction() {
+    this.props.startOmitLengthCount();
     this.setState({isAction: true});
   }
   stopAction() {
     this.setState({isAction: false});
+    this.props.omitImageListHistory();
   }
   switchCurrentPointToStartPoint(currentPoint: Point) {
     this.setState({

@@ -11,6 +11,8 @@ type Props = {
   updateImageData: ImageData => void,
   setting: MouseMoveActionLayerSetting,
   display: DisplayType,
+  startOmitLengthCount: () => void,
+  omitImageListHistory: () => void,
 };
 
 export default function DrawLineLayer(props: Props) {
@@ -34,6 +36,8 @@ export default function DrawLineLayer(props: Props) {
       imageData={props.imageData}
       setting={props.setting}
       display={props.display}
+      startOmitLengthCount={props.startOmitLengthCount}
+      omitImageListHistory={props.omitImageListHistory}
     />
   );
 }

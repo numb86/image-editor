@@ -26,6 +26,8 @@ import {
   generateImageListHistory,
   BACK,
   UPDATE,
+  START_OMIT_LENGTH_COUNT,
+  OMIT,
 } from '../state/generateImageListHistory';
 import initialState from '../state/initialState';
 
@@ -260,12 +262,28 @@ export default class App extends React.Component<Props, State> {
                 currentState: imageList,
                 target: activeImage.id,
               });
-              // TODO: history に追加するタイミングを調整する必要がある
               this.setState({
                 imageListHistory: generateImageListHistory({
                   type: UPDATE,
                   currentState: imageListHistory,
                   imageList: updatedState,
+                }),
+              });
+            }}
+            startOmitLengthCount={() => {
+              this.setState({
+                imageListHistory: generateImageListHistory({
+                  type: START_OMIT_LENGTH_COUNT,
+                  currentState: imageListHistory,
+                }),
+              });
+            }}
+            omitImageListHistory={() => {
+              if (!imageListHistory.omitLength) return;
+              this.setState({
+                imageListHistory: generateImageListHistory({
+                  type: OMIT,
+                  currentState: imageListHistory,
                 }),
               });
             }}
