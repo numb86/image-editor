@@ -18,7 +18,7 @@ const initialState = {
   imageListHistory: {
     history: [initialImageList],
     position: 0,
-    omitBasePosition: null,
+    omitLength: null,
   },
   display: {
     width: INITIAL_DISPALY_WIDTH,
