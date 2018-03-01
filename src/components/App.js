@@ -25,6 +25,7 @@ import {
 import {
   generateImageListHistory,
   BACK,
+  FORWARD,
   UPDATE,
   START_OMIT_LENGTH_COUNT,
   OMIT,
@@ -247,6 +248,18 @@ export default class App extends React.Component<Props, State> {
           }}
         >
           undo
+        </button>
+        <button
+          onClick={() => {
+            this.setState({
+              imageListHistory: generateImageListHistory({
+                type: FORWARD,
+                currentState: imageListHistory,
+              }),
+            });
+          }}
+        >
+          redo
         </button>
         <Display {...display}>
           <ViewLayerList viewLayerDataList={imageList} />
