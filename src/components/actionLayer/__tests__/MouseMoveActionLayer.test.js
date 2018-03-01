@@ -50,6 +50,8 @@ describe('MouseMoveActionLayer', () => {
         imageData={imageData}
         setting={setting}
         display={display}
+        startOmitLengthCount={() => {}}
+        omitImageListHistory={() => {}}
       />,
       {disableLifecycleMethods: true}
     );
