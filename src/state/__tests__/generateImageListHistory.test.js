@@ -5,7 +5,7 @@ import {
   BACK,
   FORWARD,
   UPDATE,
-  SET_OMIT_BASE_POSITION,
+  START_OMIT_LENGTH_COUNT,
   OMIT,
 } from '../generateImageListHistory';
 
@@ -15,7 +15,7 @@ describe('generateImageListHistory', () => {
     originalHistory = {
       history: [['a'], ['b'], ['c']],
       position: 0,
-      omitBasePosition: null,
+      omitLength: null,
     };
   });
 
@@ -36,6 +36,19 @@ describe('generateImageListHistory', () => {
       });
       assert(newHistory.position === 2);
       assert(newHistory !== originalHistory);
+    });
+    it('omitLength が null でないときは、例外を投げる', () => {
+      originalHistory.omitLength = 0;
+      let error = false;
+      try {
+        generateImageListHistory({
+          type: BACK,
+          currentState: originalHistory,
+        });
+      } catch (e) {
+        error = true;
+      }
+      assert(error === true);
     });
     it('新しいhistoryを返すため、副作用がない', () => {
       const newHistory = generateImageListHistory({
@@ -65,6 +78,19 @@ describe('generateImageListHistory', () => {
       });
       assert(newHistory.position === 0);
       assert(newHistory !== originalHistory);
+    });
+    it('omitLength が null でないときは、例外を投げる', () => {
+      originalHistory.omitLength = 0;
+      let error = false;
+      try {
+        generateImageListHistory({
+          type: FORWARD,
+          currentState: originalHistory,
+        });
+      } catch (e) {
+        error = true;
+      }
+      assert(error === true);
     });
     it('新しいhistoryを返すため、副作用がない', () => {
       originalHistory.position = 2;
@@ -107,6 +133,15 @@ describe('generateImageListHistory', () => {
       });
       assert(newHistory.position === 0);
     });
+    it('omitLength が null でないときは、カウントアップしていく', () => {
+      originalHistory.omitLength = -1;
+      const newHistory = generateImageListHistory({
+        type: UPDATE,
+        imageList: ['d'],
+        currentState: originalHistory,
+      });
+      assert(newHistory.omitLength === 0);
+    });
     it('新しいhistoryを返すため、副作用がない', () => {
       const newHistory = generateImageListHistory({
         type: UPDATE,
@@ -118,37 +153,22 @@ describe('generateImageListHistory', () => {
     });
   });
 
-  describe('setOmitBasePosition', () => {
-    it('指定した数値が omitBasePosition に設定される', () => {
+  describe('startOmitLengthCount', () => {
+    it('omitLength が null から -1 になる', () => {
       const newHistory = generateImageListHistory({
-        type: SET_OMIT_BASE_POSITION,
+        type: START_OMIT_LENGTH_COUNT,
         currentState: originalHistory,
-        target: 0,
       });
-      assert(originalHistory.omitBasePosition === null);
-      assert(newHistory.omitBasePosition === 0);
+      assert(originalHistory.omitLength === null);
+      assert(newHistory.omitLength === -1);
     });
-    it('omitBasePosition が null でないときに呼び出されると例外を投げる', () => {
-      originalHistory.omitBasePosition = 1;
+    it('omitLength が null でないときに呼び出されると例外を投げる', () => {
+      originalHistory.omitLength = 1;
       let error = false;
       try {
         generateImageListHistory({
-          type: SET_OMIT_BASE_POSITION,
+          type: START_OMIT_LENGTH_COUNT,
           currentState: originalHistory,
-          target: 0,
-        });
-      } catch (e) {
-        error = true;
-      }
-      assert(error === true);
-    });
-    it('history.length 以上の値を指定された場合は例外を投げる', () => {
-      let error = false;
-      try {
-        generateImageListHistory({
-          type: SET_OMIT_BASE_POSITION,
-          currentState: originalHistory,
-          target: originalHistory.length,
         });
       } catch (e) {
         error = true;
@@ -157,71 +177,53 @@ describe('generateImageListHistory', () => {
     });
     it('新しいhistoryを返すため、副作用がない', () => {
       const newHistory = generateImageListHistory({
-        type: SET_OMIT_BASE_POSITION,
+        type: START_OMIT_LENGTH_COUNT,
         currentState: originalHistory,
-        target: 1,
       });
-      assert(originalHistory.omitBasePosition === null);
-      assert(newHistory.omitBasePosition === 1);
+      assert(originalHistory.omitLength === null);
+      assert(newHistory.omitLength === -1);
       assert(originalHistory.history !== newHistory.history);
     });
   });
 
   describe('omit', () => {
-    it('指定した値と omitBasePosition の間にある history が削除される', () => {
-      originalHistory.omitBasePosition = 2;
+    it('history[1] 以降の要素を、 omitLength の数だけ削除される', () => {
+      originalHistory.omitLength = 1;
       const newHistory = generateImageListHistory({
         type: OMIT,
         currentState: originalHistory,
-        target: 0,
       });
       const {history} = newHistory;
       assert(history.length === 2);
       assert(history[0][0] === 'a');
       assert(history[1][0] === 'c');
     });
-    it('omitBasePosition が null になる', () => {
-      originalHistory.omitBasePosition = 2;
+    it('omitLength が 0 以下だった時は、history に変化はない', () => {
+      originalHistory.omitLength = 0;
       const newHistory = generateImageListHistory({
         type: OMIT,
         currentState: originalHistory,
-        target: 0,
       });
-      assert(newHistory.omitBasePosition === null);
+      const {history} = newHistory;
+      assert(history.length === 3);
+      assert(history[0][0] === 'a');
+      assert(history[1][0] === 'b');
     });
-    it('omitBasePosition が null のときに呼び出されると、例外を投げる', () => {
-      assert(originalHistory.omitBasePosition === null);
+    it('omitLength が null になる', () => {
+      originalHistory.omitLength = 1;
+      const newHistory = generateImageListHistory({
+        type: OMIT,
+        currentState: originalHistory,
+      });
+      assert(newHistory.omitLength === null);
+    });
+    it('omitLength が null のときに呼び出されると、例外を投げる', () => {
+      assert(originalHistory.omitLength === null);
       let error = false;
       try {
         generateImageListHistory({
           type: OMIT,
           currentState: originalHistory,
-          target: 0,
-        });
-      } catch (e) {
-        error = true;
-      }
-      assert(error === true);
-    });
-    it('omitBasePosition 以上の値を指定された場合は例外を投げる', () => {
-      originalHistory.omitBasePosition = 1;
-      let error = false;
-      try {
-        generateImageListHistory({
-          type: OMIT,
-          currentState: originalHistory,
-          target: 1,
-        });
-      } catch (e) {
-        error = true;
-      }
-      assert(error === true);
-      error = false;
-      try {
-        generateImageListHistory({
-          type: OMIT,
-          currentState: originalHistory,
-          target: 2,
         });
       } catch (e) {
         error = true;
@@ -229,11 +231,10 @@ describe('generateImageListHistory', () => {
       assert(error === true);
     });
     it('新しいhistoryを返すため、副作用がない', () => {
-      originalHistory.omitBasePosition = 2;
+      originalHistory.omitLength = 0;
       const newHistory = generateImageListHistory({
         type: OMIT,
         currentState: originalHistory,
-        target: 1,
       });
       const {history} = newHistory;
       assert(history.length === 3);
