@@ -50,8 +50,12 @@ describe('MouseMoveActionLayer', () => {
         imageData={imageData}
         setting={setting}
         display={display}
-        startOmitLengthCount={() => {}}
-        omitImageListHistory={() => {}}
+        startOmitLengthCount={() => {
+          calledFunc = 'startOmitLengthCount';
+        }}
+        omitImageListHistory={() => {
+          calledFunc = 'omitImageListHistory';
+        }}
       />,
       {disableLifecycleMethods: true}
     );
@@ -63,6 +67,13 @@ describe('MouseMoveActionLayer', () => {
   it('imageDataで渡されたサイズのCanvasが描画される', () => {
     assert(wrapper.find('canvas').prop('width') === CANVAS_WIDTH);
     assert(wrapper.find('canvas').prop('height') === CANVAS_HEIGHT);
+  });
+  it('マウスイベントによって startOmitLengthCount や omitImageListHistory が実行される', () => {
+    assert(calledFunc === null);
+    wrapper.find('canvas').simulate('mouseDown', {pageX: 0, pageY: 0});
+    assert(calledFunc === 'startOmitLengthCount');
+    wrapper.find('canvas').simulate('mouseUp');
+    assert(calledFunc === 'omitImageListHistory');
   });
   it('マウスイベントによって state.isAction が適切に切り替わる', () => {
     assert(wrapper.state('isAction') === false);
