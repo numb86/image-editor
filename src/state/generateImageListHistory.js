@@ -86,7 +86,7 @@ export function generateImageListHistory({
       if (omitLength <= 0) return updatedState;
       updatedState.history = updatedState.history.filter((e, index) => {
         if (index === 0) return true;
-        return index > omitLength || false;
+        return index > omitLength;
       });
       return updatedState;
     }
