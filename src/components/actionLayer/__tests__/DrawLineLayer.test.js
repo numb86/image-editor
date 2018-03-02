@@ -6,6 +6,16 @@ import DrawLineLayer from '../DrawLineLayer';
 
 describe('DrawLineLayer', () => {
   const IMAGE_DATA = {foo: 'boo'};
+  const EXPECTED_PROPS = [
+    'callbackDidMount',
+    'callbackDidUpdate',
+    'executeAction',
+    'imageData',
+    'setting',
+    'display',
+    'startOmitLengthCount',
+    'omitImageListHistory',
+  ];
   const wrapper = shallow(
     <DrawLineLayer imageData={IMAGE_DATA} updateImageData={() => {}} />
   );
@@ -18,21 +28,13 @@ describe('DrawLineLayer', () => {
       wrapper.find('MouseMoveActionLayer').prop('imageData') === IMAGE_DATA
     );
   });
-  it('callbackDidMount, callbackDidUpdate, executeAction, imageData, setting, display を MouseMoveActionLayer に渡す', () => {
-    const expectedProps = [
-      'callbackDidMount',
-      'callbackDidUpdate',
-      'executeAction',
-      'imageData',
-      'setting',
-      'display',
-    ];
+  it('props を適切に MouseMoveActionLayer に渡す', () => {
     const wrapperProps = Object.keys(
       wrapper.find('MouseMoveActionLayer').props()
     );
     assert(
       wrapperProps.every(prop =>
-        expectedProps.some(expectedProp => prop === expectedProp)
+        EXPECTED_PROPS.some(expectedProp => prop === expectedProp)
       )
     );
   });

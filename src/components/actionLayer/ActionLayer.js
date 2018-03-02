@@ -18,6 +18,8 @@ type Props = {
   updateImageData: ImageData => void,
   setting: MouseMoveActionLayerSetting,
   display: DisplayType,
+  startOmitLengthCount: () => void,
+  omitImageListHistory: () => void,
 };
 
 export function ActionLayer(props: Props) {
