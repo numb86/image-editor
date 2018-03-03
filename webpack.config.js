@@ -1,6 +1,6 @@
 const path = require('path');
 
-const config = {
+module.exports = {
   context: path.resolve(__dirname, 'src'),
   entry: {
     'public/bundle': './index.js',
@@ -32,5 +32,3 @@ const config = {
     historyApiFallback: true,
   },
 };
-
-module.exports = config;
