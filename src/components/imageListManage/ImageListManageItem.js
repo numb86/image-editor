@@ -25,7 +25,7 @@ export default function ImageListManageItem({
 }: Props) {
   return (
     <div className="image-list-manage-item">
-      <span
+      <button
         className={ClassNames({
           delete: true,
           delete__disable: !deleteImage,
@@ -36,9 +36,9 @@ export default function ImageListManageItem({
         }}
       >
         削除ボタン
-      </span>
+      </button>
       <span className="label">{label}</span>
-      <span
+      <button
         className={ClassNames({
           active: true,
           active__not: !isActive,
@@ -46,8 +46,8 @@ export default function ImageListManageItem({
         onClick={activate}
       >
         アクティブ
-      </span>
-      <span
+      </button>
+      <button
         className={ClassNames({
           'move-up': true,
           'move-up__disable': !moveUpImageOrder,
@@ -58,8 +58,8 @@ export default function ImageListManageItem({
         }}
       >
         アップ
-      </span>
-      <span
+      </button>
+      <button
         className={ClassNames({
           'move-down': true,
           'move-down__disable': !moveDownImageOrder,
@@ -70,8 +70,8 @@ export default function ImageListManageItem({
         }}
       >
         ダウン
-      </span>
-      <span
+      </button>
+      <button
         className={ClassNames({
           show: true,
           show__not: !isShow,
@@ -79,7 +79,7 @@ export default function ImageListManageItem({
         onClick={toggleShowOrHide}
       >
         表示非表示
-      </span>
+      </button>
     </div>
   );
 }
