@@ -1,6 +1,7 @@
 // @flow
 export type Image = {
   id: number,
+  label: string,
   isShow: boolean,
   imageData: ImageData,
   active: boolean,
@@ -30,8 +31,10 @@ export default function createNewImage(
   data: {width: number, height: number},
   currentState: Image[]
 ): Image {
+  const id = getMinUniqueId(currentState);
   return {
-    id: getMinUniqueId(currentState),
+    id,
+    label: `レイヤー${id}`,
     isShow: true,
     imageData: createEmptyImageData(data),
     active: true,
