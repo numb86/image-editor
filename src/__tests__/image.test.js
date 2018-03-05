@@ -27,5 +27,13 @@ describe('generateImageList', () => {
       ]);
       assert(image.id === 2);
     });
+    it('label は、 レイヤー + id となる', () => {
+      let image = createNewImage({width: 10, height: 10}, []);
+      assert(image.id === 0);
+      assert(image.label === 'レイヤー0');
+      image = createNewImage({width: 10, height: 10}, [{id: 0}]);
+      assert(image.id === 1);
+      assert(image.label === 'レイヤー1');
+    });
   });
 });
