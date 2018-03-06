@@ -4,7 +4,7 @@ export type Image = {
   label: string,
   isShow: boolean,
   imageData: ImageData,
-  active: boolean,
+  active: boolean, // TODO: isActive に直す
 };
 
 function getMinUniqueId(currentState: Image[]): number {
