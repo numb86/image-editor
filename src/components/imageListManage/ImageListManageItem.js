@@ -3,13 +3,13 @@ import React from 'react';
 import ClassNames from 'classnames';
 
 type Props = {
-  deleteImage: () => void | null,
+  deleteImage: (() => void) | null,
   label: string,
   isActive: boolean,
   isShow: boolean,
   activate: () => void,
-  moveUpImageOrder: () => void | null,
-  moveDownImageOrder: () => void | null,
+  moveUpImageOrder: (() => void) | null,
+  moveDownImageOrder: (() => void) | null,
   toggleShowOrHide: () => void,
 };
 
