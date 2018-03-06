@@ -24,7 +24,7 @@ export default function ImageListManageItem({
   toggleShowOrHide,
 }: Props) {
   return (
-    <div className="image-list-manage-item">
+    <li className="image-list-manage-item">
       <button
         className={ClassNames({
           delete: true,
@@ -80,6 +80,6 @@ export default function ImageListManageItem({
       >
         表示非表示
       </button>
-    </div>
+    </li>
   );
 }
