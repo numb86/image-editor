@@ -24,7 +24,7 @@ type GenerateImageListReceiveData = {
   imageData?: ImageData,
   width?: number,
   height?: number,
-  active?: boolean,
+  isActive?: boolean,
 };
 
 function getTargetIndexAndData(
@@ -48,7 +48,7 @@ function getTargetIndexAndData(
 function specifyProperty(
   currentState: Image[],
   target: number,
-  data: {isShow?: boolean, imageData?: ImageData, active?: boolean}
+  data: {isShow?: boolean, imageData?: ImageData, isActive?: boolean}
 ): Image[] {
   const {targetIndex, targetData} = getTargetIndexAndData(currentState, target);
   const updatedData = (Object.assign({}, targetData, data): Image);
@@ -72,11 +72,11 @@ function deleteImage(currentState: Image[], target: number): Image[] {
 
 function allImageNotActive(currentState: Image[]): Image[] {
   const updatedState = currentState.concat();
-  return updatedState.map(image => Object.assign({}, image, {active: false}));
+  return updatedState.map(image => Object.assign({}, image, {isActive: false}));
 }
 
 function specifyActiveImage(currentState: Image[], target: number): Image[] {
-  return specifyProperty(currentState, target, {active: true});
+  return specifyProperty(currentState, target, {isActive: true});
 }
 
 function moveUpImageOrder(currentState: Image[], target: number): Image[] {
@@ -160,7 +160,8 @@ export function generateImageList({
       if (currentState.length === 1) {
         throw new Error('You can not delete all image.');
       }
-      const currentActiveId = currentState.filter(i => i.active === true)[0].id;
+      const currentActiveId = currentState.filter(i => i.isActive === true)[0]
+        .id;
       return deleteImage(
         target === currentActiveId
           ? generateImageList({

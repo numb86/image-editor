@@ -4,7 +4,7 @@ export type Image = {
   label: string,
   isShow: boolean,
   imageData: ImageData,
-  active: boolean, // TODO: isActive に直す
+  isActive: boolean,
 };
 
 function getMinUniqueId(currentState: Image[]): number {
@@ -37,6 +37,6 @@ export default function createNewImage(
     label: `レイヤー${id}`,
     isShow: true,
     imageData: createEmptyImageData(data),
-    active: true,
+    isActive: true,
   };
 }

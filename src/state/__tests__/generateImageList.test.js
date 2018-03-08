@@ -25,21 +25,21 @@ describe('generateImageList', () => {
         id: 0,
         isShow: true,
         imageData: createImageData(100, 100, [1, 2, 3]),
-        active: true,
+        isActive: true,
         obj: {a: 5},
       },
       {
         id: 1,
         isShow: true,
         imageData: createImageData(100, 100, [1, 2, 3]),
-        active: false,
+        isActive: false,
         obj: {a: 5},
       },
       {
         id: 2,
         isShow: true,
         imageData: createImageData(100, 100, [11, 22, 33]),
-        active: false,
+        isActive: false,
         obj: {a: 5},
       },
     ];
@@ -160,9 +160,9 @@ describe('generateImageList', () => {
         data: {width: 200, height: 200},
         currentState: originalImageList,
       });
-      assert(newList[0].active === true);
-      assert(newList[1].active === false);
-      assert(newList.filter(i => i.id === 3)[0].active === true);
+      assert(newList[0].isActive === true);
+      assert(newList[1].isActive === false);
+      assert(newList.filter(i => i.id === 3)[0].isActive === true);
     });
   });
 
@@ -173,10 +173,10 @@ describe('generateImageList', () => {
         currentState: originalImageList,
         target: 1,
       });
-      assert(originalImageList[0].active === true);
-      assert(originalImageList[1].active === false);
-      assert(newList[0].active === false);
-      assert(newList[1].active === true);
+      assert(originalImageList[0].isActive === true);
+      assert(originalImageList[1].isActive === false);
+      assert(newList[0].isActive === false);
+      assert(newList[1].isActive === true);
     });
     it('アクティブなimageは常にひとつだけ', () => {
       let newList = generateImageList({
@@ -189,8 +189,8 @@ describe('generateImageList', () => {
         currentState: originalImageList,
         target: 2,
       });
-      assert(newList[2].active === true);
-      assert(newList.filter(image => image.active === true).length === 1);
+      assert(newList[2].isActive === true);
+      assert(newList.filter(image => image.isActive === true).length === 1);
     });
   });
 
@@ -213,30 +213,30 @@ describe('generateImageList', () => {
         currentState: originalImageList,
         target: 1,
       });
-      assert(activeIsOne.filter(image => image.active === true)[0].id === 1);
+      assert(activeIsOne.filter(image => image.isActive === true)[0].id === 1);
       const deleteOne = generateImageList({
         type: DELETE_IMAGE,
         currentState: activeIsOne,
         target: 1,
       });
-      assert(deleteOne.filter(image => image.active === true)[0].id === 2);
+      assert(deleteOne.filter(image => image.isActive === true)[0].id === 2);
       const deleteTwo = generateImageList({
         type: DELETE_IMAGE,
         currentState: deleteOne,
         target: 2,
       });
-      assert(deleteTwo.filter(image => image.active === true)[0].id === 0);
+      assert(deleteTwo.filter(image => image.isActive === true)[0].id === 0);
     });
     it('削除するimageがアクティブでない場合、アクティブに変化はない', () => {
       assert(
-        originalImageList.filter(image => image.active === true)[0].id === 0
+        originalImageList.filter(image => image.isActive === true)[0].id === 0
       );
       const newList = generateImageList({
         type: DELETE_IMAGE,
         currentState: originalImageList,
         target: 1,
       });
-      assert(newList.filter(image => image.active === true)[0].id === 0);
+      assert(newList.filter(image => image.isActive === true)[0].id === 0);
     });
     it('imageが一つしか無い場合は、削除できない。例外を投げる。', () => {
       const newList = generateImageList({

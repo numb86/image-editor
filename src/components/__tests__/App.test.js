@@ -59,7 +59,7 @@ describe('App', () => {
     it('getActiveImage でアクティブな image を取得できる', () => {
       const inst = wrapper.instance();
       const image = inst.getActiveImage();
-      assert(image.active === true);
+      assert(image.isActive === true);
     });
   });
   describe('changeDisplaySize', () => {

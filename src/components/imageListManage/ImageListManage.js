@@ -38,7 +38,7 @@ export default function ImageListManage({
             )
           }
           label={image.label}
-          isActive={image.active}
+          isActive={image.isActive}
           isShow={image.isShow}
           activate={() => {
             updateImageList(

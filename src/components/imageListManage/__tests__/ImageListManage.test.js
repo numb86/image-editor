@@ -23,8 +23,8 @@ describe('ImageListManage', () => {
   }
   beforeEach(() => {
     imageList = [
-      {id: 0, label: 'レイヤー0', isShow: true, active: false},
-      {id: 1, label: 'レイヤー1', isShow: false, active: true},
+      {id: 0, label: 'レイヤー0', isShow: true, isActive: false},
+      {id: 1, label: 'レイヤー1', isShow: false, isActive: true},
     ];
     wrapper = shallow(
       <ImageListManage
@@ -46,8 +46,8 @@ describe('ImageListManage', () => {
     );
   });
   it('isActive は、 image の値がそのまま使われる', () => {
-    assert(children.at(0).prop('isActive') === imageList[0].active);
-    assert(children.at(1).prop('isActive') === imageList[1].active);
+    assert(children.at(0).prop('isActive') === imageList[0].isActive);
+    assert(children.at(1).prop('isActive') === imageList[1].isActive);
   });
   it('isShow は、 image の値がそのまま使われる', () => {
     assert(children.at(0).prop('isShow') === imageList[0].isShow);
@@ -57,12 +57,12 @@ describe('ImageListManage', () => {
     assert(children.at(0).prop('label') === imageList[0].label);
     assert(children.at(1).prop('label') === imageList[1].label);
   });
-  it('activate を実行すると active が切り替わり、 updateImageList が呼び出される', () => {
-    assert(imageList[0].active === false);
-    assert(imageList[1].active === true);
+  it('activate を実行すると isActive が切り替わり、 updateImageList が呼び出される', () => {
+    assert(imageList[0].isActive === false);
+    assert(imageList[1].isActive === true);
     children.at(0).prop('activate')();
-    assert(imageList[0].active === true);
-    assert(imageList[1].active === false);
+    assert(imageList[0].isActive === true);
+    assert(imageList[1].isActive === false);
   });
   it('moveUpImageOrder を実行するとその要素が繰り上がり、 updateImageList が呼び出される', () => {
     assert(imageList[0].id === 0);
