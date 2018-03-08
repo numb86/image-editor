@@ -64,7 +64,7 @@ export default class App extends React.Component<Props, State> {
   }
   getActiveImage(): Image {
     const {history, position} = this.state.imageListHistory;
-    return history[position].filter(image => image.active === true)[0];
+    return history[position].filter(image => image.isActive === true)[0];
   }
   uploadImageFile(files: FileList): void {
     if (files.length > 1) {
