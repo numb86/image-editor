@@ -293,6 +293,7 @@ export default class App extends React.Component<Props, State> {
           updateImageList={updatedImageList => {
             this.updateImageListHistory(updatedImageList);
           }}
+          display={{width: display.width, height: display.height}}
         />
         {isDragOver && (
           <div className="guide-file-drop">画像をドロップすると新しくレイヤーが作られます</div>
