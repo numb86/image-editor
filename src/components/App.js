@@ -66,6 +66,15 @@ export default class App extends React.Component<Props, State> {
     const {history, position} = this.state.imageListHistory;
     return history[position].filter(image => image.isActive === true)[0];
   }
+  updateImageListHistory(imageList: Image[]): void {
+    this.setState({
+      imageListHistory: generateImageListHistory({
+        type: UPDATE,
+        currentState: this.state.imageListHistory,
+        imageList,
+      }),
+    });
+  }
   uploadImageFile(files: FileList): void {
     if (files.length > 1) {
       this.handleError('複数のファイルは選べません');
