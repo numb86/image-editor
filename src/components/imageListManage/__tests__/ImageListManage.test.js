@@ -113,8 +113,7 @@ describe('ImageListManage', () => {
     const button = wrapper
       .children()
       .at(0)
-      .find('button');
-    assert(button.text() === '新規レイヤー追加');
+      .find('.add-new-image');
     button.simulate('click');
     assert(imageList.length === 3);
   });

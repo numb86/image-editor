@@ -27,6 +27,7 @@ export default function ImageListManage({
     <ul className="image-list-manage">
       <li>
         <button
+          className="add-new-image fa fa-plus"
           onClick={() => {
             updateImageList(
               generateImageList({
@@ -36,9 +37,7 @@ export default function ImageListManage({
               })
             );
           }}
-        >
-          新規レイヤー追加
-        </button>
+        />
       </li>
       {imageList.map((image, index) => (
         <ImageListManageItem
