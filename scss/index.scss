@@ -1,3 +1,5 @@
+/*
+
 $file-transfer-button-font-size: 16px;
 $button-font-color: #fff;
 $error-message-font-color: #f36;
@@ -5,15 +7,6 @@ $header-menu-height: 44px;
 $header-sub-menu-height: 28px;
 $upload-guidance-height: 24px;
 $upload-image-top: 100px;
-
-html {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  height: 100%;
-}
 
 .header {
   position: fixed;
@@ -103,6 +96,17 @@ body {
 
 .error-message {
   color: $error-message-font-color;
+}
+
+*/
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
 }
 
 #app {
