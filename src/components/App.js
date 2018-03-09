@@ -5,6 +5,7 @@ import ClassNames from 'classnames';
 import Display from './Display';
 import ViewLayerList from './ViewLayerList';
 import {ActionLayer, DRAW_LINE, ERASER} from './actionLayer/ActionLayer';
+import ImageListManage from './imageListManage/ImageListManage';
 
 import {
   synthesizeImageData,
@@ -287,6 +288,12 @@ export default class App extends React.Component<Props, State> {
             }}
           />
         </Display>
+        <ImageListManage
+          imageList={imageList}
+          updateImageList={updatedImageList => {
+            this.updateImageListHistory(updatedImageList);
+          }}
+        />
         {isDragOver && (
           <div className="guide-file-drop">画像をドロップすると新しくレイヤーが作られます</div>
         )}
