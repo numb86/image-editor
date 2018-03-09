@@ -100,13 +100,7 @@ export default class App extends React.Component<Props, State> {
       if (changeWidth !== width || changeHeight !== height) {
         this.changeDisplaySize(changeWidth, changeHeight);
       }
-      this.setState({
-        imageListHistory: generateImageListHistory({
-          type: UPDATE,
-          currentState: this.state.imageListHistory,
-          imageList: updatedState,
-        }),
-      });
+      this.updateImageListHistory(updatedState);
     });
   }
   downloadImageFile(): void {
@@ -215,13 +209,7 @@ export default class App extends React.Component<Props, State> {
               currentState: imageList,
               target: activeImage.id,
             });
-            this.setState({
-              imageListHistory: generateImageListHistory({
-                type: UPDATE,
-                currentState: imageListHistory,
-                imageList: updatedState,
-              }),
-            });
+            this.updateImageListHistory(updatedState);
           }}
         >
           ネガポジ
@@ -235,13 +223,7 @@ export default class App extends React.Component<Props, State> {
               currentState: imageList,
               target: activeImage.id,
             });
-            this.setState({
-              imageListHistory: generateImageListHistory({
-                type: UPDATE,
-                currentState: imageListHistory,
-                imageList: updatedState,
-              }),
-            });
+            this.updateImageListHistory(updatedState);
           }}
         >
           50%縮小
@@ -284,13 +266,7 @@ export default class App extends React.Component<Props, State> {
                 currentState: imageList,
                 target: activeImage.id,
               });
-              this.setState({
-                imageListHistory: generateImageListHistory({
-                  type: UPDATE,
-                  currentState: imageListHistory,
-                  imageList: updatedState,
-                }),
-              });
+              this.updateImageListHistory(updatedState);
             }}
             startOmitLengthCount={() => {
               this.setState({
