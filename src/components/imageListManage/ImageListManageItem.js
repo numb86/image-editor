@@ -28,58 +28,53 @@ export default function ImageListManageItem({
       <button
         className={ClassNames({
           delete: true,
+          'fa fa-times': true,
           delete__disable: !deleteImage,
         })}
         onClick={() => {
           if (!deleteImage) return;
           deleteImage();
         }}
-      >
-        削除ボタン
-      </button>
+      />
       <span className="label">{label}</span>
       <button
         className={ClassNames({
           active: true,
+          'fa fa-check': true,
           active__not: !isActive,
         })}
         onClick={activate}
-      >
-        アクティブ
-      </button>
+      />
       <button
         className={ClassNames({
           'move-up': true,
+          'fa fa-chevron-up': true,
           'move-up__disable': !moveUpImageOrder,
         })}
         onClick={() => {
           if (!moveUpImageOrder) return;
           moveUpImageOrder();
         }}
-      >
-        アップ
-      </button>
+      />
       <button
         className={ClassNames({
           'move-down': true,
+          'fa fa-chevron-down': true,
           'move-down__disable': !moveDownImageOrder,
         })}
         onClick={() => {
           if (!moveDownImageOrder) return;
           moveDownImageOrder();
         }}
-      >
-        ダウン
-      </button>
+      />
       <button
         className={ClassNames({
           show: true,
+          'fa fa-minus-square': true,
           show__not: !isShow,
         })}
         onClick={toggleShowOrHide}
-      >
-        表示非表示
-      </button>
+      />
     </li>
   );
 }

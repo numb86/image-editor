@@ -7,6 +7,7 @@ import {
   generateImageList,
   SPECIFY_IMAGE_PROPERTY,
   SPECIFY_ACTIVE_IMAGE,
+  ADD_NEW_IMAGE,
   DELETE_IMAGE,
   MOVE_UP_IMAGE_ORDER,
 } from '../../state/generateImageList';
@@ -16,14 +17,31 @@ import type {Image} from '../../image';
 export default function ImageListManage({
   imageList,
   updateImageList,
+  display,
 }: {
   imageList: Image[],
   updateImageList: (Image[]) => void,
+  display: {width: number, height: number},
 }) {
   return (
-    <ul>
+    <ul className="image-list-manage">
+      <li>
+        <button
+          className="add-new-image fa fa-plus"
+          onClick={() => {
+            updateImageList(
+              generateImageList({
+                type: ADD_NEW_IMAGE,
+                currentState: imageList,
+                data: display,
+              })
+            );
+          }}
+        />
+      </li>
       {imageList.map((image, index) => (
         <ImageListManageItem
+          key={image.id}
           deleteImage={
             imageList.length === 1 ? null : (
               () => {

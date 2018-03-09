@@ -1,3 +1,5 @@
+/*
+
 $file-transfer-button-font-size: 16px;
 $button-font-color: #fff;
 $error-message-font-color: #f36;
@@ -5,15 +7,6 @@ $header-menu-height: 44px;
 $header-sub-menu-height: 28px;
 $upload-guidance-height: 24px;
 $upload-image-top: 100px;
-
-html {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  height: 100%;
-}
 
 .header {
   position: fixed;
@@ -105,6 +98,21 @@ body {
   color: $error-message-font-color;
 }
 
+*/
+
+$header-menu-height: 44px;
+$image-list-manage-width: 300px;
+$image-list-manage-height: 500px;
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+}
+
 #app {
   width: 100%;
   height: 100%;
@@ -116,9 +124,11 @@ body {
 }
 
 .display {
+  position: absolute;
   overflow: hidden;
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAP0lEQVQ4T2OcOXPmfwYiwL1794hQxcDAOGogznAaDUOcQTMEkk15eTlROUVJSYm4nDJqIM5wGg1D3Dll0CcbAMflUeHimVpmAAAAAElFTkSuQmCC');
-  transform-origin: left top;
+  transform-origin: left top; // propsで表示倍率を制御するために必要
+  left: $image-list-manage-width;
 }
 
 .file-drag-over-area {
@@ -142,4 +152,79 @@ body {
 .action-layer {
   @extend .layer;
   opacity: 0;
+}
+
+.image-list-manage {
+  position: fixed;
+  width: $image-list-manage-width;
+  height: $image-list-manage-height;
+  top: $header-menu-height;
+  left: 0px;
+  margin: 0;
+  padding: 0;
+  overflow: scroll;
+  border: 2px solid #333;
+  box-sizing: border-box;
+  button {
+    border: none;
+  }
+  button:hover {
+    background-color: #ddd;
+    cursor: pointer;
+    opacity: 0.8;
+  }
+}
+
+.image-list-manage .add-new-image {
+  color: #28af78;
+  font-size: 28px;
+}
+
+.image-list-manage-item {
+  margin-bottom: 2px;
+}
+.image-list-manage-item button {
+  font-size: 22px;
+}
+
+.image-list-manage-item .delete {
+  color: #f00;
+  &__disable {
+    visibility: hidden;
+  }
+}
+
+.image-list-manage-item .label {
+  display: inline-block;
+  width: 110px;
+  font-size: 17px;
+  color: #333;
+}
+
+.image-list-manage-item .active {
+  color: #47ea7e;
+  &__not {
+    color: #eee;
+  }
+}
+
+.image-list-manage-item .move-up {
+  color: #4387e9;
+  &__disable {
+    visibility: hidden;
+  }
+}
+
+.image-list-manage-item .move-down {
+  color: #4387e9;
+  &__disable {
+    visibility: hidden;
+  }
+}
+
+.image-list-manage-item .show {
+  color: #eee;
+  &__not {
+    color: #333;
+  }
 }

@@ -30,9 +30,10 @@ describe('ImageListManage', () => {
       <ImageListManage
         imageList={imageList}
         updateImageList={updateImageList}
+        display={{width: 30, height: 10}}
       />
     );
-    children = wrapper.children();
+    children = wrapper.find('ImageListManageItem');
   });
   it('image の数だけ、 ImageListManageItem が作られる', () => {
     assert(children.find('ImageListManageItem').length === imageList.length);
@@ -103,8 +104,17 @@ describe('ImageListManage', () => {
         updateImageList={updateImageList}
       />
     );
-    children = wrapper.children();
+    children = wrapper.find('ImageListManageItem');
     assert(children.find('ImageListManageItem').length === 1);
     assert(children.at(0).prop('deleteImage') === null);
+  });
+  it('レイヤー追加のボタンを押すと、 image が増える', () => {
+    assert(imageList.length === 2);
+    const button = wrapper
+      .children()
+      .at(0)
+      .find('.add-new-image');
+    button.simulate('click');
+    assert(imageList.length === 3);
   });
 });
