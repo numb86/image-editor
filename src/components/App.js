@@ -66,6 +66,15 @@ export default class App extends React.Component<Props, State> {
     const {history, position} = this.state.imageListHistory;
     return history[position].filter(image => image.isActive === true)[0];
   }
+  updateImageListHistory(imageList: Image[]): void {
+    this.setState({
+      imageListHistory: generateImageListHistory({
+        type: UPDATE,
+        currentState: this.state.imageListHistory,
+        imageList,
+      }),
+    });
+  }
   uploadImageFile(files: FileList): void {
     if (files.length > 1) {
       this.handleError('複数のファイルは選べません');
@@ -91,13 +100,7 @@ export default class App extends React.Component<Props, State> {
       if (changeWidth !== width || changeHeight !== height) {
         this.changeDisplaySize(changeWidth, changeHeight);
       }
-      this.setState({
-        imageListHistory: generateImageListHistory({
-          type: UPDATE,
-          currentState: this.state.imageListHistory,
-          imageList: updatedState,
-        }),
-      });
+      this.updateImageListHistory(updatedState);
     });
   }
   downloadImageFile(): void {
@@ -206,13 +209,7 @@ export default class App extends React.Component<Props, State> {
               currentState: imageList,
               target: activeImage.id,
             });
-            this.setState({
-              imageListHistory: generateImageListHistory({
-                type: UPDATE,
-                currentState: imageListHistory,
-                imageList: updatedState,
-              }),
-            });
+            this.updateImageListHistory(updatedState);
           }}
         >
           ネガポジ
@@ -226,13 +223,7 @@ export default class App extends React.Component<Props, State> {
               currentState: imageList,
               target: activeImage.id,
             });
-            this.setState({
-              imageListHistory: generateImageListHistory({
-                type: UPDATE,
-                currentState: imageListHistory,
-                imageList: updatedState,
-              }),
-            });
+            this.updateImageListHistory(updatedState);
           }}
         >
           50%縮小
@@ -275,13 +266,7 @@ export default class App extends React.Component<Props, State> {
                 currentState: imageList,
                 target: activeImage.id,
               });
-              this.setState({
-                imageListHistory: generateImageListHistory({
-                  type: UPDATE,
-                  currentState: imageListHistory,
-                  imageList: updatedState,
-                }),
-              });
+              this.updateImageListHistory(updatedState);
             }}
             startOmitLengthCount={() => {
               this.setState({

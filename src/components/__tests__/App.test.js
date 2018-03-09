@@ -62,6 +62,20 @@ describe('App', () => {
       assert(image.isActive === true);
     });
   });
+  describe('updateImageListHistory', () => {
+    it('updateImageListHistory で state.imageListHistory を更新できる', () => {
+      assert(wrapper.state('imageListHistory').history.length === 1);
+      assert(wrapper.state('imageListHistory').history[0][0].id === 0);
+      wrapper
+        .instance()
+        .updateImageListHistory([
+          {id: 9, isActive: true},
+          {id: 0, isActive: false},
+        ]);
+      assert(wrapper.state('imageListHistory').history.length === 2);
+      assert(wrapper.state('imageListHistory').history[0][0].id === 9);
+    });
+  });
   describe('changeDisplaySize', () => {
     it('渡された値に、 state.display のサイズを変える', () => {
       const inst = wrapper.instance();
