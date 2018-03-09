@@ -101,7 +101,8 @@ $upload-image-top: 100px;
 */
 
 $header-menu-height: 44px;
-$image-list-manage-width: 400px;
+$image-list-manage-width: 300px;
+$image-list-manage-height: 500px;
 
 html {
   height: 100%;
@@ -156,9 +157,74 @@ body {
 .image-list-manage {
   position: fixed;
   width: $image-list-manage-width;
+  height: $image-list-manage-height;
   top: $header-menu-height;
   left: 0px;
   margin: 0;
   padding: 0;
-  background-color: aqua;
+  overflow: scroll;
+  border: 2px solid #333;
+  box-sizing: border-box;
+  button {
+    border: none;
+  }
+  button:hover {
+    background-color: #ddd;
+    cursor: pointer;
+    opacity: 0.8;
+  }
+}
+
+.image-list-manage .add-new-image {
+  color: #28af78;
+  font-size: 28px;
+}
+
+.image-list-manage-item {
+  margin-bottom: 2px;
+}
+.image-list-manage-item button {
+  font-size: 22px;
+}
+
+.image-list-manage-item .delete {
+  color: #f00;
+  &__disable {
+    visibility: hidden;
+  }
+}
+
+.image-list-manage-item .label {
+  display: inline-block;
+  width: 110px;
+  font-size: 17px;
+  color: #333;
+}
+
+.image-list-manage-item .active {
+  color: #47ea7e;
+  &__not {
+    color: #eee;
+  }
+}
+
+.image-list-manage-item .move-up {
+  color: #4387e9;
+  &__disable {
+    visibility: hidden;
+  }
+}
+
+.image-list-manage-item .move-down {
+  color: #4387e9;
+  &__disable {
+    visibility: hidden;
+  }
+}
+
+.image-list-manage-item .show {
+  color: #eee;
+  &__not {
+    color: #333;
+  }
 }
