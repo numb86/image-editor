@@ -21,7 +21,7 @@ export default function ImageListManage({
   updateImageList: (Image[]) => void,
 }) {
   return (
-    <ul>
+    <ul className="image-list-manage">
       {imageList.map((image, index) => (
         <ImageListManageItem
           key={image.id}

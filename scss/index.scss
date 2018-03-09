@@ -100,6 +100,9 @@ $upload-image-top: 100px;
 
 */
 
+$header-menu-height: 44px;
+$image-list-manage-width: 400px;
+
 html {
   height: 100%;
 }
@@ -120,9 +123,11 @@ body {
 }
 
 .display {
+  position: absolute;
   overflow: hidden;
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAP0lEQVQ4T2OcOXPmfwYiwL1794hQxcDAOGogznAaDUOcQTMEkk15eTlROUVJSYm4nDJqIM5wGg1D3Dll0CcbAMflUeHimVpmAAAAAElFTkSuQmCC');
-  transform-origin: left top;
+  transform-origin: left top; // propsで表示倍率を制御するために必要
+  left: $image-list-manage-width;
 }
 
 .file-drag-over-area {
@@ -146,4 +151,14 @@ body {
 .action-layer {
   @extend .layer;
   opacity: 0;
+}
+
+.image-list-manage {
+  position: fixed;
+  width: $image-list-manage-width;
+  top: $header-menu-height;
+  left: 0px;
+  margin: 0;
+  padding: 0;
+  background-color: aqua;
 }
