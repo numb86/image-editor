@@ -24,6 +24,7 @@ export default function ImageListManage({
     <ul>
       {imageList.map((image, index) => (
         <ImageListManageItem
+          key={image.id}
           deleteImage={
             imageList.length === 1 ? null : (
               () => {
