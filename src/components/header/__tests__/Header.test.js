@@ -20,8 +20,8 @@ describe('Header', () => {
     };
     wrapper = shallow(
       <Header
-        uploadImageFile={() => {
-          calledFunc = 'uploadImageFile';
+        uploadImageFile={arg => {
+          calledFunc = `uploadImageFile+${arg}`;
         }}
         downloadImageFile={() => {
           calledFunc = 'downloadImageFile';
@@ -31,8 +31,21 @@ describe('Header', () => {
       />
     );
   });
-  it.skip('アップロードボタンを押すとアップロードダイアログが表示され、 uploadImageFile が実行される', () => {});
-  it.skip('uploadImageFile の引数は e.target.files', () => {});
+  it('アップロードボタンでアップロードすると、 uploadImageFile が実行される', () => {
+    assert(calledFunc === null);
+    wrapper
+      .find('.upload')
+      .find('input')
+      .simulate('change', {target: {files: ''}});
+    assert(calledFunc.indexOf('uploadImageFile') === 0);
+  });
+  it('uploadImageFile の引数は e.target.files', () => {
+    wrapper
+      .find('.upload')
+      .find('input')
+      .simulate('change', {target: {files: 'foo'}});
+    assert(calledFunc.indexOf('foo') !== -1);
+  });
   it('ダウンロードボタンを押すと downloadImageFile が実行される', () => {
     assert(calledFunc === null);
     wrapper.find('.download').simulate('click');
