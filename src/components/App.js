@@ -303,8 +303,8 @@ export default class App extends React.Component<Props, State> {
           downloadImageFile={() => this.downloadImageFile()}
           uploadImageFile={fileList => this.uploadImageFile(fileList)}
           imageListHistory={imageListHistory}
-          updateImageListHistory={updatedState =>
-            this.updateImageListHistory(updatedState)}
+          updateImageListHistory={changedImageListHistory =>
+            this.updateImageListHistory(changedImageListHistory)}
         />
         {isDragOver && (
           <div className="guide-file-drop">画像をドロップすると新しくレイヤーが作られます</div>
