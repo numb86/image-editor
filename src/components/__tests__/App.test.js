@@ -68,10 +68,7 @@ describe('App', () => {
       assert(wrapper.state('imageListHistory').history[0][0].id === 0);
       wrapper
         .instance()
-        .updateImageList([
-          {id: 9, isActive: true},
-          {id: 0, isActive: false},
-        ]);
+        .updateImageList([{id: 9, isActive: true}, {id: 0, isActive: false}]);
       assert(wrapper.state('imageListHistory').history.length === 2);
       assert(wrapper.state('imageListHistory').history[0][0].id === 9);
     });
