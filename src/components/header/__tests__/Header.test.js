@@ -36,14 +36,14 @@ describe('Header', () => {
     wrapper
       .find('.upload')
       .find('input')
-      .simulate('change', {target: {files: ''}});
+      .simulate('change', {target: {files: ''}, preventDefault: () => {}});
     assert(calledFunc.indexOf('uploadImageFile') === 0);
   });
   it('uploadImageFile の引数は e.target.files', () => {
     wrapper
       .find('.upload')
       .find('input')
-      .simulate('change', {target: {files: 'foo'}});
+      .simulate('change', {target: {files: 'foo'}, preventDefault: () => {}});
     assert(calledFunc.indexOf('foo') !== -1);
   });
   it('ダウンロードボタンを押すと downloadImageFile が実行される', () => {

@@ -28,7 +28,10 @@ export default function Header({
           id="image-upload-input"
           type="file"
           accept="image/*"
-          onChange={e => uploadImageFile(e.target.files)}
+          onChange={e => {
+            e.preventDefault();
+            uploadImageFile(e.target.files);
+          }}
         />
       </label>
       <button
