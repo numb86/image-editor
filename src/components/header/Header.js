@@ -22,8 +22,8 @@ export default function Header({
 }) {
   return (
     <header>
-      <button className="download" onClick={downloadImageFile} />
-      <label htmlFor="image-upload-input" className="upload">
+      <button className="download fa fa-download" onClick={downloadImageFile} />
+      <label htmlFor="image-upload-input" className="upload fa fa-upload">
         <input
           id="image-upload-input"
           type="file"
@@ -35,7 +35,7 @@ export default function Header({
         />
       </label>
       <button
-        className="undo"
+        className="undo fa fa-undo"
         onClick={() => {
           updateImageListHistory(
             generateImageListHistory({
@@ -46,7 +46,7 @@ export default function Header({
         }}
       />
       <button
-        className="redo"
+        className="redo fa fa-repeat"
         onClick={() => {
           updateImageListHistory(
             generateImageListHistory({
