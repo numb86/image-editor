@@ -76,6 +76,9 @@ export default class App extends React.Component<Props, State> {
       }),
     });
   }
+  updateImageListHistory(imageListHistory: ImageListHistory): void {
+    this.setState({imageListHistory});
+  }
   uploadImageFile(files: FileList): void {
     if (files.length > 1) {
       this.handleError('複数のファイルは選べません');

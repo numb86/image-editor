@@ -73,6 +73,19 @@ describe('App', () => {
       assert(wrapper.state('imageListHistory').history[0][0].id === 9);
     });
   });
+  describe('updateImageListHistory', () => {
+    it('updateImageListHistory で state.imageListHistory を更新できる', () => {
+      assert(wrapper.state('imageListHistory').position === 0);
+      assert(wrapper.state('imageListHistory').history[0][0].id === 0);
+      wrapper.instance().updateImageListHistory({
+        history: [[{id: 1, isActive: true}], [{id: 0, isActive: true}]],
+        position: 1,
+        omitLength: null,
+      });
+      assert(wrapper.state('imageListHistory').position === 1);
+      assert(wrapper.state('imageListHistory').history[0][0].id === 1);
+    });
+  });
   describe('changeDisplaySize', () => {
     it('渡された値に、 state.display のサイズを変える', () => {
       const inst = wrapper.instance();
