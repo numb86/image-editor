@@ -4,7 +4,7 @@ import ClassNames from 'classnames';
 
 import Display from './Display';
 import ViewLayerList from './ViewLayerList';
-import {ActionLayer, DRAW_LINE, ERASER} from './actionLayer/ActionLayer';
+import {ActionLayer} from './actionLayer/ActionLayer';
 import ImageListManage from './imageListManage/ImageListManage';
 import Header from './header/Header';
 
@@ -12,22 +12,14 @@ import {
   synthesizeImageData,
   convertBlobToImageData,
   convertImageDataToBlob,
-  resizeImageData,
 } from '../imageData';
-import {invertNegaPosi} from '../editImageDataPixel';
 import {
   generateImageList,
   SPECIFY_IMAGE_PROPERTY,
   ADD_NEW_IMAGE,
 } from '../state/generateImageList';
 import {
-  generateActionLayerSettings,
-  SPECIFY_CONTEXT_PROPERTY,
-} from '../state/generateActionLayerSettings';
-import {
   generateImageListHistory,
-  BACK,
-  FORWARD,
   UPDATE,
   START_OMIT_LENGTH_COUNT,
   OMIT,
@@ -179,84 +171,6 @@ export default class App extends React.Component<Props, State> {
           if (e.clientX === 0) this.setState({isDragOver: false});
         }}
       >
-        <button
-          onClick={() => {
-            this.setState({
-              activeActionLayer:
-                this.state.activeActionLayer === DRAW_LINE ? ERASER : DRAW_LINE,
-            });
-          }}
-        >
-          ペン ⇔ 消しゴム
-        </button>
-        <button
-          onClick={() => {
-            const newValue =
-              actionLayerSettings[DRAW_LINE].ctx.lineWidth === 1 ? 15 : 1;
-            const newSetting = generateActionLayerSettings({
-              type: SPECIFY_CONTEXT_PROPERTY,
-              currentState: actionLayerSettings,
-              data: {lineWidth: newValue},
-              target: DRAW_LINE,
-            });
-            this.setState({actionLayerSettings: newSetting});
-          }}
-        >
-          ペン（太） ⇔　ペン（細）
-        </button>
-        <button onClick={() => this.downloadImageFile()}>ダウンロード</button>
-        <button
-          onClick={() => {
-            const imageData = invertNegaPosi(activeImage.imageData);
-            const updatedState = generateImageList({
-              type: SPECIFY_IMAGE_PROPERTY,
-              data: {imageData},
-              currentState: imageList,
-              target: activeImage.id,
-            });
-            this.updateImageList(updatedState);
-          }}
-        >
-          ネガポジ
-        </button>
-        <button
-          onClick={() => {
-            const imageData = resizeImageData(activeImage.imageData, 50);
-            const updatedState = generateImageList({
-              type: SPECIFY_IMAGE_PROPERTY,
-              data: {imageData},
-              currentState: imageList,
-              target: activeImage.id,
-            });
-            this.updateImageList(updatedState);
-          }}
-        >
-          50%縮小
-        </button>
-        <button
-          onClick={() => {
-            this.setState({
-              imageListHistory: generateImageListHistory({
-                type: BACK,
-                currentState: imageListHistory,
-              }),
-            });
-          }}
-        >
-          undo
-        </button>
-        <button
-          onClick={() => {
-            this.setState({
-              imageListHistory: generateImageListHistory({
-                type: FORWARD,
-                currentState: imageListHistory,
-              }),
-            });
-          }}
-        >
-          redo
-        </button>
         <Display {...display}>
           <ViewLayerList viewLayerDataList={imageList} />
           <ActionLayer
