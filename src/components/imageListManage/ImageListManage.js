@@ -33,7 +33,7 @@ export default function ImageListManage({
               generateImageList({
                 type: ADD_NEW_IMAGE,
                 currentState: imageList,
-                data: display,
+                data: {width: display.width, height: display.height},
               })
             );
           }}

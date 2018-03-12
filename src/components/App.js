@@ -67,7 +67,7 @@ export default class App extends React.Component<Props, State> {
     const {history, position} = this.state.imageListHistory;
     return history[position].filter(image => image.isActive === true)[0];
   }
-  updateImageListHistory(imageList: Image[]): void {
+  updateImageList(imageList: Image[]): void {
     this.setState({
       imageListHistory: generateImageListHistory({
         type: UPDATE,
@@ -101,7 +101,7 @@ export default class App extends React.Component<Props, State> {
       if (changeWidth !== width || changeHeight !== height) {
         this.changeDisplaySize(changeWidth, changeHeight);
       }
-      this.updateImageListHistory(updatedState);
+      this.updateImageList(updatedState);
     });
   }
   downloadImageFile(): void {
@@ -210,7 +210,7 @@ export default class App extends React.Component<Props, State> {
               currentState: imageList,
               target: activeImage.id,
             });
-            this.updateImageListHistory(updatedState);
+            this.updateImageList(updatedState);
           }}
         >
           ネガポジ
@@ -224,7 +224,7 @@ export default class App extends React.Component<Props, State> {
               currentState: imageList,
               target: activeImage.id,
             });
-            this.updateImageListHistory(updatedState);
+            this.updateImageList(updatedState);
           }}
         >
           50%縮小
@@ -267,7 +267,7 @@ export default class App extends React.Component<Props, State> {
                 currentState: imageList,
                 target: activeImage.id,
               });
-              this.updateImageListHistory(updatedState);
+              this.updateImageList(updatedState);
             }}
             startOmitLengthCount={() => {
               this.setState({
@@ -291,7 +291,7 @@ export default class App extends React.Component<Props, State> {
         <ImageListManage
           imageList={imageList}
           updateImageList={updatedImageList => {
-            this.updateImageListHistory(updatedImageList);
+            this.updateImageList(updatedImageList);
           }}
           display={{width: display.width, height: display.height}}
         />
