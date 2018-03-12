@@ -123,12 +123,20 @@ body {
   height: 100%;
 }
 
+.header {
+  position: fixed;
+  height: $header-menu-height;
+  background-color: #555;
+  width: 100%;
+}
+
 .display {
   position: absolute;
+  top: $header-menu-height + 20;
+  left: $image-list-manage-width + 20;
   overflow: hidden;
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAP0lEQVQ4T2OcOXPmfwYiwL1794hQxcDAOGogznAaDUOcQTMEkk15eTlROUVJSYm4nDJqIM5wGg1D3Dll0CcbAMflUeHimVpmAAAAAElFTkSuQmCC');
   transform-origin: left top; // propsで表示倍率を制御するために必要
-  left: $image-list-manage-width;
 }
 
 .file-drag-over-area {

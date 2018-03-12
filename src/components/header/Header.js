@@ -21,7 +21,7 @@ export default function Header({
   updateImageListHistory: ImageListHistory => void,
 }) {
   return (
-    <header>
+    <header className="header">
       <button className="download fa fa-download" onClick={downloadImageFile} />
       <label htmlFor="image-upload-input" className="upload fa fa-upload">
         <input
