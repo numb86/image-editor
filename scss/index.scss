@@ -160,15 +160,15 @@ body {
 
 .header .menu-list {
   margin-left: 120px;
-  font-size: 13px;
 }
 
-.header .menu-list span {
+.header .menu-list button {
   margin-left: 30px;
+  font-size: 13px;
   cursor: pointer;
 }
 
-.header .menu-list span:hover {
+.header .menu-list button:hover {
   color: #81b9d7;
 }
 
