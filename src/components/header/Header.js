@@ -27,12 +27,14 @@ export default function Header({
   uploadImageFile,
   imageListHistory,
   updateImageListHistory,
+  select,
 }: {
   selectedMenu: HeaderMenuList,
   downloadImageFile: () => void,
   uploadImageFile: FileList => void,
   imageListHistory: ImageListHistory,
   updateImageListHistory: ImageListHistory => void,
+  select: HeaderMenuList => void,
 }) {
   return (
     <header className="header">
@@ -75,7 +77,11 @@ export default function Header({
           const classNames = ClassNames({
             selected: selectedMenu === menuName,
           });
-          return <span className={classNames}>{menuName}</span>;
+          return (
+            <span className={classNames} onClick={() => select(menuName)}>
+              {menuName}
+            </span>
+          );
         })}
       </span>
       <div className="sub-menu">sub</div>
