@@ -200,10 +200,10 @@ body {
   box-sizing: border-box;
   button {
     border: none;
+    cursor: pointer;
   }
   button:hover {
     background-color: #ddd;
-    cursor: pointer;
     opacity: 0.8;
   }
 }
