@@ -220,7 +220,6 @@ export default class App extends React.Component<Props, State> {
           updateImageListHistory={changedImageListHistory =>
             this.updateImageListHistory(changedImageListHistory)}
         />
-        <div className="sub-menu">sub</div>
         {isDragOver && (
           <div className="guide-file-drop">画像をドロップすると新しくレイヤーが作られます</div>
         )}
