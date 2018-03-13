@@ -9,6 +9,8 @@ import {
 
 import type {ImageListHistory} from '../../state/generateImageListHistory';
 
+const HEADER_MENU_LIST = ['スケッチ', 'リサイズと色調変換', 'キャンバス'];
+
 export default function Header({
   downloadImageFile,
   uploadImageFile,
@@ -56,6 +58,9 @@ export default function Header({
           );
         }}
       />
+      <span className="menu-list">
+        {HEADER_MENU_LIST.map(menuName => <span>{menuName}</span>)}
+      </span>
       <div className="sub-menu">sub</div>
     </header>
   );
