@@ -31,6 +31,7 @@ import type {Image} from '../image';
 import type {ActionLayerName} from './actionLayer/ActionLayer';
 import type {ActionLayerSettings} from '../state/generateActionLayerSettings';
 import type {ImageListHistory} from '../state/generateImageListHistory';
+import type {HeaderMenuList} from './header/Header';
 
 const MIME_PING = 'image/png';
 const MIME_JPEG = 'image/jpeg';
@@ -39,6 +40,7 @@ const ALLOW_FILE_TYPES = [MIME_PING, MIME_JPEG];
 type Props = {||};
 type State = {
   isDragOver: boolean,
+  selectedMenu: HeaderMenuList,
   imageListHistory: ImageListHistory,
   display: DisplayType,
   activeActionLayer: ActionLayerName,
@@ -214,6 +216,7 @@ export default class App extends React.Component<Props, State> {
           display={{width: display.width, height: display.height}}
         />
         <Header
+          selectedMenu={this.state.selectedMenu}
           downloadImageFile={() => this.downloadImageFile()}
           uploadImageFile={fileList => this.uploadImageFile(fileList)}
           imageListHistory={imageListHistory}

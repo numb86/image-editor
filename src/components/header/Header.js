@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import ClassNames from 'classnames';
 
 import {
   generateImageListHistory,
@@ -9,14 +10,25 @@ import {
 
 import type {ImageListHistory} from '../../state/generateImageListHistory';
 
-const HEADER_MENU_LIST = ['スケッチ', 'リサイズと色調変換', 'キャンバス'];
+const SKETCH: 'スケッチ' = 'スケッチ';
+const RESIZE_AND_COLOR_TONE_CHANGE: 'リサイズと色調変換' = 'リサイズと色調変換';
+const CANVAS: 'キャンバス' = 'キャンバス';
+
+export type HeaderMenuList =
+  | typeof SKETCH
+  | typeof RESIZE_AND_COLOR_TONE_CHANGE
+  | typeof CANVAS;
+
+const HEADER_MENU_LIST = [SKETCH, RESIZE_AND_COLOR_TONE_CHANGE, CANVAS];
 
 export default function Header({
+  selectedMenu,
   downloadImageFile,
   uploadImageFile,
   imageListHistory,
   updateImageListHistory,
 }: {
+  selectedMenu: HeaderMenuList,
   downloadImageFile: () => void,
   uploadImageFile: FileList => void,
   imageListHistory: ImageListHistory,
@@ -59,7 +71,12 @@ export default function Header({
         }}
       />
       <span className="menu-list">
-        {HEADER_MENU_LIST.map(menuName => <span>{menuName}</span>)}
+        {HEADER_MENU_LIST.map(menuName => {
+          const classNames = ClassNames({
+            selected: selectedMenu === menuName,
+          });
+          return <span className={classNames}>{menuName}</span>;
+        })}
       </span>
       <div className="sub-menu">sub</div>
     </header>

@@ -3,6 +3,7 @@ import {generateImageList, ADD_NEW_IMAGE} from './generateImageList';
 
 import {DRAW_LINE, ERASER} from '../components/actionLayer/ActionLayer';
 
+const INITIAL_SELECTED_MENU = 'スケッチ';
 const INITIAL_DISPALY_WIDTH = 500;
 const INITIAL_DISPALY_HEIGHT = 500;
 const INITIAL_DISPALY_MAGNIFICATION_PERCENT = 100;
@@ -15,6 +16,7 @@ const initialImageList = generateImageList({
 
 const initialState = {
   isDragOver: false,
+  selectedMenu: INITIAL_SELECTED_MENU,
   imageListHistory: {
     history: [initialImageList],
     position: 0,
