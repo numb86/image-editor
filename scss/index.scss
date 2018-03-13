@@ -102,7 +102,7 @@ $upload-image-top: 100px;
 
 $base-color: #f7f9fc;
 $image-list-manage-base-color: #eaf0f9;
-$header-menu-height: 30px;
+$header-menu-height: 32px;
 $sub-menu-height: 50px;
 $image-list-manage-width: 300px;
 $image-list-manage-height: 500px;
@@ -132,7 +132,7 @@ body {
   background-color: #555;
   width: 100%;
   color: #fffafa;
-  font-size: 21px;
+  font-size: 20px;
   input {
     display: none;
   }
@@ -158,6 +158,20 @@ body {
   }
 }
 
+.header .menu-list {
+  margin-left: 120px;
+  font-size: 13px;
+}
+
+.header .menu-list span {
+  margin-left: 30px;
+  cursor: pointer;
+}
+
+.header .menu-list span:hover {
+  color: #81b9d7;
+}
+
 .sub-menu {
   position: fixed;
   width: 100%;
@@ -165,6 +179,7 @@ body {
   height: $sub-menu-height;
   background-color: $base-color;
   box-sizing: border-box;
+  color: #000;
 }
 
 .display {
