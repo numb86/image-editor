@@ -100,6 +100,8 @@ $upload-image-top: 100px;
 
 */
 
+$base-color: #f7f9fc;
+$image-list-manage-base-color: #eaf0f9;
 $header-menu-height: 30px;
 $sub-menu-height: 50px;
 $image-list-manage-width: 300px;
@@ -161,7 +163,7 @@ body {
   width: 100%;
   top: $header-menu-height;
   height: $sub-menu-height;
-  background-color: #f7f9fc;
+  background-color: $base-color;
   box-sizing: border-box;
 }
 
@@ -206,7 +208,7 @@ body {
   margin: 0;
   padding: 0;
   overflow: scroll;
-  background-color: #f7f9fc;
+  background-color: $base-color;
   box-sizing: border-box;
   button {
     border: none;
@@ -221,17 +223,17 @@ body {
 .image-list-manage .add-new-image {
   color: #28af78;
   font-size: 28px;
-  background-color: #eaf0f9;
+  background-color: $image-list-manage-base-color;
 }
 
 .image-list-manage-item {
   padding: 3px 0;
-  background-color: #eaf0f9;
+  background-color: $image-list-manage-base-color;
   border-bottom: #d1e1f9 solid 1px;
 }
 .image-list-manage-item button {
   font-size: 22px;
-  background-color: #eaf0f9;
+  background-color: $image-list-manage-base-color;
 }
 
 .image-list-manage-item .delete {
