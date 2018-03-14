@@ -28,6 +28,9 @@ describe('Header', () => {
         }}
         imageListHistory={imageListHistory}
         updateImageListHistory={updateImageListHistory}
+        select={arg => {
+          calledFunc = `select+${arg}`;
+        }}
       />
     );
   });
@@ -61,5 +64,23 @@ describe('Header', () => {
     assert(imageListHistory.position === 1);
     wrapper.find('.redo').simulate('click');
     assert(imageListHistory.position === 0);
+  });
+  it('メニューリストを押すと、 select が呼ばれる', () => {
+    assert(calledFunc === null);
+    wrapper
+      .find('.menu-list')
+      .children()
+      .first()
+      .simulate('click');
+    assert(calledFunc.indexOf('select') === 0);
+  });
+  it('クリックした要素のテキストが、 select の引数になる', () => {
+    assert(calledFunc === null);
+    const target = wrapper
+      .find('.menu-list')
+      .children()
+      .first();
+    target.simulate('click');
+    assert(calledFunc.indexOf(target.text()) !== -1);
   });
 });

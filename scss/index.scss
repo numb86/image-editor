@@ -102,7 +102,8 @@ $upload-image-top: 100px;
 
 $base-color: #f7f9fc;
 $image-list-manage-base-color: #eaf0f9;
-$header-menu-height: 30px;
+$header-menu-height: 32px;
+$header-menu-hover-color: #81b9d7;
 $sub-menu-height: 50px;
 $image-list-manage-width: 300px;
 $image-list-manage-height: 500px;
@@ -132,7 +133,7 @@ body {
   background-color: #555;
   width: 100%;
   color: #fffafa;
-  font-size: 21px;
+  font-size: 20px;
   input {
     display: none;
   }
@@ -142,7 +143,7 @@ body {
     cursor: pointer;
   }
   label:hover {
-    color: #81b9d7;
+    color: $header-menu-hover-color;
   }
   button {
     display: inline-block;
@@ -154,8 +155,26 @@ body {
   }
   button:hover {
     opacity: 0.8;
-    color: #81b9d7;
+    color: $header-menu-hover-color;
   }
+}
+
+.header .menu-list {
+  margin-left: 120px;
+}
+
+.header .menu-list button {
+  margin-left: 30px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.header .menu-list button:hover {
+  color: $header-menu-hover-color;
+}
+
+.header .menu-list .selected {
+  color: #86b4f9;
 }
 
 .sub-menu {
@@ -165,6 +184,7 @@ body {
   height: $sub-menu-height;
   background-color: $base-color;
   box-sizing: border-box;
+  color: #000;
 }
 
 .display {
