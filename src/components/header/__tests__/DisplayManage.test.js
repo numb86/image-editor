@@ -54,29 +54,29 @@ describe('DisplayManage', () => {
       heightInput = inputs.at(1);
     });
     it('ボタンを押すと、テキストボックスの値を updateDisplaySize に渡して呼び出す', () => {
-      widthInput.simulate('change', {currentTarget: {value: 33}});
-      heightInput.simulate('change', {currentTarget: {value: 22}});
+      widthInput.simulate('change', {currentTarget: {value: '33'}});
+      heightInput.simulate('change', {currentTarget: {value: '22'}});
       assert(displaySize.width === null && displaySize.height === null);
       wrapper.find('[data-test="specify-display-size"]').simulate('click');
       assert(displaySize.width === 33 && displaySize.height === 22);
     });
     it('テキストボックスの値が0以下のときは updateDisplaySize を呼び出さない', () => {
-      widthInput.simulate('change', {currentTarget: {value: -33}});
-      heightInput.simulate('change', {currentTarget: {value: 22}});
+      widthInput.simulate('change', {currentTarget: {value: '-33'}});
+      heightInput.simulate('change', {currentTarget: {value: '22'}});
       assert(displaySize.width === null && displaySize.height === null);
       wrapper.find('[data-test="specify-display-size"]').simulate('click');
       assert(displaySize.width === null && displaySize.height === null);
     });
     it('テキストボックスの値が10,000以上のときは updateDisplaySize を呼び出さない', () => {
-      widthInput.simulate('change', {currentTarget: {value: 33}});
-      heightInput.simulate('change', {currentTarget: {value: 10000}});
+      widthInput.simulate('change', {currentTarget: {value: '33'}});
+      heightInput.simulate('change', {currentTarget: {value: '10000'}});
       assert(displaySize.width === null && displaySize.height === null);
       wrapper.find('[data-test="specify-display-size"]').simulate('click');
       assert(displaySize.width === null && displaySize.height === null);
     });
     it('テキストボックスの値が数値以外のときは updateDisplaySize を呼び出さない', () => {
       widthInput.simulate('change', {currentTarget: {value: '33a'}});
-      heightInput.simulate('change', {currentTarget: {value: 22}});
+      heightInput.simulate('change', {currentTarget: {value: '22'}});
       assert(displaySize.width === null && displaySize.height === null);
       wrapper.find('[data-test="specify-display-size"]').simulate('click');
       assert(displaySize.width === null && displaySize.height === null);
