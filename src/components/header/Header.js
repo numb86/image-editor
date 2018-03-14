@@ -78,7 +78,11 @@ export default function Header({
             selected: selectedMenu === menuName,
           });
           return (
-            <button className={classNames} onClick={() => select(menuName)}>
+            <button
+              key={menuName}
+              className={classNames}
+              onClick={() => select(menuName)}
+            >
               {menuName}
             </button>
           );
