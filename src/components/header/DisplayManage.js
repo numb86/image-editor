@@ -1,7 +1,21 @@
+// @flow
 import React from 'react';
 
-export default class DisplayManage extends React.Component {
-  constructor(props) {
+import type {DisplayType} from '../Display';
+
+type Props = {
+  updateDisplaySize: (width: number, height: number) => void,
+  showImageDatas: ImageData[],
+  display: DisplayType,
+};
+
+type State = {
+  widthString: string,
+  heightString: string,
+};
+
+export default class DisplayManage extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     const {width, height} = this.props.display;
     this.state = {
