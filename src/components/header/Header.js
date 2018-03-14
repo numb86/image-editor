@@ -2,12 +2,15 @@
 import React from 'react';
 import ClassNames from 'classnames';
 
+import DisplayManage from './DisplayManage';
+
 import {
   generateImageListHistory,
   BACK,
   FORWARD,
 } from '../../state/generateImageListHistory';
 
+import type {DisplayType} from '../Display';
 import type {ImageListHistory} from '../../state/generateImageListHistory';
 
 const SKETCH: 'スケッチ' = 'スケッチ';
@@ -28,6 +31,9 @@ export default function Header({
   imageListHistory,
   updateImageListHistory,
   select,
+  display,
+  updateDisplaySize,
+  showImageDatas,
 }: {
   selectedMenu: HeaderMenuList,
   downloadImageFile: () => void,
@@ -35,6 +41,9 @@ export default function Header({
   imageListHistory: ImageListHistory,
   updateImageListHistory: ImageListHistory => void,
   select: HeaderMenuList => void,
+  display: DisplayType,
+  updateDisplaySize: (width: number, height: number) => void,
+  showImageDatas: ImageData[],
 }) {
   return (
     <header className="header">
@@ -91,7 +100,13 @@ export default function Header({
       <div className="sub-menu">
         {selectedMenu === SKETCH && <div>スケッチ</div>}
         {selectedMenu === RESIZE_AND_COLOR_TONE_CHANGE && <div>リサイズなど</div>}
-        {selectedMenu === CANVAS && <div>canvas</div>}
+        {selectedMenu === CANVAS && (
+          <DisplayManage
+            updateDisplaySize={updateDisplaySize}
+            showImageDatas={showImageDatas}
+            display={display}
+          />
+        )}
       </div>
     </header>
   );
