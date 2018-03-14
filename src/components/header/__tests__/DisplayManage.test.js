@@ -21,6 +21,7 @@ describe('DisplayManage', () => {
           displaySize = {width, height};
         }}
         showImageDatas={imageDatas}
+        display={{width: 10, height: 10}}
       />
     );
   });
@@ -38,6 +39,7 @@ describe('DisplayManage', () => {
             displaySize = {width, height};
           }}
           showImageDatas={imageDatas}
+          display={{width: 10, height: 10}}
         />
       );
       assert(displaySize.width === null && displaySize.height === null);
