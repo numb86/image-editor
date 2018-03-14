@@ -103,6 +103,7 @@ $upload-image-top: 100px;
 $base-color: #f7f9fc;
 $image-list-manage-base-color: #eaf0f9;
 $header-menu-height: 32px;
+$header-menu-hover-color: #81b9d7;
 $sub-menu-height: 50px;
 $image-list-manage-width: 300px;
 $image-list-manage-height: 500px;
@@ -142,7 +143,7 @@ body {
     cursor: pointer;
   }
   label:hover {
-    color: #81b9d7;
+    color: $header-menu-hover-color;
   }
   button {
     display: inline-block;
@@ -154,7 +155,7 @@ body {
   }
   button:hover {
     opacity: 0.8;
-    color: #81b9d7;
+    color: $header-menu-hover-color;
   }
 }
 
@@ -169,7 +170,7 @@ body {
 }
 
 .header .menu-list button:hover {
-  color: #81b9d7;
+  color: $header-menu-hover-color;
 }
 
 .header .menu-list .selected {
