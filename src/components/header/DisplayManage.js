@@ -8,8 +8,8 @@ export default function DisplayManage({
   updateDisplaySize: (width: number, height: number) => void,
   showImageDatas: ImageData[],
 }) {
-  let width = null;
-  let height = null;
+  let widthString = '';
+  let heightString = '';
   return (
     <div className="display-manage">
       <button
@@ -26,20 +26,22 @@ export default function DisplayManage({
       <input
         type="number"
         onChange={e => {
-          width = e.currentTarget.value;
+          widthString = e.currentTarget.value;
         }}
       />px
       <input
         type="number"
         onChange={e => {
-          height = e.currentTarget.value;
+          heightString = e.currentTarget.value;
         }}
       />px
       <button
         data-test="specify-display-size"
         onClick={() => {
-          if (!width || !height) return;
-          if (!Number.isFinite(width) || !Number.isFinite(height)) return;
+          if (!widthString || !heightString) return;
+          const width = widthString - 0;
+          const height = heightString - 0;
+          if (isNaN(width) || isNaN(height)) return;
           if (width <= 0 || height <= 0) return;
           if (width >= 10000 || height >= 10000) return;
           updateDisplaySize(width, height);
