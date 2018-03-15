@@ -44,7 +44,7 @@ export default class DisplayManage extends React.Component<Props, State> {
           キャンバスをレイヤーの最大値に合わせる
         </button>
         {['widthString', 'heightString'].map(value => (
-          <>
+          <span key={value}>
             <input
               type="number"
               className={ClassNames({'error-message': this.state.error})}
@@ -56,7 +56,7 @@ export default class DisplayManage extends React.Component<Props, State> {
                 });
               }}
             />px
-          </>
+          </span>
         ))}
         <button
           data-test="specify-display-size"
