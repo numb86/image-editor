@@ -8,6 +8,8 @@ describe('DisplayManage', () => {
   let wrapper;
   let displaySize;
   let imageDatas;
+  let widthInput;
+  let heightInput;
   beforeEach(() => {
     displaySize = {width: null, height: null};
     imageDatas = [
@@ -24,6 +26,9 @@ describe('DisplayManage', () => {
         display={{width: 10, height: 10}}
       />
     );
+    const inputs = wrapper.find('input');
+    widthInput = inputs.at(0);
+    heightInput = inputs.at(1);
   });
   describe('fitMaxViewLayer', () => {
     it('ボタンを押すと、 imageDatas の中のwidthとheightの最大値を updateDisplaySize に渡して呼び出す', () => {
@@ -48,13 +53,6 @@ describe('DisplayManage', () => {
     });
   });
   describe('specifyDisplaySize', () => {
-    let widthInput;
-    let heightInput;
-    beforeEach(() => {
-      const inputs = wrapper.find('input');
-      widthInput = inputs.at(0);
-      heightInput = inputs.at(1);
-    });
     it('ボタンを押すと、テキストボックスの値を updateDisplaySize に渡して呼び出す', () => {
       widthInput.simulate('change', {currentTarget: {value: '33'}});
       heightInput.simulate('change', {currentTarget: {value: '22'}});
@@ -82,6 +80,34 @@ describe('DisplayManage', () => {
       assert(displaySize.width === null && displaySize.height === null);
       wrapper.find('[data-test="specify-display-size"]').simulate('click');
       assert(displaySize.width === null && displaySize.height === null);
+    });
+  });
+  describe('state', () => {
+    it('widthString と widthHeight の初期値は、 display を文字列変換した値になる', () => {
+      const {width, height} = wrapper.instance().props.display;
+      assert(
+        String(width) === wrapper.state('widthString') &&
+          String(height) === wrapper.state('widthString')
+      );
+    });
+    it('テキストボックスへの onChange によって、 widthString と widthHeight が変化する', () => {
+      assert(wrapper.state('widthString') !== '987');
+      widthInput.simulate('change', {currentTarget: {value: '987'}});
+      assert(wrapper.state('widthString') === '987');
+    });
+    it('テキストボックスの値が適切でない状態で specifyDisplaySize ボタンを押した場合、 error が true になる', () => {
+      assert(wrapper.state('error') === false);
+      widthInput.simulate('change', {currentTarget: {value: 'hoge'}});
+      wrapper.find('[data-test="specify-display-size"]').simulate('click');
+      assert(wrapper.state('error') === true);
+    });
+    it('テキストボックスへの onChange によって、 error が false になる', () => {
+      assert(wrapper.state('error') === false);
+      widthInput.simulate('change', {currentTarget: {value: 'hoge'}});
+      wrapper.find('[data-test="specify-display-size"]').simulate('click');
+      assert(wrapper.state('error') === true);
+      widthInput.simulate('change', {currentTarget: {value: '1'}});
+      assert(wrapper.state('error') === false);
     });
   });
 });
