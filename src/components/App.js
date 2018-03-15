@@ -215,6 +215,7 @@ export default class App extends React.Component<Props, State> {
           }}
           display={{width: display.width, height: display.height}}
         />
+        {/* TODO: Header に渡す props が増えすぎているため、調整する */}
         <Header
           selectedMenu={this.state.selectedMenu}
           downloadImageFile={() => this.downloadImageFile()}
