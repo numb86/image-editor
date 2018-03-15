@@ -2,12 +2,15 @@
 import React from 'react';
 import ClassNames from 'classnames';
 
+import DisplayManage from './DisplayManage';
+
 import {
   generateImageListHistory,
   BACK,
   FORWARD,
 } from '../../state/generateImageListHistory';
 
+import type {DisplayType} from '../Display';
 import type {ImageListHistory} from '../../state/generateImageListHistory';
 
 const SKETCH: 'スケッチ' = 'スケッチ';
@@ -28,6 +31,9 @@ export default function Header({
   imageListHistory,
   updateImageListHistory,
   select,
+  display,
+  updateDisplaySize,
+  displayedImageDatas,
 }: {
   selectedMenu: HeaderMenuList,
   downloadImageFile: () => void,
@@ -35,6 +41,9 @@ export default function Header({
   imageListHistory: ImageListHistory,
   updateImageListHistory: ImageListHistory => void,
   select: HeaderMenuList => void,
+  display: DisplayType,
+  updateDisplaySize: (width: number, height: number) => void,
+  displayedImageDatas: ImageData[],
 }) {
   return (
     <header className="header">
@@ -78,13 +87,29 @@ export default function Header({
             selected: selectedMenu === menuName,
           });
           return (
-            <button className={classNames} onClick={() => select(menuName)}>
+            <button
+              key={menuName}
+              className={classNames}
+              onClick={() => select(menuName)}
+            >
               {menuName}
             </button>
           );
         })}
       </span>
-      <div className="sub-menu">sub</div>
+      <div className="sub-menu">
+        {selectedMenu === SKETCH && <div>スケッチ</div>}
+        {selectedMenu === RESIZE_AND_COLOR_TONE_CHANGE && (
+          <div>リサイズなど</div>
+        )}
+        {selectedMenu === CANVAS && (
+          <DisplayManage
+            updateDisplaySize={updateDisplaySize}
+            displayedImageDatas={displayedImageDatas}
+            display={display}
+          />
+        )}
+      </div>
     </header>
   );
 }

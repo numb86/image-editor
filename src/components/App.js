@@ -226,6 +226,13 @@ export default class App extends React.Component<Props, State> {
           select={menuName => {
             this.setState({selectedMenu: menuName});
           }}
+          display={display}
+          updateDisplaySize={(width, height) => {
+            this.changeDisplaySize(width, height);
+          }}
+          displayedImageDatas={imageList
+            .filter(image => image.isShow)
+            .map(image => image.imageData)}
         />
         {isDragOver && (
           <div className="guide-file-drop">
