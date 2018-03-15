@@ -26,9 +26,9 @@ export default function synthesizeImages(
   return generateBaseCanvas(dataUrlList[0])
     .then(({canvas, ctx}) => {
       dataUrlList.shift();
-      return Promise.all(
-        dataUrlList.map(data => loadImage(data))
-      ).then(images => ({canvas, ctx, images}));
+      return Promise.all(dataUrlList.map(data => loadImage(data))).then(
+        images => ({canvas, ctx, images})
+      );
     })
     .then(({canvas, ctx, images}) => {
       images.forEach(image => {

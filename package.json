@@ -40,12 +40,12 @@
     "eslint-plugin-prettier": "^2.2.0",
     "eslint-plugin-react": "^7.0.1",
     "extract-text-webpack-plugin": "^3.0.2",
-    "flow-bin": "^0.59.0",
+    "flow-bin": "^0.67.1",
     "jsdom": "^11.6.2",
     "mocha": "^3.5.0",
     "node-sass": "^4.7.2",
     "power-assert": "^1.4.4",
-    "prettier": "^1.6.0",
+    "prettier": "^1.11.1",
     "react-test-renderer": "^16.1.1",
     "sass-loader": "^6.0.7",
     "sinon": "^4.1.2",
@@ -55,8 +55,8 @@
   "dependencies": {
     "canvas-exif-orientation": "^0.4.0",
     "classnames": "^2.2.5",
-    "react": "^16.1.1",
-    "react-dom": "^16.1.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "react-router-dom": "^4.1.1"
   }
 }
