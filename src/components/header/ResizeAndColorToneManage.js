@@ -1,10 +1,12 @@
 // @flow
 import React from 'react';
 
+import {invertNegaPosi, applyGrayScale} from '../../editImageDataPixel';
+import {resizeImageData} from '../../imageData';
+
 type Props = {
-  invertNegaPosi: () => void,
-  applyGrayScale: () => void,
-  resizeImage: number => void,
+  imageData: ImageData,
+  updateImageData: ImageData => void,
 };
 
 type State = {
@@ -21,12 +23,13 @@ export default class ResizeAndColorToneManage extends React.Component<
     this.state = {resizeRatio: '100', error: false};
   }
   render() {
+    const {imageData, updateImageData} = this.props;
     return (
       <div>
         <button
           data-test="invert-nega-posi"
           onClick={() => {
-            this.props.invertNegaPosi();
+            updateImageData(invertNegaPosi(imageData));
           }}
         >
           ネガポジ反転
@@ -34,7 +37,7 @@ export default class ResizeAndColorToneManage extends React.Component<
         <button
           data-test="apply-gray-scale"
           onClick={() => {
-            this.props.applyGrayScale();
+            updateImageData(applyGrayScale(imageData));
           }}
         >
           グレースケール
@@ -64,7 +67,7 @@ export default class ResizeAndColorToneManage extends React.Component<
               this.setState({error: true});
               return;
             }
-            this.props.resizeImage(ratio);
+            updateImageData(resizeImageData(imageData, ratio));
           }}
         >
           リサイズ
