@@ -65,7 +65,7 @@ export default class DisplayManage extends React.Component<Props, State> {
             const {widthString, heightString} = this.state;
             if (!widthString || !heightString) error = true;
             const width = Number(widthString);
-            const height = Number(heightString) - 0;
+            const height = Number(heightString);
             if (isNaN(width) || isNaN(height)) error = true;
             if (width <= 0 || height <= 0) error = true;
             if (width >= 10000 || height >= 10000) error = true;
