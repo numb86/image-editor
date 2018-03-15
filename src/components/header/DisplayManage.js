@@ -43,28 +43,21 @@ export default class DisplayManage extends React.Component<Props, State> {
         >
           キャンバスをレイヤーの最大値に合わせる
         </button>
-        <input
-          type="number"
-          className={ClassNames({'error-message': this.state.error})}
-          value={this.state.widthString}
-          onChange={e => {
-            this.setState({
-              widthString: e.currentTarget.value,
-              error: false,
-            });
-          }}
-        />px
-        <input
-          type="number"
-          className={ClassNames({'error-message': this.state.error})}
-          value={this.state.heightString}
-          onChange={e => {
-            this.setState({
-              heightString: e.currentTarget.value,
-              error: false,
-            });
-          }}
-        />px
+        {['widthString', 'heightString'].map(value => (
+          <>
+            <input
+              type="number"
+              className={ClassNames({'error-message': this.state.error})}
+              value={this.state[value]}
+              onChange={e => {
+                this.setState({
+                  [value]: e.currentTarget.value,
+                  error: false,
+                });
+              }}
+            />px
+          </>
+        ))}
         <button
           data-test="specify-display-size"
           onClick={() => {
