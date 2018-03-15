@@ -33,7 +33,7 @@ export default function Header({
   select,
   display,
   updateDisplaySize,
-  showImageDatas,
+  displayedImageDatas,
 }: {
   selectedMenu: HeaderMenuList,
   downloadImageFile: () => void,
@@ -43,7 +43,7 @@ export default function Header({
   select: HeaderMenuList => void,
   display: DisplayType,
   updateDisplaySize: (width: number, height: number) => void,
-  showImageDatas: ImageData[],
+  displayedImageDatas: ImageData[],
 }) {
   return (
     <header className="header">
@@ -103,7 +103,7 @@ export default function Header({
         {selectedMenu === CANVAS && (
           <DisplayManage
             updateDisplaySize={updateDisplaySize}
-            showImageDatas={showImageDatas}
+            displayedImageDatas={displayedImageDatas}
             display={display}
           />
         )}

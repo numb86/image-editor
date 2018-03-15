@@ -20,7 +20,7 @@ describe('DisplayManage', () => {
         updateDisplaySize={(width, height) => {
           displaySize = {width, height};
         }}
-        showImageDatas={imageDatas}
+        displayedImageDatas={imageDatas}
         display={{width: 10, height: 10}}
       />
     );
@@ -38,7 +38,7 @@ describe('DisplayManage', () => {
           updateDisplaySize={(width, height) => {
             displaySize = {width, height};
           }}
-          showImageDatas={imageDatas}
+          displayedImageDatas={imageDatas}
           display={{width: 10, height: 10}}
         />
       );

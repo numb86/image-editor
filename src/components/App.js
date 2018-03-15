@@ -230,7 +230,7 @@ export default class App extends React.Component<Props, State> {
           updateDisplaySize={(width, height) => {
             this.changeDisplaySize(width, height);
           }}
-          showImageDatas={imageList
+          displayedImageDatas={imageList
             .filter(image => image.isShow)
             .map(image => image.imageData)}
         />

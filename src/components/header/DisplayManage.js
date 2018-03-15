@@ -6,7 +6,7 @@ import type {DisplayType} from '../Display';
 
 type Props = {
   updateDisplaySize: (width: number, height: number) => void,
-  showImageDatas: ImageData[],
+  displayedImageDatas: ImageData[],
   display: DisplayType,
 };
 
@@ -27,15 +27,17 @@ export default class DisplayManage extends React.Component<Props, State> {
     };
   }
   render() {
-    const {updateDisplaySize, showImageDatas} = this.props;
+    const {updateDisplaySize, displayedImageDatas} = this.props;
     return (
       <div className="display-manage">
         <button
           data-test="fit-max-view-layer"
           onClick={() => {
-            if (showImageDatas.length === 0) return;
-            const maxWidth = Math.max(...showImageDatas.map(i => i.width));
-            const maxHeight = Math.max(...showImageDatas.map(i => i.height));
+            if (displayedImageDatas.length === 0) return;
+            const maxWidth = Math.max(...displayedImageDatas.map(i => i.width));
+            const maxHeight = Math.max(
+              ...displayedImageDatas.map(i => i.height)
+            );
             updateDisplaySize(maxWidth, maxHeight);
           }}
         >
