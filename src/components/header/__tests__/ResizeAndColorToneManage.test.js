@@ -80,5 +80,19 @@ describe('ResizeAndColorToneManage', () => {
       resizeRatioInput.simulate('change', {currentTarget: {value: '45'}});
       assert(wrapper.state('resizeRatio') === '45');
     });
+    it('テキストボックスの値が適切でない状態で resizeImage ボタンを押した場合、 error が true になる', () => {
+      assert(wrapper.state('error') === false);
+      resizeRatioInput.simulate('change', {currentTarget: {value: 'hoge'}});
+      wrapper.find('[data-test="resize-image"]').simulate('click');
+      assert(wrapper.state('error') === true);
+    });
+    it('テキストボックスへの onChange によって、 error が false になる', () => {
+      assert(wrapper.state('error') === false);
+      resizeRatioInput.simulate('change', {currentTarget: {value: 'hoge'}});
+      wrapper.find('[data-test="resize-image"]').simulate('click');
+      assert(wrapper.state('error') === true);
+      resizeRatioInput.simulate('change', {currentTarget: {value: 'hoge'}});
+      assert(wrapper.state('error') === false);
+    });
   });
 });
