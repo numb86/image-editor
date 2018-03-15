@@ -99,7 +99,9 @@ export default function Header({
       </span>
       <div className="sub-menu">
         {selectedMenu === SKETCH && <div>スケッチ</div>}
-        {selectedMenu === RESIZE_AND_COLOR_TONE_CHANGE && <div>リサイズなど</div>}
+        {selectedMenu === RESIZE_AND_COLOR_TONE_CHANGE && (
+          <div>リサイズなど</div>
+        )}
         {selectedMenu === CANVAS && (
           <DisplayManage
             updateDisplaySize={updateDisplaySize}
