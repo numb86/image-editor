@@ -50,7 +50,9 @@ export default class FileDropArea extends React.Component<Props, State> {
           this.setState({isDragOver: false});
         }}
       >
-        {!children && <span>ここに画像をドロップすることでもアップロードできます</span>}
+        {!children && (
+          <span>ここに画像をドロップすることでもアップロードできます</span>
+        )}
         {children}
       </div>
     );

@@ -43,17 +43,17 @@ export default function ImageListManage({
         <ImageListManageItem
           key={image.id}
           deleteImage={
-            imageList.length === 1 ? null : (
-              () => {
-                updateImageList(
-                  generateImageList({
-                    type: DELETE_IMAGE,
-                    currentState: imageList,
-                    target: image.id,
-                  })
-                );
-              }
-            )
+            imageList.length === 1
+              ? null
+              : () => {
+                  updateImageList(
+                    generateImageList({
+                      type: DELETE_IMAGE,
+                      currentState: imageList,
+                      target: image.id,
+                    })
+                  );
+                }
           }
           label={image.label}
           isActive={image.isActive}
@@ -68,30 +68,30 @@ export default function ImageListManage({
             );
           }}
           moveUpImageOrder={
-            index === 0 ? null : (
-              () => {
-                updateImageList(
-                  generateImageList({
-                    type: MOVE_UP_IMAGE_ORDER,
-                    currentState: imageList,
-                    target: image.id,
-                  })
-                );
-              }
-            )
+            index === 0
+              ? null
+              : () => {
+                  updateImageList(
+                    generateImageList({
+                      type: MOVE_UP_IMAGE_ORDER,
+                      currentState: imageList,
+                      target: image.id,
+                    })
+                  );
+                }
           }
           moveDownImageOrder={
-            index === imageList.length - 1 ? null : (
-              () => {
-                updateImageList(
-                  generateImageList({
-                    type: MOVE_UP_IMAGE_ORDER,
-                    currentState: imageList,
-                    target: imageList[index + 1].id,
-                  })
-                );
-              }
-            )
+            index === imageList.length - 1
+              ? null
+              : () => {
+                  updateImageList(
+                    generateImageList({
+                      type: MOVE_UP_IMAGE_ORDER,
+                      currentState: imageList,
+                      target: imageList[index + 1].id,
+                    })
+                  );
+                }
           }
           toggleShowOrHide={() => {
             updateImageList(
