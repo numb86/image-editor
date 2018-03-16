@@ -67,7 +67,7 @@ export function resizeImageData(
   srcCtx.putImageData(src, 0, 0);
 
   const destCanvas = document.createElement('canvas');
-  const destCtx = srcCanvas.getContext('2d');
+  const destCtx = destCanvas.getContext('2d');
   destCanvas.width = Math.floor(src.width * (resizeRatioPercent / 100));
   destCanvas.height = Math.floor(src.height * (resizeRatioPercent / 100));
   const {width, height} = destCanvas;
