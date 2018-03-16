@@ -29,5 +29,27 @@ describe('imageData', () => {
       assert(srcImageData.width === 10);
       assert(srcImageData.height === 7);
     });
+    it('第二引数に渡した数値の比率で、リサイズする　端数は切り捨て', () => {
+      let ratio;
+      let destImageData;
+      const assertCheck = () => {
+        assert(
+          destImageData.width === Math.floor(srcImageData.width * (ratio / 100))
+        );
+        assert(
+          destImageData.height ===
+            Math.floor(srcImageData.height * (ratio / 100))
+        );
+      };
+      ratio = 50;
+      destImageData = resizeImageData(srcImageData, ratio);
+      assertCheck();
+      ratio = 100;
+      destImageData = resizeImageData(srcImageData, ratio);
+      assertCheck();
+      ratio = 200;
+      destImageData = resizeImageData(srcImageData, ratio);
+      assertCheck();
+    });
   });
 });
