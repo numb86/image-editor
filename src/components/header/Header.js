@@ -2,6 +2,7 @@
 import React from 'react';
 import ClassNames from 'classnames';
 
+import ResizeAndColorToneManage from './ResizeAndColorToneManage';
 import DisplayManage from './DisplayManage';
 
 import {
@@ -34,6 +35,8 @@ export default function Header({
   display,
   updateDisplaySize,
   displayedImageDatas,
+  imageData,
+  updateImageData,
 }: {
   selectedMenu: HeaderMenuList,
   downloadImageFile: () => void,
@@ -44,6 +47,8 @@ export default function Header({
   display: DisplayType,
   updateDisplaySize: (width: number, height: number) => void,
   displayedImageDatas: ImageData[],
+  imageData: ImageData,
+  updateImageData: ImageData => void,
 }) {
   return (
     <header className="header">
@@ -100,7 +105,10 @@ export default function Header({
       <div className="sub-menu">
         {selectedMenu === SKETCH && <div>スケッチ</div>}
         {selectedMenu === RESIZE_AND_COLOR_TONE_CHANGE && (
-          <div>リサイズなど</div>
+          <ResizeAndColorToneManage
+            imageData={imageData}
+            updateImageData={updateImageData}
+          />
         )}
         {selectedMenu === CANVAS && (
           <DisplayManage

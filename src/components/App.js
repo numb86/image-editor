@@ -234,6 +234,16 @@ export default class App extends React.Component<Props, State> {
           displayedImageDatas={imageList
             .filter(image => image.isShow)
             .map(image => image.imageData)}
+          imageData={activeImage.imageData}
+          updateImageData={imageData => {
+            const updatedState = generateImageList({
+              type: SPECIFY_IMAGE_PROPERTY,
+              data: {imageData},
+              currentState: imageList,
+              target: activeImage.id,
+            });
+            this.updateImageList(updatedState);
+          }}
         />
         {isDragOver && (
           <div className="guide-file-drop">
