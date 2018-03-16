@@ -5,70 +5,77 @@ import assert from 'assert';
 import ResizeAndColorToneManage from '../ResizeAndColorToneManage';
 
 describe('ResizeAndColorToneManage', () => {
+  const CANVAS_WIDTH = 8;
+  const CANVAS_HEIGHT = 4;
+  let canvas;
+  let ctx;
+  let imageData;
+  let funcCalledResult;
   let wrapper;
-  let calledFunc;
   let resizeRatioInput;
   beforeEach(() => {
-    calledFunc = null;
+    canvas = document.createElement('canvas');
+    ctx = canvas.getContext('2d');
+    canvas.width = CANVAS_WIDTH;
+    canvas.height = CANVAS_HEIGHT;
+    imageData = ctx.createImageData(CANVAS_WIDTH, CANVAS_HEIGHT);
+    funcCalledResult = null;
     wrapper = shallow(
       <ResizeAndColorToneManage
-        invertNegaPosi={() => {
-          calledFunc = 'invertNegaPosi';
-        }}
-        applyGrayScale={() => {
-          calledFunc = 'applyGrayScale';
-        }}
-        resizeImage={resizeRatio => {
-          calledFunc = resizeRatio;
+        imageData={imageData}
+        updateImageData={arg => {
+          funcCalledResult = arg;
         }}
       />
     );
     resizeRatioInput = wrapper.find('input');
   });
   describe('invertNegaPosi', () => {
-    it('ボタンを押すと、 invertNegaPosi が呼び出される', () => {
-      assert(calledFunc === null);
+    it('ボタンを押すと、 ネガポジ反転した上で updateImageData が呼び出される', () => {
+      assert(funcCalledResult === null);
       wrapper.find('[data-test="invert-nega-posi"]').simulate('click');
-      assert(calledFunc === 'invertNegaPosi');
+      assert(funcCalledResult.data[0] === 255);
     });
   });
   describe('applyGrayScale', () => {
-    it('ボタンを押すと、 applyGrayScale が呼び出される', () => {
-      assert(calledFunc === null);
+    it('ボタンを押すと、 グレースケールした上で updateImageData が呼び出される', () => {
+      assert(funcCalledResult === null);
       wrapper.find('[data-test="apply-gray-scale"]').simulate('click');
-      assert(calledFunc === 'applyGrayScale');
+      assert(funcCalledResult.data[0] === 0);
     });
   });
   describe('resizeImage', () => {
-    it('ボタンを押すと、テキストボックスの値を resizeImage に渡して呼び出す', () => {
-      resizeRatioInput.simulate('change', {currentTarget: {value: '80'}});
-      assert(calledFunc === null);
+    it('ボタンを押すと、テキストボックスの値でリサイズした上で updateImageData が呼び出される', () => {
+      resizeRatioInput.simulate('change', {currentTarget: {value: '50'}});
+      assert(funcCalledResult === null);
       wrapper.find('[data-test="resize-image"]').simulate('click');
-      assert(calledFunc === 80);
+      assert(funcCalledResult.width === CANVAS_WIDTH / 2);
+      assert(funcCalledResult.height === CANVAS_HEIGHT / 2);
     });
-    it('テキストボックスの値が0以下のときは resizeImage を呼び出さない', () => {
+    it('テキストボックスの値が0以下のときは updateImageData を呼び出さない', () => {
       resizeRatioInput.simulate('change', {currentTarget: {value: '-80'}});
-      assert(calledFunc === null);
+      assert(funcCalledResult === null);
       wrapper.find('[data-test="resize-image"]').simulate('click');
-      assert(calledFunc === null);
+      assert(funcCalledResult === null);
       resizeRatioInput.simulate('change', {currentTarget: {value: '0'}});
       wrapper.find('[data-test="resize-image"]').simulate('click');
-      assert(calledFunc === null);
+      assert(funcCalledResult === null);
     });
-    it('テキストボックスの値が201以上のときは resizeImage を呼び出さない', () => {
+    it('テキストボックスの値が201以上のときは updateImageData を呼び出さない', () => {
       resizeRatioInput.simulate('change', {currentTarget: {value: '201'}});
-      assert(calledFunc === null);
+      assert(funcCalledResult === null);
       wrapper.find('[data-test="resize-image"]').simulate('click');
-      assert(calledFunc === null);
+      assert(funcCalledResult === null);
       resizeRatioInput.simulate('change', {currentTarget: {value: '200'}});
       wrapper.find('[data-test="resize-image"]').simulate('click');
-      assert(calledFunc === 200);
+      assert(funcCalledResult.width === CANVAS_WIDTH * 2);
+      assert(funcCalledResult.height === CANVAS_HEIGHT * 2);
     });
-    it('テキストボックスの値が数値以外のときは resizeImage を呼び出さない', () => {
+    it('テキストボックスの値が数値以外のときは updateImageData を呼び出さない', () => {
       resizeRatioInput.simulate('change', {currentTarget: {value: '12a'}});
-      assert(calledFunc === null);
+      assert(funcCalledResult === null);
       wrapper.find('[data-test="resize-image"]').simulate('click');
-      assert(calledFunc === null);
+      assert(funcCalledResult === null);
     });
   });
   describe('state', () => {
