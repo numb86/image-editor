@@ -62,6 +62,19 @@ describe('App', () => {
       assert(image.isActive === true);
     });
   });
+  describe('updateImageData', () => {
+    it('updateImageData に ImageData を渡すことで state.imageListHistory を更新できる', () => {
+      assert(wrapper.state('imageListHistory').history.length === 1);
+      assert(
+        wrapper.state('imageListHistory').history[0][0].imageData.width === 500
+      );
+      wrapper.instance().updateImageData({data: 'foo', width: 99, height: 88});
+      assert(wrapper.state('imageListHistory').history.length === 2);
+      assert(
+        wrapper.state('imageListHistory').history[0][0].imageData.width === 99
+      );
+    });
+  });
   describe('updateImageList', () => {
     it('updateImageList で state.imageListHistory を更新できる', () => {
       assert(wrapper.state('imageListHistory').history.length === 1);
