@@ -192,24 +192,19 @@ body {
   color: #000;
 }
 
-.sub-menu button {
-  color: #000;
-  border: solid 1px #000;
-}
-
 .display-manage{
   line-height: 40px;
   margin-left: 280px;
-}
-
-.display-manage input {
-  font-size: 15px;
-  width: 46px;
-  margin: 0 0 0 20px;
-}
-
-.display-manage button {
-  margin: 0 12px 0 40px;
+  input {
+    font-size: 15px;
+    width: 46px;
+    margin: 0 0 0 20px;
+    }
+  button {
+    color: #000;
+    border: solid 1px #000;
+    margin: 0 12px 0 40px;
+  }
 }
 
 .display {
