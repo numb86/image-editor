@@ -211,6 +211,10 @@ body {
   @extend .sub-menu-content;
 }
 
+.resize-and-color-tone-manage {
+  @extend .sub-menu-content;
+}
+
 .display {
   position: absolute;
   top: $header-menu-height + $sub-menu-height + 10;

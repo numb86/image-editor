@@ -25,7 +25,7 @@ export default class ResizeAndColorToneManage extends React.Component<
   render() {
     const {imageData, updateImageData} = this.props;
     return (
-      <div>
+      <div className="resize-and-color-tone-manage">
         <button
           data-test="invert-nega-posi"
           onClick={() => {
