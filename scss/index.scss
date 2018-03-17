@@ -192,7 +192,7 @@ body {
   color: #000;
 }
 
-.display-manage{
+.sub-menu-content{
   line-height: 40px;
   margin-left: 280px;
   input {
@@ -205,6 +205,10 @@ body {
     border: solid 1px #000;
     margin: 0 12px 0 40px;
   }
+}
+
+.display-manage {
+  @extend .sub-menu-content;
 }
 
 .display {
