@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import ClassNames from 'classnames';
 
 import {invertNegaPosi, applyGrayScale} from '../../editImageDataPixel';
 import {resizeImageData} from '../../imageData';
@@ -44,6 +45,7 @@ export default class ResizeAndColorToneManage extends React.Component<
         </button>
         <input
           type="number"
+          className={ClassNames({'error-message': this.state.error})}
           value={this.state.resizeRatio}
           onChange={e => {
             this.setState({
