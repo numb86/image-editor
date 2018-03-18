@@ -61,16 +61,22 @@ export default class DisplayManage extends React.Component<Props, State> {
         <button
           data-test="specify-display-size"
           onClick={() => {
-            let error = false;
             const {widthString, heightString} = this.state;
-            if (!widthString || !heightString) error = true;
+            if (!widthString || !heightString) {
+              this.setState({error: true});
+              return;
+            }
             const width = Number(widthString);
             const height = Number(heightString);
-            if (isNaN(width) || isNaN(height)) error = true;
             // TODO: マジックナンバーの削除
-            if (width <= 0 || height <= 0) error = true;
-            if (width >= 10000 || height >= 10000) error = true;
-            if (error) {
+            if (
+              isNaN(width) ||
+              isNaN(height) ||
+              width <= 0 ||
+              height <= 0 ||
+              width >= 10000 ||
+              height >= 10000
+            ) {
               this.setState({error: true});
               return;
             }

@@ -57,15 +57,14 @@ export default class ResizeAndColorToneManage extends React.Component<
         <button
           data-test="resize-image"
           onClick={() => {
-            let error = false;
             const {resizeRatio} = this.state;
-            if (!resizeRatio) error = true;
+            if (!resizeRatio) {
+              this.setState({error: true});
+              return;
+            }
             const ratio = Number(resizeRatio);
-            if (isNaN(ratio)) error = true;
             // TODO: マジックナンバーの削除
-            if (ratio <= 0) error = true;
-            if (ratio > 200) error = true;
-            if (error) {
+            if (isNaN(ratio) || ratio <= 0 || ratio > 200) {
               this.setState({error: true});
               return;
             }
