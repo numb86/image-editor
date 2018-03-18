@@ -16,6 +16,11 @@ type State = {
   error: boolean,
 };
 
+const MIN_DISPLAY_WIDTH = 1;
+const MIN_DISPLAY_HEIGHT = 1;
+const MAX_DISPLAY_WIDTH = 9999;
+const MAX_DISPLAY_HEIGHT = 9999;
+
 export default class DisplayManage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -61,15 +66,21 @@ export default class DisplayManage extends React.Component<Props, State> {
         <button
           data-test="specify-display-size"
           onClick={() => {
-            let error = false;
             const {widthString, heightString} = this.state;
-            if (!widthString || !heightString) error = true;
+            if (!widthString || !heightString) {
+              this.setState({error: true});
+              return;
+            }
             const width = Number(widthString);
             const height = Number(heightString);
-            if (isNaN(width) || isNaN(height)) error = true;
-            if (width <= 0 || height <= 0) error = true;
-            if (width >= 10000 || height >= 10000) error = true;
-            if (error) {
+            if (
+              isNaN(width) ||
+              isNaN(height) ||
+              width < MIN_DISPLAY_WIDTH ||
+              height < MIN_DISPLAY_HEIGHT ||
+              width > MAX_DISPLAY_WIDTH ||
+              height > MAX_DISPLAY_HEIGHT
+            ) {
               this.setState({error: true});
               return;
             }

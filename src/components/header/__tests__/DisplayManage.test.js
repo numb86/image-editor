@@ -61,7 +61,7 @@ describe('DisplayManage', () => {
       assert(displaySize.width === 33 && displaySize.height === 22);
     });
     it('テキストボックスの値が0以下のときは updateDisplaySize を呼び出さない', () => {
-      widthInput.simulate('change', {currentTarget: {value: '-33'}});
+      widthInput.simulate('change', {currentTarget: {value: '0'}});
       heightInput.simulate('change', {currentTarget: {value: '22'}});
       assert(displaySize.width === null && displaySize.height === null);
       wrapper.find('[data-test="specify-display-size"]').simulate('click');

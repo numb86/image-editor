@@ -62,6 +62,17 @@ export default class App extends React.Component<Props, State> {
     const {history, position} = this.state.imageListHistory;
     return history[position].filter(image => image.isActive === true)[0];
   }
+  updateImageData(imageData: ImageData): void {
+    const {history, position} = this.state.imageListHistory;
+    const imageList = history[position];
+    const updatedState = generateImageList({
+      type: SPECIFY_IMAGE_PROPERTY,
+      data: {imageData},
+      currentState: imageList,
+      target: this.getActiveImage().id,
+    });
+    this.updateImageList(updatedState);
+  }
   updateImageList(imageList: Image[]): void {
     this.setState({
       imageListHistory: generateImageListHistory({
@@ -181,13 +192,7 @@ export default class App extends React.Component<Props, State> {
             setting={actionLayerSettings[activeActionLayer]}
             display={display}
             updateImageData={imageData => {
-              const updatedState = generateImageList({
-                type: SPECIFY_IMAGE_PROPERTY,
-                data: {imageData},
-                currentState: imageList,
-                target: activeImage.id,
-              });
-              this.updateImageList(updatedState);
+              this.updateImageData(imageData);
             }}
             startOmitLengthCount={() => {
               this.setState({
@@ -215,6 +220,7 @@ export default class App extends React.Component<Props, State> {
           }}
           display={{width: display.width, height: display.height}}
         />
+        {/* TODO: Header に渡す props が増えすぎているため、調整する */}
         <Header
           selectedMenu={this.state.selectedMenu}
           downloadImageFile={() => this.downloadImageFile()}
@@ -233,6 +239,10 @@ export default class App extends React.Component<Props, State> {
           displayedImageDatas={imageList
             .filter(image => image.isShow)
             .map(image => image.imageData)}
+          imageData={activeImage.imageData}
+          updateImageData={imageData => {
+            this.updateImageData(imageData);
+          }}
         />
         {isDragOver && (
           <div className="guide-file-drop">
