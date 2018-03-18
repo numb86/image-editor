@@ -15,6 +15,9 @@ type State = {
   error: boolean,
 };
 
+const MIN_RESIZE_RATIO = 1;
+const MAX_RESIZE_RATIO = 200;
+
 export default class ResizeAndColorToneManage extends React.Component<
   Props,
   State
@@ -63,8 +66,11 @@ export default class ResizeAndColorToneManage extends React.Component<
               return;
             }
             const ratio = Number(resizeRatio);
-            // TODO: マジックナンバーの削除
-            if (isNaN(ratio) || ratio <= 0 || ratio > 200) {
+            if (
+              isNaN(ratio) ||
+              ratio < MIN_RESIZE_RATIO ||
+              ratio > MAX_RESIZE_RATIO
+            ) {
               this.setState({error: true});
               return;
             }

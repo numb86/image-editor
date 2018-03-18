@@ -16,6 +16,11 @@ type State = {
   error: boolean,
 };
 
+const MIN_DISPLAY_WIDTH = 1;
+const MIN_DISPLAY_HEIGHT = 1;
+const MAX_DISPLAY_WIDTH = 9999;
+const MAX_DISPLAY_HEIGHT = 9999;
+
 export default class DisplayManage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -68,14 +73,13 @@ export default class DisplayManage extends React.Component<Props, State> {
             }
             const width = Number(widthString);
             const height = Number(heightString);
-            // TODO: マジックナンバーの削除
             if (
               isNaN(width) ||
               isNaN(height) ||
-              width <= 0 ||
-              height <= 0 ||
-              width >= 10000 ||
-              height >= 10000
+              width < MIN_DISPLAY_WIDTH ||
+              height < MIN_DISPLAY_HEIGHT ||
+              width > MAX_DISPLAY_WIDTH ||
+              height > MAX_DISPLAY_HEIGHT
             ) {
               this.setState({error: true});
               return;
