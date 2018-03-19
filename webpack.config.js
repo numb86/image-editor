@@ -6,7 +6,6 @@ module.exports = {
   entry: {
     'public/bundle': './index.js',
     'public/css/index': './style.js',
-    'experiment/deterioration/deterioration': './experiment/deterioration.js',
   },
   output: {
     path: path.resolve(__dirname, 'build'),
