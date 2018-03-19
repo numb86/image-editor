@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
 
+import Palette from './Palette';
+
 import {DRAW_LINE, ERASER} from '../actionLayer/ActionLayer';
 
 import type {ActionLayerName} from '../actionLayer/ActionLayer';
@@ -35,8 +37,8 @@ export default function SketchManage({
   );
 
   return (
-    <div className="display-manage">
-      {Input(DRAW_LINE)}
+    <div className="sketch-manage">
+      {Input(DRAW_LINE)}ペン
       <select
         defaultValue={lineWidth[DRAW_LINE]}
         onChange={e => {
@@ -49,8 +51,9 @@ export default function SketchManage({
         <option value={1}>細</option>
         <option value={5}>中</option>
         <option value={15}>太</option>
-      </select>ペン
-      {Input(ERASER)}
+      </select>
+      <Palette updateActionLayerSettings={updateActionLayerSettings} />
+      {Input(ERASER)}消しゴム
       <select
         defaultValue={lineWidth[ERASER]}
         onChange={e => {
@@ -63,7 +66,7 @@ export default function SketchManage({
         <option value={1}>細</option>
         <option value={5}>中</option>
         <option value={15}>太</option>
-      </select>消しゴム
+      </select>
     </div>
   );
 }
