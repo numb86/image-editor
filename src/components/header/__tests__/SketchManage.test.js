@@ -4,12 +4,14 @@ import assert from 'assert';
 
 import SketchManage from '../SketchManage';
 
+import {DRAW_LINE, ERASER} from '../../actionLayer/ActionLayer';
+
 describe('SketchManage', () => {
   let wrapper;
   let funcCalledResult;
   const props = {
-    activeActionLayer: 'drawLine',
-    lineWidth: {drawLine: 1, eraser: 1},
+    activeActionLayer: DRAW_LINE,
+    lineWidth: {[DRAW_LINE]: 1, [ERASER]: 1},
     specifyActiveActionLayer: arg => {
       funcCalledResult = arg;
     },
@@ -22,7 +24,7 @@ describe('SketchManage', () => {
     wrapper = shallow(<SketchManage {...props} />);
   });
   it('ラジオボタンの初期値は activeActionLayer', () => {
-    assert(props.activeActionLayer === 'drawLine');
+    assert(props.activeActionLayer === DRAW_LINE);
     assert(
       wrapper.find('[data-test="radio-draw-line"]').prop('checked') === true
     );
@@ -41,12 +43,12 @@ describe('SketchManage', () => {
     assert(
       wrapper
         .find('[data-test="select-draw-line-line-width"]')
-        .prop('defaultValue') === props.lineWidth.drawLine
+        .prop('defaultValue') === props.lineWidth[DRAW_LINE]
     );
     assert(
       wrapper
         .find('[data-test="select-eraser-line-width"]')
-        .prop('defaultValue') === props.lineWidth.eraser
+        .prop('defaultValue') === props.lineWidth[ERASER]
     );
   });
   it('セレクトボックスの onChange で updateActionLayerSettings が呼び出される', () => {
@@ -65,7 +67,7 @@ describe('SketchManage', () => {
       .simulate('change', {
         currentTarget: {options: {selectedIndex: 1, 1: {value: 'foo'}}},
       });
-    assert(funcCalledResult[0] === 'drawLine');
+    assert(funcCalledResult[0] === DRAW_LINE);
     assert(Object.keys(funcCalledResult[1])[0] === 'lineWidth');
     assert(funcCalledResult[1].lineWidth === 'foo');
   });

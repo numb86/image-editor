@@ -38,7 +38,7 @@ export default function SketchManage({
     <div className="display-manage">
       {Input(DRAW_LINE)}
       <select
-        defaultValue={lineWidth.drawLine}
+        defaultValue={lineWidth[DRAW_LINE]}
         onChange={e => {
           const {options} = e.currentTarget;
           const newValue = options[options.selectedIndex].value;
@@ -52,7 +52,7 @@ export default function SketchManage({
       </select>ペン
       {Input(ERASER)}
       <select
-        defaultValue={lineWidth.eraser}
+        defaultValue={lineWidth[ERASER]}
         onChange={e => {
           const {options} = e.currentTarget;
           const newValue = options[options.selectedIndex].value;

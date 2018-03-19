@@ -125,8 +125,8 @@ export default function Header({
           <SketchManage
             activeActionLayer={activeActionLayer}
             lineWidth={{
-              drawLine: actionLayerSettings[DRAW_LINE].ctx.lineWidth,
-              eraser: actionLayerSettings[ERASER].ctx.lineWidth,
+              [DRAW_LINE]: actionLayerSettings[DRAW_LINE].ctx.lineWidth,
+              [ERASER]: actionLayerSettings[ERASER].ctx.lineWidth,
             }}
             specifyActiveActionLayer={specifyActiveActionLayer}
             updateActionLayerSettings={updateActionLayerSettings}
