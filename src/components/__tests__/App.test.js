@@ -99,6 +99,14 @@ describe('App', () => {
       assert(wrapper.state('imageListHistory').history[0][0].id === 1);
     });
   });
+  describe('updateActionLayerSettings', () => {
+    it('updateActionLayerSettings で state.actionLayerSettings を更新できる', () => {
+      const target = 'drawLine';
+      assert(wrapper.state('actionLayerSettings')[target].ctx.lineWidth === 1);
+      wrapper.instance().updateActionLayerSettings(target, {lineWidth: 3});
+      assert(wrapper.state('actionLayerSettings')[target].ctx.lineWidth === 3);
+    });
+  });
   describe('changeDisplaySize', () => {
     it('渡された値に、 state.display のサイズを変える', () => {
       const inst = wrapper.instance();
