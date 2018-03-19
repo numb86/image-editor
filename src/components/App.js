@@ -252,6 +252,14 @@ export default class App extends React.Component<Props, State> {
           select={menuName => {
             this.setState({selectedMenu: menuName});
           }}
+          activeActionLayer={activeActionLayer}
+          actionLayerSettings={actionLayerSettings}
+          specifyActiveActionLayer={actionLayerName => {
+            this.setState({activeActionLayer: actionLayerName});
+          }}
+          updateActionLayerSettings={(target, data) => {
+            this.updateActionLayerSettings(target, data);
+          }}
           display={display}
           updateDisplaySize={(width, height) => {
             this.changeDisplaySize(width, height);

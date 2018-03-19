@@ -2,9 +2,11 @@
 import React from 'react';
 import ClassNames from 'classnames';
 
+import SketchManage from './SketchManage';
 import ResizeAndColorToneManage from './ResizeAndColorToneManage';
 import DisplayManage from './DisplayManage';
 
+import {DRAW_LINE, ERASER} from '../actionLayer/ActionLayer';
 import {
   generateImageListHistory,
   BACK,
@@ -13,6 +15,11 @@ import {
 
 import type {DisplayType} from '../Display';
 import type {ImageListHistory} from '../../state/generateImageListHistory';
+import type {
+  ActionLayerSettings,
+  ChangeableProperty,
+} from '../../state/generateActionLayerSettings';
+import type {ActionLayerName} from '../actionLayer/ActionLayer';
 
 const SKETCH: 'スケッチ' = 'スケッチ';
 const RESIZE_AND_COLOR_TONE_CHANGE: 'リサイズと色調変換' = 'リサイズと色調変換';
@@ -32,6 +39,10 @@ export default function Header({
   imageListHistory,
   updateImageListHistory,
   select,
+  activeActionLayer,
+  actionLayerSettings,
+  specifyActiveActionLayer,
+  updateActionLayerSettings,
   display,
   updateDisplaySize,
   displayedImageDatas,
@@ -44,6 +55,13 @@ export default function Header({
   imageListHistory: ImageListHistory,
   updateImageListHistory: ImageListHistory => void,
   select: HeaderMenuList => void,
+  activeActionLayer: ActionLayerName,
+  actionLayerSettings: ActionLayerSettings,
+  specifyActiveActionLayer: ActionLayerName => void,
+  updateActionLayerSettings: (
+    target: ActionLayerName,
+    data: ChangeableProperty
+  ) => void,
   display: DisplayType,
   updateDisplaySize: (width: number, height: number) => void,
   displayedImageDatas: ImageData[],
@@ -103,7 +121,17 @@ export default function Header({
         })}
       </span>
       <div className="sub-menu">
-        {selectedMenu === SKETCH && <div>スケッチ</div>}
+        {selectedMenu === SKETCH && (
+          <SketchManage
+            activeActionLayer={activeActionLayer}
+            lineWidth={{
+              drawLine: actionLayerSettings[DRAW_LINE].ctx.lineWidth,
+              eraser: actionLayerSettings[ERASER].ctx.lineWidth,
+            }}
+            specifyActiveActionLayer={specifyActiveActionLayer}
+            updateActionLayerSettings={updateActionLayerSettings}
+          />
+        )}
         {selectedMenu === RESIZE_AND_COLOR_TONE_CHANGE && (
           <ResizeAndColorToneManage
             imageData={imageData}
