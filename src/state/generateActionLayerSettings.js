@@ -6,7 +6,7 @@ export const SPECIFY_CONTEXT_PROPERTY: 'specifyContextProperty' =
 
 const CTX: 'ctx' = 'ctx';
 
-type ChangeableProperty = {
+export type ChangeableProperty = {
   lineWidth?: number,
   strokeStyle?: string,
 };
