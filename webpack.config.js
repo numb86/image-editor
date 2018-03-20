@@ -4,11 +4,11 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
   context: path.resolve(__dirname, 'src'),
   entry: {
-    'public/bundle': './index.js',
-    'public/css/index': './style.js',
+    bundle: './index.js',
+    'css/index': './style.js',
   },
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, 'public'),
     filename: '[name].js',
   },
   module: {
@@ -39,7 +39,7 @@ module.exports = {
   },
   plugins: [new ExtractTextPlugin({filename: '[name].css'})],
   devServer: {
-    contentBase: path.resolve(__dirname, 'build'),
+    contentBase: path.resolve(__dirname, 'public'),
     historyApiFallback: true,
   },
 };
