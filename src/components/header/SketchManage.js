@@ -36,37 +36,33 @@ export default function SketchManage({
     />
   );
 
+  const Select = actionLayerName => (
+    <select
+      defaultValue={lineWidth[actionLayerName]}
+      onChange={e => {
+        const {options} = e.currentTarget;
+        const newValue = options[options.selectedIndex].value;
+        updateActionLayerSettings(actionLayerName, {lineWidth: newValue});
+      }}
+      data-test={
+        actionLayerName === DRAW_LINE
+          ? 'select-draw-line-line-width'
+          : 'select-eraser-line-width'
+      }
+    >
+      <option value={1}>細</option>
+      <option value={5}>中</option>
+      <option value={15}>太</option>
+    </select>
+  );
+
   return (
     <div className="sketch-manage">
       {Input(DRAW_LINE)}ペン
-      <select
-        defaultValue={lineWidth[DRAW_LINE]}
-        onChange={e => {
-          const {options} = e.currentTarget;
-          const newValue = options[options.selectedIndex].value;
-          updateActionLayerSettings(DRAW_LINE, {lineWidth: newValue});
-        }}
-        data-test="select-draw-line-line-width"
-      >
-        <option value={1}>細</option>
-        <option value={5}>中</option>
-        <option value={15}>太</option>
-      </select>
+      {Select(DRAW_LINE)}
       <Palette updateActionLayerSettings={updateActionLayerSettings} />
       {Input(ERASER)}消しゴム
-      <select
-        defaultValue={lineWidth[ERASER]}
-        onChange={e => {
-          const {options} = e.currentTarget;
-          const newValue = options[options.selectedIndex].value;
-          updateActionLayerSettings(ERASER, {lineWidth: newValue});
-        }}
-        data-test="select-eraser-line-width"
-      >
-        <option value={1}>細</option>
-        <option value={5}>中</option>
-        <option value={15}>太</option>
-      </select>
+      {Select(ERASER)}
     </div>
   );
 }
