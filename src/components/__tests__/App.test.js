@@ -5,6 +5,8 @@ import assert from 'assert';
 
 import App from '../App';
 
+import {DRAW_LINE} from '../actionLayer/ActionLayer';
+
 describe('App', () => {
   let wrapper;
   let onDrop;
@@ -101,7 +103,7 @@ describe('App', () => {
   });
   describe('updateActionLayerSettings', () => {
     it('updateActionLayerSettings で state.actionLayerSettings を更新できる', () => {
-      const target = 'drawLine';
+      const target = DRAW_LINE;
       assert(wrapper.state('actionLayerSettings')[target].ctx.lineWidth === 1);
       wrapper.instance().updateActionLayerSettings(target, {lineWidth: 3});
       assert(wrapper.state('actionLayerSettings')[target].ctx.lineWidth === 3);
