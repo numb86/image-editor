@@ -17,7 +17,7 @@ import type {DisplayType} from '../Display';
 import type {ImageListHistory} from '../../state/generateImageListHistory';
 import type {
   ActionLayerSettings,
-  ChangeableProperty,
+  ChangeableActionLayerSettings,
 } from '../../state/generateActionLayerSettings';
 import type {ActionLayerName} from '../actionLayer/ActionLayer';
 
@@ -60,7 +60,7 @@ export default function Header({
   specifyActiveActionLayer: ActionLayerName => void,
   updateActionLayerSettings: (
     target: ActionLayerName,
-    data: ChangeableProperty
+    data: ChangeableActionLayerSettings
   ) => void,
   display: DisplayType,
   updateDisplaySize: (width: number, height: number) => void,

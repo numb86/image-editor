@@ -4,7 +4,7 @@ import React from 'react';
 import {DRAW_LINE} from '../actionLayer/ActionLayer';
 
 import type {ActionLayerName} from '../actionLayer/ActionLayer';
-import type {ChangeableProperty} from '../../state/generateActionLayerSettings';
+import type {ChangeableActionLayerSettings} from '../../state/generateActionLayerSettings';
 
 const COLOR_LIST = [
   '#000', // 黒
@@ -24,7 +24,7 @@ export default function Palette({
 }: {
   updateActionLayerSettings: (
     target: ActionLayerName,
-    data: ChangeableProperty
+    data: ChangeableActionLayerSettings
   ) => void,
 }) {
   function update(color) {

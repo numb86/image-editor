@@ -6,7 +6,7 @@ import Palette from './Palette';
 import {DRAW_LINE, ERASER} from '../actionLayer/ActionLayer';
 
 import type {ActionLayerName} from '../actionLayer/ActionLayer';
-import type {ChangeableProperty} from '../../state/generateActionLayerSettings';
+import type {ChangeableActionLayerSettings} from '../../state/generateActionLayerSettings';
 
 export default function SketchManage({
   activeActionLayer,
@@ -19,7 +19,7 @@ export default function SketchManage({
   specifyActiveActionLayer: ActionLayerName => void,
   updateActionLayerSettings: (
     target: ActionLayerName,
-    data: ChangeableProperty
+    data: ChangeableActionLayerSettings
   ) => void,
 }) {
   const Input = actionLayerName => (

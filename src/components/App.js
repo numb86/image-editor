@@ -35,7 +35,7 @@ import type {Image} from '../image';
 import type {ActionLayerName} from './actionLayer/ActionLayer';
 import type {
   ActionLayerSettings,
-  ChangeableProperty,
+  ChangeableActionLayerSettings,
 } from '../state/generateActionLayerSettings';
 import type {ImageListHistory} from '../state/generateImageListHistory';
 import type {HeaderMenuList} from './header/Header';
@@ -94,7 +94,7 @@ export default class App extends React.Component<Props, State> {
   }
   updateActionLayerSettings(
     target: ActionLayerName,
-    data: ChangeableProperty
+    data: ChangeableActionLayerSettings
   ): void {
     this.setState({
       actionLayerSettings: generateActionLayerSettings({
