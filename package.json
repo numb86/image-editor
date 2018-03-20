@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --inline",
+    "start": "webpack-dev-server",
     "build": "yarn licenses generate-disclaimer > use-library.txt && NODE_ENV=production webpack -p",
     "test": "mocha --compilers js:babel-register --require setup_test.js 'src/**/__tests__/*.test.js'",
     "mocha": "mocha --compilers js:babel-register --require setup_test.js",
