@@ -1,12 +1,11 @@
 # Image Editor
 
-Canvasを使って、画像のリサイズや回転を行います。  
-現時点ではただそれだけのものです。
+画像編集を行えるWEBアプリです。
 
 ```bash
 $ npm i
 $ npm start
-$ open http://localhost:8080/public/
+$ open http://localhost:8080/
 ```
 
-完成物は`build/public`ディレクトリに入っています。
+完成物は`public`ディレクトリに入っています。
