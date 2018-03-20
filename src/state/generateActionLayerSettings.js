@@ -6,7 +6,7 @@ export const SPECIFY_CONTEXT_PROPERTY: 'specifyContextProperty' =
 
 const CTX: 'ctx' = 'ctx';
 
-type ChangeableProperty = {
+export type ChangeableActionLayerSettings = {
   lineWidth?: number,
   strokeStyle?: string,
 };
@@ -29,7 +29,7 @@ function specifyProperty(
   currentState: ActionLayerSettings,
   target: ActionLayerName,
   key: typeof CTX,
-  data: ChangeableProperty
+  data: ChangeableActionLayerSettings
 ): ActionLayerSettings {
   const newKeyValue = Object.assign({}, currentState[target][key], data);
   const newTargetValue = Object.assign({}, currentState[target], {
@@ -46,7 +46,7 @@ export function generateActionLayerSettings({
 }: {
   type: typeof SPECIFY_CONTEXT_PROPERTY,
   currentState: ActionLayerSettings,
-  data: ChangeableProperty,
+  data: ChangeableActionLayerSettings,
   target: ActionLayerName,
 }): ActionLayerSettings {
   switch (type) {

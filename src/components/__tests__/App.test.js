@@ -5,6 +5,8 @@ import assert from 'assert';
 
 import App from '../App';
 
+import {DRAW_LINE} from '../actionLayer/ActionLayer';
+
 describe('App', () => {
   let wrapper;
   let onDrop;
@@ -97,6 +99,14 @@ describe('App', () => {
       });
       assert(wrapper.state('imageListHistory').position === 1);
       assert(wrapper.state('imageListHistory').history[0][0].id === 1);
+    });
+  });
+  describe('updateActionLayerSettings', () => {
+    it('updateActionLayerSettings で state.actionLayerSettings を更新できる', () => {
+      const target = DRAW_LINE;
+      assert(wrapper.state('actionLayerSettings')[target].ctx.lineWidth === 1);
+      wrapper.instance().updateActionLayerSettings(target, {lineWidth: 3});
+      assert(wrapper.state('actionLayerSettings')[target].ctx.lineWidth === 3);
     });
   });
   describe('changeDisplaySize', () => {

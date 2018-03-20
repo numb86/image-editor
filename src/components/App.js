@@ -19,6 +19,10 @@ import {
   ADD_NEW_IMAGE,
 } from '../state/generateImageList';
 import {
+  generateActionLayerSettings,
+  SPECIFY_CONTEXT_PROPERTY,
+} from '../state/generateActionLayerSettings';
+import {
   generateImageListHistory,
   UPDATE,
   START_OMIT_LENGTH_COUNT,
@@ -29,7 +33,10 @@ import initialState from '../state/initialState';
 import type {DisplayType} from './Display';
 import type {Image} from '../image';
 import type {ActionLayerName} from './actionLayer/ActionLayer';
-import type {ActionLayerSettings} from '../state/generateActionLayerSettings';
+import type {
+  ActionLayerSettings,
+  ChangeableActionLayerSettings,
+} from '../state/generateActionLayerSettings';
 import type {ImageListHistory} from '../state/generateImageListHistory';
 import type {HeaderMenuList} from './header/Header';
 
@@ -84,6 +91,19 @@ export default class App extends React.Component<Props, State> {
   }
   updateImageListHistory(imageListHistory: ImageListHistory): void {
     this.setState({imageListHistory});
+  }
+  updateActionLayerSettings(
+    target: ActionLayerName,
+    data: ChangeableActionLayerSettings
+  ): void {
+    this.setState({
+      actionLayerSettings: generateActionLayerSettings({
+        type: SPECIFY_CONTEXT_PROPERTY,
+        currentState: this.state.actionLayerSettings,
+        data,
+        target,
+      }),
+    });
   }
   uploadImageFile(files: FileList): void {
     if (files.length > 1) {
@@ -231,6 +251,14 @@ export default class App extends React.Component<Props, State> {
           }
           select={menuName => {
             this.setState({selectedMenu: menuName});
+          }}
+          activeActionLayer={activeActionLayer}
+          actionLayerSettings={actionLayerSettings}
+          specifyActiveActionLayer={actionLayerName => {
+            this.setState({activeActionLayer: actionLayerName});
+          }}
+          updateActionLayerSettings={(target, data) => {
+            this.updateActionLayerSettings(target, data);
           }}
           display={display}
           updateDisplaySize={(width, height) => {

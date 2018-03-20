@@ -90,7 +90,7 @@ body {
   color: #000;
 }
 
-.sub-menu-content{
+.sub-menu-content {
   line-height: 40px;
   margin-left: 280px;
   input {
@@ -112,6 +112,30 @@ body {
 .resize-and-color-tone-manage {
   @extend .sub-menu-content;
 }
+
+.sketch-manage {
+  @extend .sub-menu-content;
+  margin-left: 320px;
+  font-size: 15px;
+  line-height: 52px;
+  input {
+    margin: 0 -20px 0 0;
+  }
+  select {
+    margin: 0 0 0 20px;
+  }
+}
+
+.sketch-manage .palette {
+  margin: 0 70px 0 30px;
+  button {
+    width: 20px;
+    height: 20px;
+    border: none;
+    margin: 0;
+  }
+}
+
 
 .display {
   position: absolute;
