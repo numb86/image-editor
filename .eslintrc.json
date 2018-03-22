@@ -25,6 +25,7 @@
         "trailingComma": "es5",
         "bracketSpacing": false
       }
-    ]
+    ],
+    "prefer-destructuring": 1
   }
 }
