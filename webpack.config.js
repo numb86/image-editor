@@ -1,5 +1,7 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const LicenseInfoWebpackPlugin = require('license-info-webpack-plugin').default;
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = env => ({
   context: path.resolve(__dirname, 'src'),
@@ -29,7 +31,19 @@ module.exports = env => ({
       },
     ],
   },
-  plugins: [new ExtractTextPlugin({filename: '[name].css'})],
+  plugins: [
+    new ExtractTextPlugin({filename: '[name].css'}),
+    new LicenseInfoWebpackPlugin({
+      glob: '{LICENSE,license,License}*',
+    }),
+    new UglifyJsPlugin({
+      uglifyOptions: {
+        output: {
+          comments: /^\**!|@preserve|@license|@cc_on/,
+        },
+      },
+    }),
+  ],
   devServer: {
     contentBase: path.resolve(__dirname, 'public'),
   },
