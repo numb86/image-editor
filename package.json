@@ -1,8 +1,8 @@
 {
   "name": "image-editor",
-  "version": "0.1.1",
-  "description": "",
-  "main": "index.js",
+  "version": "0.2.0",
+  "description": "Image editing web application by React and Canvas.",
+  "main": "",
   "scripts": {
     "start": "npm i && webpack-dev-server --mode development",
     "build": "npm i && NODE_ENV=production webpack --mode production",
@@ -12,7 +12,7 @@
     "lint:fix": "eslint src --fix",
     "flow": "flow"
   },
-  "author": "",
+  "author": "numb86",
   "license": "MIT",
   "repository": {
     "type": "git",
