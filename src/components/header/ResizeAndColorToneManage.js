@@ -67,7 +67,7 @@ export default class ResizeAndColorToneManage extends React.Component<
             }
             const ratio = Number(resizeRatio);
             if (
-              isNaN(ratio) ||
+              Number.isNaN(ratio) ||
               ratio < MIN_RESIZE_RATIO ||
               ratio > MAX_RESIZE_RATIO
             ) {

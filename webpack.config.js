@@ -3,19 +3,13 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const LicenseInfoWebpackPlugin = require('license-info-webpack-plugin').default;
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-module.exports = env => {
+module.exports = (env, argv) => {
+  const isProduction = argv.mode === 'production';
   const plugins = [new ExtractTextPlugin({filename: '[name].css'})];
-  if (env === 'production') {
+  if (isProduction) {
     plugins.push(
       new LicenseInfoWebpackPlugin({
         glob: '{LICENSE,license,License}*',
-      }),
-      new UglifyJsPlugin({
-        uglifyOptions: {
-          output: {
-            comments: /^\**!|@preserve|@license|@cc_on/,
-          },
-        },
       })
     );
   }
@@ -48,6 +42,19 @@ module.exports = env => {
       ],
     },
     plugins,
+    optimization: isProduction
+      ? {
+          minimizer: [
+            new UglifyJsPlugin({
+              uglifyOptions: {
+                output: {
+                  comments: /^\**!|@preserve|@license|@cc_on/,
+                },
+              },
+            }),
+          ],
+        }
+      : {},
     devServer: {
       contentBase: path.resolve(__dirname, 'public'),
     },
