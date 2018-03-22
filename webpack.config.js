@@ -1,7 +1,7 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-module.exports = {
+module.exports = env => ({
   context: path.resolve(__dirname, 'src'),
   entry: {
     bundle: './index.js',
@@ -41,4 +41,4 @@ module.exports = {
   devServer: {
     contentBase: path.resolve(__dirname, 'public'),
   },
-};
+});
