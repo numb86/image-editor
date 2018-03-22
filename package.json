@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "NODE_ENV=production webpack --env=production",
+    "start": "npm i && webpack-dev-server",
+    "build": "npm i && NODE_ENV=production webpack --env=production",
     "test": "mocha --compilers js:babel-register --require setup_test.js 'src/**/__tests__/*.test.js'",
     "mocha": "mocha --compilers js:babel-register --require setup_test.js",
     "lint": "eslint src",
