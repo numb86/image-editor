@@ -9,13 +9,9 @@
     "flowtype",
     "prettier"
   ],
-  "globals": {
-    "document": true,
-    "FileReader": false,
-    "Image": false,
-    "describe": false,
-    "it": false,
-    "beforeEach": false
+  "env": {
+    "browser": true,
+    "mocha": true
   },
   "rules": {
     "react/jsx-filename-extension": 0,
@@ -29,6 +25,7 @@
         "trailingComma": "es5",
         "bracketSpacing": false
       }
-    ]
+    ],
+    "prefer-destructuring": 1
   }
 }
