@@ -74,8 +74,8 @@ export default class DisplayManage extends React.Component<Props, State> {
             const width = Number(widthString);
             const height = Number(heightString);
             if (
-              isNaN(width) ||
-              isNaN(height) ||
+              Number.isNaN(width) ||
+              Number.isNaN(height) ||
               width < MIN_DISPLAY_WIDTH ||
               height < MIN_DISPLAY_HEIGHT ||
               width > MAX_DISPLAY_WIDTH ||
