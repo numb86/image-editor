@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "yarn licenses generate-disclaimer > use-library.txt && NODE_ENV=production webpack -p",
+    "start": "npm i && webpack-dev-server",
+    "build": "npm i && NODE_ENV=production webpack --env=production",
     "test": "mocha --compilers js:babel-register --require setup_test.js 'src/**/__tests__/*.test.js'",
     "mocha": "mocha --compilers js:babel-register --require setup_test.js",
     "lint": "eslint src",
@@ -46,6 +46,7 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "flow-bin": "^0.67.1",
     "jsdom": "^11.6.2",
+    "license-info-webpack-plugin": "^1.0.0",
     "mocha": "^3.5.0",
     "node-sass": "^4.7.2",
     "power-assert": "^1.4.4",
@@ -53,6 +54,7 @@
     "react-test-renderer": "^16.1.1",
     "sass-loader": "^6.0.7",
     "sinon": "^4.1.2",
+    "uglifyjs-webpack-plugin": "^1.2.4",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.4.5"
   },
