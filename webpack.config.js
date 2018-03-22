@@ -40,6 +40,5 @@ module.exports = {
   plugins: [new ExtractTextPlugin({filename: '[name].css'})],
   devServer: {
     contentBase: path.resolve(__dirname, 'public'),
-    historyApiFallback: true,
   },
 };
