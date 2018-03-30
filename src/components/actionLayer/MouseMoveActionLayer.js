@@ -45,13 +45,13 @@ export default class MouseMoveActionLayer extends React.Component<
     const {canvas} = this;
     if (!canvas) throw new Error('canvas is null.');
     this.ctx = canvas.getContext('2d');
-    const {x, y} = ((canvas.getBoundingClientRect(): any): DOMRect);
+    const {left, top} = ((canvas.getBoundingClientRect(): any): DOMRect);
     if (!document.scrollingElement) {
       throw new Error('document.scrollingElement is undefined.');
     }
     const {scrollTop, scrollLeft} = (document.scrollingElement: any);
-    this.canvasStartPosition.x = x + scrollLeft;
-    this.canvasStartPosition.y = y + scrollTop;
+    this.canvasStartPosition.x = left + scrollLeft;
+    this.canvasStartPosition.y = top + scrollTop;
     const {ctx} = this;
     if (!ctx) throw new Error('ctx is null.');
     this.loadContextSetting(ctx);
