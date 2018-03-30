@@ -39,7 +39,7 @@ export default class MouseMoveActionLayer extends React.Component<
     };
     this.canvas = null;
     this.ctx = null;
-    this.canvasStartPosition = null;
+    this.canvasStartPosition = {x: null, y: null};
   }
   componentDidMount() {
     const {canvas} = this;
@@ -59,38 +59,38 @@ export default class MouseMoveActionLayer extends React.Component<
     this.props.callbackDidUpdate({ctx});
   }
   setStartPoint(mouseEventPageX: number, mouseEventPageY: number) {
-    const {canvasStartPosition} = this;
-    if (!canvasStartPosition) throw new Error('canvasStartPosition is null.');
+    const {x, y} = this.canvasStartPosition;
+    if (!x || !y) throw new Error('canvasStartPosition is null.');
     this.setState({
       startPoint: {
-        x: mouseEventPageX - canvasStartPosition.x,
-        y: mouseEventPageY - canvasStartPosition.y,
+        x: mouseEventPageX - x,
+        y: mouseEventPageY - y,
       },
     });
   }
   getCurrentPoint(mouseEventPageX: number, mouseEventPageY: number): Point {
-    const {canvasStartPosition} = this;
-    if (!canvasStartPosition) throw new Error('canvasStartPosition is null.');
+    const {x, y} = this.canvasStartPosition;
+    if (!x || !y) throw new Error('canvasStartPosition is null.');
     return {
-      x: mouseEventPageX - canvasStartPosition.x,
-      y: mouseEventPageY - canvasStartPosition.y,
+      x: mouseEventPageX - x,
+      y: mouseEventPageY - y,
     };
   }
   loadContextSetting(ctx: CanvasRenderingContext2D) {
     Object.assign(ctx, this.props.setting.ctx);
   }
   isOutsideDisplay(mouseEventPageX: number, mouseEventPageY: number): boolean {
-    const {canvasStartPosition} = this;
-    if (!canvasStartPosition) throw new Error('canvasStartPosition is null.');
-    const x = mouseEventPageX - canvasStartPosition.x;
-    const y = mouseEventPageY - canvasStartPosition.y;
+    const {x, y} = this.canvasStartPosition;
+    if (!x || !y) throw new Error('canvasStartPosition is null.');
+    const targetX = mouseEventPageX - x;
+    const targetY = mouseEventPageY - y;
     const {width, height} = this.props.display;
-    return x > width || y > height;
+    return targetX > width || targetY > height;
   }
 
   canvas: HTMLCanvasElement | null;
   ctx: CanvasRenderingContext2D | null;
-  canvasStartPosition: Point | null;
+  canvasStartPosition: {x: number | null, y: number | null};
 
   startAction() {
     this.props.startOmitLengthCount();
