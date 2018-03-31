@@ -8,7 +8,6 @@ import MouseMoveActionLayer from '../MouseMoveActionLayer';
 describe('MouseMoveActionLayer', () => {
   const CANVAS_WIDTH = 40;
   const CANVAS_HEIGHT = 30;
-  const CANVAS_START_POSITION = {x: 200, y: 200};
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   const imageData = ctx.createImageData(CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -27,6 +26,12 @@ describe('MouseMoveActionLayer', () => {
     width: DISPLAY_WIDTH,
     height: DISPLAY_HEIGHT,
     magnificationPercent: DISPLAY_MAGNIFICATION_PERCENT,
+  };
+  const SCROLL_LEFT = 90;
+  const SCROLL_TOP = 80;
+  document.scrollingElement = {
+    scrollLeft: SCROLL_LEFT,
+    scrollTop: SCROLL_TOP,
   };
   let wrapper;
   let calledFunc;
@@ -62,7 +67,6 @@ describe('MouseMoveActionLayer', () => {
     inst = wrapper.instance();
     inst.canvas = document.createElement('canvas');
     inst.ctx = document.createElement('canvas').getContext('2d');
-    inst.canvasStartPosition = CANVAS_START_POSITION;
   });
   it('imageDataで渡されたサイズのCanvasが描画される', () => {
     assert(wrapper.find('canvas').prop('width') === CANVAS_WIDTH);
@@ -70,12 +74,15 @@ describe('MouseMoveActionLayer', () => {
   });
   it('マウスイベントによって startOmitLengthCount や omitImageListHistory が実行される', () => {
     assert(calledFunc === null);
+    inst.componentDidMount();
+    assert(calledFunc === 'callbackDidMount');
     wrapper.find('canvas').simulate('mouseDown', {pageX: 0, pageY: 0});
     assert(calledFunc === 'startOmitLengthCount');
     wrapper.find('canvas').simulate('mouseUp');
     assert(calledFunc === 'omitImageListHistory');
   });
   it('マウスイベントによって state.isAction が適切に切り替わる', () => {
+    inst.componentDidMount();
     assert(wrapper.state('isAction') === false);
     wrapper.find('canvas').simulate('mouseDown', {pageX: 0, pageY: 0});
     assert(wrapper.state('isAction') === true);
@@ -83,7 +90,8 @@ describe('MouseMoveActionLayer', () => {
     assert(wrapper.state('isAction') === false);
   });
   it('ディスプレイの範囲外を押下しても、state.isAction は切り替わらない', () => {
-    const {x, y} = CANVAS_START_POSITION;
+    inst.componentDidMount();
+    const {x, y} = inst.canvasStartPosition;
     assert(wrapper.state('isAction') === false);
     wrapper.find('canvas').simulate('mouseDown', {
       pageX: x + DISPLAY_WIDTH + 1,
@@ -118,21 +126,24 @@ describe('MouseMoveActionLayer', () => {
     spy.restore();
   });
   it('getCurrentPoint で、押下したポイントを取得できる', () => {
+    inst.componentDidMount();
     const result = inst.getCurrentPoint(100, 105);
-    assert(result.x === 100 - CANVAS_START_POSITION.x);
-    assert(result.y === 105 - CANVAS_START_POSITION.y);
+    assert(result.x === 100 - inst.canvasStartPosition.x);
+    assert(result.y === 105 - inst.canvasStartPosition.y);
   });
   it('mouseDown の後に mouseMove すると props.executeAction が実行される', () => {
     assert(calledFunc === null);
+    inst.componentDidMount();
     wrapper.find('canvas').simulate('mouseDown', {pageX: 0, pageY: 0});
     wrapper.find('canvas').simulate('mouseMove', {pageX: 0, pageY: 0});
     assert(calledFunc === 'executeAction');
   });
   it('executeAction に、正しくポイントが渡される', () => {
+    inst.componentDidMount();
     assert(executeActionReceivedArg === null);
     wrapper.find('canvas').simulate('mouseDown', {pageX: 100, pageY: 60});
     wrapper.find('canvas').simulate('mouseMove', {pageX: 110, pageY: 70});
-    const {x, y} = CANVAS_START_POSITION;
+    const {x, y} = inst.canvasStartPosition;
     assert(executeActionReceivedArg.startPoint.x === 100 - x);
     assert(executeActionReceivedArg.startPoint.y === 60 - y);
     assert(executeActionReceivedArg.currentPoint.x === 110 - x);
@@ -146,6 +157,7 @@ describe('MouseMoveActionLayer', () => {
     assert(wrapper.state('startPoint').y === 44);
   });
   it('mouseDown の後に mouseMove すると switchCurrentPointToStartPoint が呼び出される', () => {
+    inst.componentDidMount();
     const spy = sinon.spy(inst, 'switchCurrentPointToStartPoint');
     assert(spy.callCount === 0);
     wrapper.find('canvas').simulate('mouseDown', {pageX: 0, pageY: 0});
