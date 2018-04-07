@@ -2,6 +2,7 @@
 import React from 'react';
 import ClassNames from 'classnames';
 
+import ActiveActionLayerState from './ActiveActionLayerState';
 import SketchManage from './SketchManage';
 import ResizeAndColorToneManage from './ResizeAndColorToneManage';
 import DisplayManage from './DisplayManage';
@@ -105,6 +106,10 @@ export default function Header({
         }}
       />
       <span className="menu-list">
+        <ActiveActionLayerState
+          activeActionLayer={activeActionLayer}
+          setting={actionLayerSettings[activeActionLayer]}
+        />
         {HEADER_MENU_LIST.map(menuName => {
           const classNames = ClassNames({
             selected: selectedMenu === menuName,
