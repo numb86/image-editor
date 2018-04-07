@@ -63,7 +63,18 @@ body {
 }
 
 .header .menu-list {
-  margin-left: 120px;
+  margin-left: 160px;
+}
+
+.header .menu-list .active-action-layer-color {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-bottom: -4px;
+  margin-left: 10px;
+  box-sizing: content-box;
+  border: 1px #fff solid;
+  border-radius: 50%;
 }
 
 .header .menu-list button {
