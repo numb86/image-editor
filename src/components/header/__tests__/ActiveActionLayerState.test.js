@@ -41,7 +41,7 @@ describe('ActiveActionLayerState', () => {
       />
     );
     const style = wrapper
-      .find('[data-test="active-action-layer-color"]')
+      .find('[data-test="active-action-layer-color-state"]')
       .prop('style');
     assert(style.backgroundColor === '#000');
   });
@@ -53,7 +53,7 @@ describe('ActiveActionLayerState', () => {
       />
     );
     const style = wrapper
-      .find('[data-test="active-action-layer-color"]')
+      .find('[data-test="active-action-layer-color-state"]')
       .prop('style');
     assert(style.backgroundColor === undefined);
     assert(style.backgroundImage === `url(${DATA_URL_TRANSPARENT})`);

@@ -39,8 +39,8 @@ export default function ActiveActionLayerState({
     <span>
       <span className={`fa ${getIconClassName()}`} />
       <span
-        data-test="active-action-layer-color"
-        className="active-action-layer-color"
+        data-test="active-action-layer-color-state"
+        className="active-action-layer-color-state"
         style={getColorStateStyle()}
       />
     </span>
