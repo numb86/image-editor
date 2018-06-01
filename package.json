@@ -1,6 +1,6 @@
 {
   "name": "image-editor",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Image editing web application by React and Canvas.",
   "main": "",
   "scripts": {
