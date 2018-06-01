@@ -3,6 +3,7 @@ import {shallow} from 'enzyme';
 import assert from 'assert';
 
 import Header from '../Header';
+import {DRAW_LINE} from '../../actionLayer/ActionLayer';
 
 describe('Header', () => {
   let wrapper;
@@ -31,6 +32,8 @@ describe('Header', () => {
         select={arg => {
           calledFunc = `select+${arg}`;
         }}
+        activeActionLayer={DRAW_LINE}
+        actionLayerSettings={{[DRAW_LINE]: {ctx: {}}}}
       />
     );
   });
@@ -70,7 +73,7 @@ describe('Header', () => {
     wrapper
       .find('.menu-list')
       .children()
-      .first()
+      .at(1)
       .simulate('click');
     assert(calledFunc.indexOf('select') === 0);
   });
@@ -79,7 +82,7 @@ describe('Header', () => {
     const target = wrapper
       .find('.menu-list')
       .children()
-      .first();
+      .at(1);
     target.simulate('click');
     assert(calledFunc.indexOf(target.text()) !== -1);
   });
